@@ -155,3 +155,10 @@ body {
 #interpolation-image-wrapper img {
   border-radius: 5px;
 }
+
+#interpolation-image-wrapper1{
+  width: 100%;
+}
+#interpolation-image-wrapper1 img {
+  border-radius: 5px;
+}

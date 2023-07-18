@@ -71,7 +71,7 @@ $(document).ready(function() {
       setInterpolationImage(this.value);
     });
     setInterpolationImage(0);
-    $('#interpolation-slider').prop('max', NUM_INTERP_FRAMES - 1);
+    $('#interpolation-slider').prop('max', NUM_INTERP_FRAMES_1 - 1);
 
     bulmaSlider.attach();
 

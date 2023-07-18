@@ -234,19 +234,20 @@
     </div>
   </div>
 </section>
-<section class="hero is-light is-small">
+
+<!-- <section class="hero is-light is-small">
   <div class="hero-body">
     <div class="container">
       <div id="results-carousel" class="carousel results-carousel">
         <div class="item item-steve">
           <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/steve.mp4"
+            <source src="./static/videos/kitti_demo.mp4"
                     type="video/mp4">
           </video>
         </div>
         <div class="item item-chair-tp">
           <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/chair-tp.mp4"
+            <source src="./static/videos/vkitti_demo.mp4"
                     type="video/mp4">
           </video>
         </div>
@@ -288,8 +289,12 @@
         </div>
       </div>
     </div>
+    
   </div>
-</section>
+</section> -->
+
+
+
 <section class="section">
   <div class="container is-max-desktop">
     <!-- Abstract. -->
@@ -331,27 +336,14 @@
     <!--/ Paper video. -->
   </div>
 </section>
+
+
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <!-- Visual Effects. -->
       <div class="column">
-        <div class="content">
-          <h2 class="title is-3">Visual Effects</h2>
-          <p>
-            Using <i>nerfies</i> you can create fun visual effects. This Dolly zoom effect
-            would be impossible without nerfies since it would require going through a wall.
-          </p>
-          <video id="dollyzoom" autoplay controls muted loop playsinline height="100%">
-            <source src="./static/videos/dollyzoom-stacked.mp4"
-                    type="video/mp4">
-          </video>
-        </div>
-      </div>
-      <!--/ Visual Effects. -->
-      <!-- Matting. -->
-      <div class="column">
-        <h2 class="title is-3">Matting</h2>
+        <h2 class="title is-3">Vitural-KITTI-2</h2>
         <div class="columns is-centered">
           <div class="column content">
             <p>
@@ -359,7 +351,24 @@
               samples that fall outside of a bounding box during rendering.
             </p>
             <video id="matting-video" controls playsinline height="100%">
-              <source src="./static/videos/matting.mp4"
+              <source src="./static/videos/vkitti_demo.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+      <!--/ Visual Effects. -->
+      <!-- Matting. -->
+      <div class="column">
+        <h2 class="title is-3">KITTI-MOT</h2>
+        <div class="columns is-centered">
+          <div class="column content">
+            <p>
+              As a byproduct of our method, we can also solve the matting problem by ignoring
+              samples that fall outside of a bounding box during rendering.
+            </p>
+            <video id="matting-video" controls playsinline height="100%">
+              <source src="./static/videos/kitti_demo.mp4"
                       type="video/mp4">
             </video>
           </div>
@@ -373,7 +382,6 @@
         <h2 class="title is-3">Editing</h2>
 
         <!-- Interpolating. -->
-        <h3 class="title is-4">Rotation</h3>
         <h3 class="title is-4">Rotation & Translation</h3>
         <div class="content has-text-justified">
           <p>
@@ -384,7 +392,7 @@
         </div>
         <div class="columns is-vcentered interpolation-panel">
           <div class="column is-3 has-text-centered">
-            <img src="./static/images/rotate_start.png"
+            <img src="./static/images/rotate_start.jpg"
                  class="interpolation-image"
                  alt="Rotation start reference image."/>
             <p>Start Frame</p>
@@ -398,7 +406,7 @@
                    step="1" min="0" max="88" value="0" type="range">
           </div>
           <div class="column is-3 has-text-centered">
-            <img src="./static/images/translation_end.png"
+            <img src="./static/images/translation_end.jpg"
                  class="interpolation-image"
                  alt="Rotation end reference image."/>
             <p class="is-bold">End Frame</p>
@@ -421,7 +429,7 @@
                  preload
                  playsinline
                  width="75%">
-            <source src="./static/videos/replay.mp4"
+            <source src="./static/videos/waymo_demo.mp4"
                     type="video/mp4">
           </video>
         </div>

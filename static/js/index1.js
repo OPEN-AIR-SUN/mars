@@ -1,22 +1,22 @@
 window.HELP_IMPROVE_VIDEOJS = false;
 
-var INTERP_BASE = "./static/interpolation/stacked/rotation";
-var NUM_INTERP_FRAMES = 15;
+var INTERP_BASE_1 = "./static/interpolation/stacked/transition";
+var NUM_INTERP_FRAMES_1 = 75;
 
-var interp_images = [];
-function preloadInterpolationImages() {
-  for (var i = 0; i < NUM_INTERP_FRAMES; i++) {
-    var path = INTERP_BASE + '/' + String(i).padStart(6, '0') + '.png';
-    interp_images[i] = new Image();
-    interp_images[i].src = path;
+var interp_images_1 = [];
+function preloadInterpolationImages_1() {
+  for (var i = 0; i < NUM_INTERP_FRAMES_1; i++) {
+    var path = INTERP_BASE_1 + '/' + String(i).padStart(6, '0') + '.png';
+    interp_images_1[i] = new Image();
+    interp_images_1[i].src = path;
   }
 }
 
 function setInterpolationImage(i) {
-  var image = interp_images[i];
-  image.ondragstart = function() { return false; };
-  image.oncontextmenu = function() { return false; };
-  $('#interpolation-image-wrapper').empty().append(image);
+  var image_1 = interp_images_1[i];
+  image_1.ondragstart = function() { return false; };
+  image_1.oncontextmenu = function() { return false; };
+  $('#interpolation-image-wrapper-1').empty().append(image_1);
 }
 
 
@@ -29,7 +29,7 @@ $(document).ready(function() {
 
     });
 
-    var options = {
+    var options_1 = {
 			slidesToScroll: 1,
 			slidesToShow: 3,
 			loop: true,
@@ -39,22 +39,22 @@ $(document).ready(function() {
     }
 
 		// Initialize all div with carousel class
-    var carousels = bulmaCarousel.attach('.carousel', options);
+    var carousels_1 = bulmaCarousel.attach('.carousel', options_1);
 
     // Loop on each carousel initialized
-    for(var i = 0; i < carousels.length; i++) {
+    for(var i = 0; i < carousels_1.length; i++) {
     	// Add listener to  event
-    	carousels[i].on('before:show', state => {
-    		console.log(state);
+    	carousels_1[i].on('before:show', state_1 => {
+    		console.log(state_1);
     	});
     }
 
     // Access to bulmaCarousel instance of an element
-    var element = document.querySelector('#my-element');
-    if (element && element.bulmaCarousel) {
+    var element_1 = document.querySelector('#my-element');
+    if (element_1 && element_1.bulmaCarousel) {
     	// bulmaCarousel instance is available as element.bulmaCarousel
-    	element.bulmaCarousel.on('before-show', function(state) {
-    		console.log(state);
+    	element_1.bulmaCarousel.on('before-show', function(state_1) {
+    		console.log(state_1);
     	});
     }
 

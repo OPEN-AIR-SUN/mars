@@ -276,45 +276,49 @@
 </section>
 
 <section> 
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <img src="./static/images/MARS-poster.jpg"
-      class="interpolation-image"
-      >
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <img src="./static/images/main.jpg"
+        class="interpolation-image"
+        >
     </div>
   </div>
 </section>
 
 <section class="section">
   <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="columns content">
+        <h4>
+          <br>
+          Below we show some demos of our simulator on different datasets.
+          <br>
+        </h4>
+      </div>
+    </div>
     <div class="columns is-centered">
-      <!-- Visual Effects. -->
       <div class="column">
         <h2 class="title is-3"><a href="https://europe.naverlabs.com/research/computer-vision/proxy-virtual-worlds-vkitti-2/">Vitural-KITTI-2</a></h2>
         <div class="columns is-centered">
           <div class="column content">
             <p>
-              As a byproduct of our method, we can also solve the matting problem by ignoring
-              samples that fall outside of a bounding box during rendering.
+              A rendered demo of our simulator on V-KITTI2 dataset, which is on Scene02.
             </p>
-            <video id="matting-video" controls playsinline height="100%">
+            <video id="matting-video" autoplay muted controls loop playsinline height="100%">
               <source src="./static/videos/vkitti_demo.mp4"
                       type="video/mp4">
             </video>
           </div>
         </div>
       </div>
-      <!--/ Visual Effects. -->
-      <!-- Matting. -->
       <div class="column">
         <h2 class="title is-3"><a href=https://www.cvlibs.net/datasets/kitti/eval_tracking.php>KITTI-MOT </a></h2>
         <div class="columns is-centered">
           <div class="column content">
             <p>
-              As a byproduct of our method, we can also solve the matting problem by ignoring
-              samples that fall outside of a bounding box during rendering.
+              A rendered demo of our simulator on KITTI-MOT dataset, which is on sequence 0006.
             </p>
-            <video id="matting-video" controls playsinline height="100%">
+            <video id="matting-video" autoplay muted controls loop playsinline height="100%">
               <source src="./static/videos/kitti_demo.mp4"
                       type="video/mp4">
             </video>
@@ -322,13 +326,29 @@
         </div>
       </div>
     </div>
-    <!--/ Matting. -->
-    <!-- Animation. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">Editing</h2>
-
-        <!-- Interpolating. -->
+        <p>
+          We first show the editing clip on KITTI and V-KITTI2, below is a widget that allows you to edit the scene by changing the pose of the camera. Besides, we provide the edit result on waymo datase, which is a more challenging dataset.
+        </p>
+        <br>
+        <br>
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <img src="./static/images/editing.jpg"
+            class="interpolation-image"
+            >
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
         <h3 class="title is-4">Rotation & Translation</h3>
         <div class="content has-text-justified">
           <p>
@@ -362,11 +382,10 @@
         <br/>
         <!--/ Interpolating. -->
         <!-- Re-rendering. -->
-        <h3 class="title is-4">Re-rendering the input video</h3>
+        <h3 class="title is-4">Waymo Editing Result</h3>
         <div class="content has-text-justified">
           <p>
-            Using <span class="dnerf">Nerfies</span>, you can re-render a video from a novel
-            viewpoint such as a stabilized camera by playing back the training deformations.
+            Here is the editing result on waymo dataset, we move the black pickup truck in the video, while it doesn't influence other foreground objects.
           </p>
         </div>
         <div class="content has-text-centered">
@@ -379,12 +398,51 @@
             <source src="./static/videos/waymo_demo.mp4"
                     type="video/mp4">
           </video>
+          <br>
+          <br>
         </div>
         <!--/ Re-rendering. -->
       </div>
     </div>
-    <!--/ Animation. -->
-    <!-- Concurrent Work. -->
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Experiment results</h2>
+        <p>
+          Here we perform both qualitative and quantitative experiments of MARS.<br>
+        </p>
+      </div>
+    </div>
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <img src="./static/images/results.jpg"
+        class="interpolation-image"
+        >
+      </div>
+    <div>
+    <br>
+    <br>
+    <img src="./static/images/qualitative.jpg"
+    class="interpolation-image"
+    >
+    <br>
+    <br>
+    <img src="./static/images/tab-recon.jpg"
+    class="interpolation-image"
+    >    
+    <br>
+    <br>
+    <img src="./static/images/tab-nvs.jpg"
+    class="interpolation-image"
+    >    
+    <br>
+    <br>
+    <img src="./static/images/tab-ablation.jpg"
+    class="interpolation-image"
+    >
+  </div>
+  </div>
+  <br>
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">Related Links</h2>
@@ -404,10 +462,9 @@
         </div>
       </div>
     </div>
-    <!--/ Concurrent Work. -->
-
   </div>
 </section>
+
 
 
 <section class="section" id="BibTeX">

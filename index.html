@@ -24,9 +24,11 @@
 	<meta name="citation_author" content="Shi, Yongliang">
 	<meta name="citation_author" content="Liao, Yiyi">
 	<meta name="citation_author" content="Zhao, Hao">
-	<meta name="citation_publication_date" content="2023">
-	<meta name="citation_conference_title" content="CICAI">
-	<meta name="citation_pdf_url" content="https://arxiv.org/pdf/2007.11571.pdf">
+	<meta name="citation_publication_date" content="2023/07">
+	<meta name="citation_conference_title" content="CAAI International Conference on Artificial Intelligence (CICAI)">
+	<meta name="citation_pdf_url" content="https://open-air-sun.github.io/mars/static/data/CICAI_MARS_FullPaper.pdf">
+	<meta name="citation_abstract"
+		content="Nowadays, autonomous cars can drive smoothly in ordinary cases, and it is widely recognized that realistic sensor simulation will play a critical role in solving remaining corner cases by simulating them. To this end, we propose an autonomous driving simulator based upon neural radiance fields (NeRFs). Compared with existing works, ours has three notable features: (1) Instance-aware. Our simulator models the foreground instances and background environments separately with independent networks so that the static (e.g., size and appearance) and dynamic (e.g., trajectory) properties of instances can be controlled separately.  (2) Modular. Our simulator allows flexible switching between different modern NeRF-related backbones, sampling strategies, input modalities, etc. We expect this modular design to boost academic progress and industrial deployment of NeRF-based autonomous driving simulation.  (3) Realistic. Our simulator set new state-of-the-art photo-realism results given the best module selection. Our simulator will be open-sourced while most of our counterparts are not.">
 	<meta name="robots" content="index,follow">
 	<meta name="description"
 		content="Nowadays, autonomous cars can drive smoothly in ordinary cases, and it is widely recognized that realistic sensor simulation will play a critical role in solving remaining corner cases by simulating them. To this end, we propose an autonomous driving simulator based upon neural radiance fields (NeRFs). Compared with existing works, ours has three notable features: (1) Instance-aware. Our simulator models the foreground instances and background environments separately with independent networks so that the static (e.g., size and appearance) and dynamic (e.g., trajectory) properties of instances can be controlled separately.  (2) Modular. Our simulator allows flexible switching between different modern NeRF-related backbones, sampling strategies, input modalities, etc. We expect this modular design to boost academic progress and industrial deployment of NeRF-based autonomous driving simulation.  (3) Realistic. Our simulator set new state-of-the-art photo-realism results given the best module selection. Our simulator will be open-sourced while most of our counterparts are not.">
@@ -113,7 +115,7 @@
             </span>
           </div>
 
-          <br/>
+          <br>
 
           <div class="is-size-5 publication-authors">
             <span class="author-block"><sup>1</sup>AiR, Tsinghua University,</span>
@@ -128,6 +130,9 @@
             <span class="author-block"><sup>10</sup>Imperial College London,</span>
             <span class="author-block"><sup>11</sup>Zhejiang University</span>
           </div>
+
+          <h4 class="title is-4 has-text-centererd">CICAI 2023 (Oral)</h4>
+          
           <div class="column has-text-centered">
             <div class="publication-links">
               <!-- PDF Link. -->
@@ -224,29 +229,17 @@
     </div>
     <!--/ Abstract. -->
 
-    <!-- Paper video. -->
-    <div class="columns is-centered has-text-centered">
-    <!-- <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Video</h2>
-        <div class="publication-video">
-          <iframe src="https://www.youtube.com/watch?v=JUQyLk4s5bo"
-                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-    </div> -->
-    <!--/ Paper video. -->
-  </div>
 </section>
 
 <section> 
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <img src="./static/images/main.jpg" class="interpolation-image" width="60%">
+        <br>
         <h2 class="subtitle has-text-centered">
           Our method pipeline.
         </h2>
+        <br>
     </div>
   </div>
 </section>
@@ -257,7 +250,9 @@
       <div class="columns content">
         <h4>
           <br>
-          Below we show some demos of our simulator on different datasets.
+          <br>
+          Results
+          <br>
           <br>
         </h4>
       </div>
@@ -268,7 +263,7 @@
         <div class="columns is-centered">
           <div class="column content">
             <p>
-              A rendered demo of our simulator on V-KITTI2 dataset, which is on Scene02.
+              A reconstruction of the Virtual-KITTI-2 dataset (Scene02).
             </p>
             <video id="matting-video" autoplay muted controls loop playsinline height="100%">
               <source src="./static/videos/vkitti_demo.mp4"
@@ -282,7 +277,7 @@
         <div class="columns is-centered">
           <div class="column content">
             <p>
-              A rendered demo of our simulator on KITTI-MOT dataset, which is on sequence 0006.
+              A reconstruction of the KITTI dataset (Sequence 0006).
             </p>
             <video id="matting-video" autoplay muted controls loop playsinline height="100%">
               <source src="./static/videos/kitti_demo.mp4"
@@ -301,7 +296,7 @@
       <div class="column is-full-width">
         <h2 class="title is-3">Editing</h2>
         <p>
-          We first show the editing clip on KITTI and V-KITTI2, below is a widget that allows you to edit the scene by changing the pose of the camera. Besides, we provide the edit result on waymo datase, which is a more challenging dataset.
+          We first show some editing clips on KITTI/V-KITTI. 
         </p>
         <br>
         <br>
@@ -318,9 +313,7 @@
         <h3 class="title is-4">Rotation & Translation</h3>
         <div class="content has-text-justified">
           <p>
-            We can also edit the scene by changing the pose of foreground objects.
-            Use the slider here to linearly move between the left frame and the right
-            frame.
+            You can also try playing with the widget in below that allows you to edit the scene by changing the pose of the camera. 
           </p>
         </div>
         <div class="columns is-vcentered interpolation-panel">
@@ -348,10 +341,10 @@
         <br/>
         <!--/ Interpolating. -->
         <!-- Re-rendering. -->
-        <h3 class="title is-4">Waymo Editing Result</h3>
+        <h3 class="title is-4">Waymo Open Dataset</h3>
         <div class="content has-text-justified">
           <p>
-            Here is the editing result on waymo dataset, we move the black pickup truck in the video, while it doesn't influence other foreground objects.
+            We also provide an extra editing result on the <a href="https://waymo.com/open/">Waymo-open dataset</a>.
           </p>
         </div>
         <div class="content has-text-centered">
@@ -374,38 +367,19 @@
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">Experiment results</h2>
-        <p>
-          Here we perform both qualitative and quantitative experiments of MARS.<br>
-        </p>
       </div>
     </div>
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <img src="./static/images/results.jpg"
-        class="interpolation-image"
-        >
-      </div>
-    <div>
+    <img src="./static/images/qualitative.jpg" class="interpolation-image" >
     <br>
     <br>
-    <img src="./static/images/qualitative.jpg"
-    class="interpolation-image"
-    >
+    <p>
+      Gallery of different rendering channels.
+    </p>
     <br>
     <br>
-    <img src="./static/images/tab-recon.jpg"
-    class="interpolation-image"
-    >    
+    <img src="./static/images/tab-nvs.jpg" class="interpolation-image" >    
     <br>
     <br>
-    <img src="./static/images/tab-nvs.jpg"
-    class="interpolation-image"
-    >    
-    <br>
-    <br>
-    <img src="./static/images/tab-ablation.jpg"
-    class="interpolation-image"
-    >
   </div>
   </div>
   <br>
@@ -417,13 +391,13 @@
             There's a lot of excellent work that was introduced around the same time as ours.
           </p>
           <p>
-            <a href="https://arxiv.org/abs/2303.14536">SUDS: Scalable Urban Dynamic Sceneson</a> introduces ......
+            <a href="https://arxiv.org/abs/2303.14536">SUDS: Scalable Urban Dynamic Scenes</a> factorizes the scene into three separate hash tables to efficiently encode static, dynamic, and far-field parts of the scene.
           </p>
           <p>
-            <a href=https://waabi.ai/unisim/>Unisim </a>......
+            <a href=https://waabi.ai/unisim/>UniSim</a> creates manipulable digital twins from recorded sensor data.
           </p>
           <p>
-            Some excellent priors works, such as <a href="https://arxiv.org/abs/2011.10379">NSG</a>, <a href="https://arxiv.org/abs/2205.04334">PNF</a>.
+            Some excellent priors works, such as <a href="https://arxiv.org/abs/2011.10379">NeuralSceneGraph</a>, <a href="https://arxiv.org/abs/2205.04334">Panoptic Neural Fields</a>, etc.
           </p>
         </div>
       </div>

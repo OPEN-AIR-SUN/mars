@@ -1,55 +1,53 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
-  <meta name="description"
-        content="MARS: An Instance-aware, Modular and Realistic Simulator for Autonomous Driving">
+  <meta name="description" content="MARS: An Instance-aware, Modular and Realistic Simulator for Autonomous Driving">
   <meta name="keywords" content="MARS, NeRF, Autonomous Driving, Simulaotr">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Meta tags for Zotero grab citation -->
-	<meta name="citation_title" content="MARS: An Instance-aware, Modular and Realistic Simulator for Autonomous Driving">
-	<meta name="citation_author" content="Wu, Zirui">
-	<meta name="citation_author" content="Liu, Tianyu">
-	<meta name="citation_author" content="Luo, Liyi">
-	<meta name="citation_author" content="Zhong, Zhide">
-	<meta name="citation_author" content="Chen, Jianteng">
-	<meta name="citation_author" content="Xiao, Hongmin">
-	<meta name="citation_author" content="Hou, Chao">
-	<meta name="citation_author" content="Lou, Haozhe">
-	<meta name="citation_author" content="Chen, Yuantao">
-	<meta name="citation_author" content="Yang, Runyi">
-	<meta name="citation_author" content="Huang, Yuxin">
-	<meta name="citation_author" content="Ye, Xiaoyu">
-	<meta name="citation_author" content="Yan, Zike">
-	<meta name="citation_author" content="Shi, Yongliang">
-	<meta name="citation_author" content="Liao, Yiyi">
-	<meta name="citation_author" content="Zhao, Hao">
-	<meta name="citation_publication_date" content="2023/07">
-	<meta name="citation_conference_title" content="CAAI International Conference on Artificial Intelligence (CICAI)">
-	<meta name="citation_pdf_url" content="https://open-air-sun.github.io/mars/static/data/CICAI_MARS_FullPaper.pdf">
-	<meta name="citation_abstract"
-		content="Nowadays, autonomous cars can drive smoothly in ordinary cases, and it is widely recognized that realistic sensor simulation will play a critical role in solving remaining corner cases by simulating them. To this end, we propose an autonomous driving simulator based upon neural radiance fields (NeRFs). Compared with existing works, ours has three notable features: (1) Instance-aware. Our simulator models the foreground instances and background environments separately with independent networks so that the static (e.g., size and appearance) and dynamic (e.g., trajectory) properties of instances can be controlled separately.  (2) Modular. Our simulator allows flexible switching between different modern NeRF-related backbones, sampling strategies, input modalities, etc. We expect this modular design to boost academic progress and industrial deployment of NeRF-based autonomous driving simulation.  (3) Realistic. Our simulator set new state-of-the-art photo-realism results given the best module selection. Our simulator will be open-sourced while most of our counterparts are not.">
-	<meta name="robots" content="index,follow">
-	<meta name="description"
-		content="Nowadays, autonomous cars can drive smoothly in ordinary cases, and it is widely recognized that realistic sensor simulation will play a critical role in solving remaining corner cases by simulating them. To this end, we propose an autonomous driving simulator based upon neural radiance fields (NeRFs). Compared with existing works, ours has three notable features: (1) Instance-aware. Our simulator models the foreground instances and background environments separately with independent networks so that the static (e.g., size and appearance) and dynamic (e.g., trajectory) properties of instances can be controlled separately.  (2) Modular. Our simulator allows flexible switching between different modern NeRF-related backbones, sampling strategies, input modalities, etc. We expect this modular design to boost academic progress and industrial deployment of NeRF-based autonomous driving simulation.  (3) Realistic. Our simulator set new state-of-the-art photo-realism results given the best module selection. Our simulator will be open-sourced while most of our counterparts are not.">
-	<link rel="author" href="https://wuzirui.github.io/" />
+  <meta name="citation_title" content="MARS: An Instance-aware, Modular and Realistic Simulator for Autonomous Driving">
+  <meta name="citation_author" content="Wu, Zirui">
+  <meta name="citation_author" content="Liu, Tianyu">
+  <meta name="citation_author" content="Luo, Liyi">
+  <meta name="citation_author" content="Zhong, Zhide">
+  <meta name="citation_author" content="Chen, Jianteng">
+  <meta name="citation_author" content="Xiao, Hongmin">
+  <meta name="citation_author" content="Hou, Chao">
+  <meta name="citation_author" content="Lou, Haozhe">
+  <meta name="citation_author" content="Chen, Yuantao">
+  <meta name="citation_author" content="Yang, Runyi">
+  <meta name="citation_author" content="Huang, Yuxin">
+  <meta name="citation_author" content="Ye, Xiaoyu">
+  <meta name="citation_author" content="Yan, Zike">
+  <meta name="citation_author" content="Shi, Yongliang">
+  <meta name="citation_author" content="Liao, Yiyi">
+  <meta name="citation_author" content="Zhao, Hao">
+  <meta name="citation_publication_date" content="2023/07">
+  <meta name="citation_conference_title" content="CAAI International Conference on Artificial Intelligence (CICAI)">
+  <meta name="citation_pdf_url" content="https://open-air-sun.github.io/mars/static/data/CICAI_MARS_FullPaper.pdf">
+  <meta name="citation_abstract"
+    content="Nowadays, autonomous cars can drive smoothly in ordinary cases, and it is widely recognized that realistic sensor simulation will play a critical role in solving remaining corner cases by simulating them. To this end, we propose an autonomous driving simulator based upon neural radiance fields (NeRFs). Compared with existing works, ours has three notable features: (1) Instance-aware. Our simulator models the foreground instances and background environments separately with independent networks so that the static (e.g., size and appearance) and dynamic (e.g., trajectory) properties of instances can be controlled separately.  (2) Modular. Our simulator allows flexible switching between different modern NeRF-related backbones, sampling strategies, input modalities, etc. We expect this modular design to boost academic progress and industrial deployment of NeRF-based autonomous driving simulation.  (3) Realistic. Our simulator set new state-of-the-art photo-realism results given the best module selection. Our simulator will be open-sourced while most of our counterparts are not.">
+  <meta name="robots" content="index,follow">
+  <meta name="description"
+    content="Nowadays, autonomous cars can drive smoothly in ordinary cases, and it is widely recognized that realistic sensor simulation will play a critical role in solving remaining corner cases by simulating them. To this end, we propose an autonomous driving simulator based upon neural radiance fields (NeRFs). Compared with existing works, ours has three notable features: (1) Instance-aware. Our simulator models the foreground instances and background environments separately with independent networks so that the static (e.g., size and appearance) and dynamic (e.g., trajectory) properties of instances can be controlled separately.  (2) Modular. Our simulator allows flexible switching between different modern NeRF-related backbones, sampling strategies, input modalities, etc. We expect this modular design to boost academic progress and industrial deployment of NeRF-based autonomous driving simulation.  (3) Realistic. Our simulator set new state-of-the-art photo-realism results given the best module selection. Our simulator will be open-sourced while most of our counterparts are not.">
+  <link rel="author" href="https://wuzirui.github.io/" />
   <title>MARS: An Instance-aware, Modular and Realistic Simulator for Autonomous Driving</title>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D9CHDFCS1E"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-D9CHDFCS1E');
   </script>
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="icon" href="./static/images/favicon.svg">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -58,128 +56,129 @@
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
 </head>
+
 <body>
 
-<section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">MARS: An Instance-aware, Modular and Realistic Simulator for Autonomous Driving</h1>
-          
-          <h5 class="title is-5 has-text-centererd">CICAI 2023 (Oral)</h5>
-          
-          <div class="is-size-5 publication-authors">
-            <span class="author-block">
-              <a href="https://wuzirui.github.io">Zirui Wu</a><sup>1,2</sup>,</span>
-            <span class="author-block">
-              Tianyu Liu<sup>1,3</sup>,</span>
-            <span class="author-block">
-              Liyi Luo<sup>1,4</sup>,
-            </span>
-            <span class="author-block">
-              Zhide Zhong<sup>1,5</sup>,
-            </span>
-            <span class="author-block">
-              Jianteng Chen<sup>1,5</sup>,
-            </span>
-            <span class="author-block">
-              Hongmin Xiao<sup>1,6</sup>,
-            </span>
-            <span class="author-block">
-              Chao Hou<sup>1,7</sup>,
-            </span>
-            <span class="author-block">
-              Haozhe Lou<sup>1,8</sup>,
-            </span>
-            <span class="author-block">
-              Yuantao Chen<sup>1,9</sup>,
-            </span>
-            <span class="author-block">
-              <a href="https://runyiyang.github.io">Runyi Yang</a><sup>1,10</sup>,
-            </span>
-            <span class="author-block">
-              Yuxin Huang<sup>1,5</sup>,
-            </span>
-            <span class="author-block">
-              Xiaoyu Ye<sup>1,5</sup>,
-            </span>
-            <span class="author-block">
-              Zike Yan<sup>1</sup>,
-            </span>
-            <span class="author-block">
-              Yongliang Shi<sup>1</sup>,
-            </span>
-            <span class="author-block">
-              Yiyi Liao<sup>11</sup>,
-            </span>
-            <span class="author-block">
-              <a href="https://sites.google.com/view/fromandto">Hao Zhao</a><sup>1</sup>
-            </span>
-          </div>
-
-          <br>
-
-          <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>AiR, Tsinghua University,</span>
-            <span class="author-block"><sup>2</sup>HKUST(GZ),</span>
-            <span class="author-block"><sup>3</sup>HKUST,</span>
-            <span class="author-block"><sup>4</sup>McGill University,</span>
-            <span class="author-block"><sup>5</sup>Beijing Institute of Technology,</span>
-            <span class="author-block"><sup>6</sup>National University of Singapore,</span>
-            <span class="author-block"><sup>7</sup>HKU,</span>
-            <span class="author-block"><sup>8</sup>University of Wisconsin Madison,</span>
-            <span class="author-block"><sup>9</sup>Xi'an University of Architecture and Technology,</span>
-            <span class="author-block"><sup>10</sup>Imperial College London,</span>
-            <span class="author-block"><sup>11</sup>Zhejiang University</span>
-          </div>
-
-          
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
           <div class="column has-text-centered">
-            <div class="publication-links">
-              <!-- PDF Link. -->
-              <span class="link-block">
-                <!-- <a href="https://arxiv.org/pdf/2011.12948" -->
-                <a href="./static/data/CICAI_MARS_FullPaper.pdf" download="CICAI_MARS_FullPaper.pdf"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
+            <h1 class="title is-1 publication-title">MARS: An Instance-aware, Modular and Realistic Simulator for
+              Autonomous Driving</h1>
+
+            <h5 class="title is-5 has-text-centererd">CICAI 2023 (Oral)</h5>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://wuzirui.github.io">Zirui Wu</a><sup>1,2</sup>,</span>
+              <span class="author-block">
+                Tianyu Liu<sup>1,3</sup>,</span>
+              <span class="author-block">
+                Liyi Luo<sup>1,4</sup>,
+              </span>
+              <span class="author-block">
+                Zhide Zhong<sup>1,5</sup>,
+              </span>
+              <span class="author-block">
+                Jianteng Chen<sup>1,5</sup>,
+              </span>
+              <span class="author-block">
+                Hongmin Xiao<sup>1,6</sup>,
+              </span>
+              <span class="author-block">
+                Chao Hou<sup>1,7</sup>,
+              </span>
+              <span class="author-block">
+                Haozhe Lou<sup>1,8</sup>,
+              </span>
+              <span class="author-block">
+                Yuantao Chen<sup>1,9</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://runyiyang.github.io">Runyi Yang</a><sup>1,10</sup>,
+              </span>
+              <span class="author-block">
+                Yuxin Huang<sup>1,5</sup>,
+              </span>
+              <span class="author-block">
+                Xiaoyu Ye<sup>1,5</sup>,
+              </span>
+              <span class="author-block">
+                Zike Yan<sup>1</sup>,
+              </span>
+              <span class="author-block">
+                Yongliang Shi<sup>1</sup>,
+              </span>
+              <span class="author-block">
+                Yiyi Liao<sup>11</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://sites.google.com/view/fromandto">Hao Zhao</a><sup>1</sup>
+              </span>
+            </div>
+
+            <br>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>AiR, Tsinghua University,</span>
+              <span class="author-block"><sup>2</sup>HKUST(GZ),</span>
+              <span class="author-block"><sup>3</sup>HKUST,</span>
+              <span class="author-block"><sup>4</sup>McGill University,</span>
+              <span class="author-block"><sup>5</sup>Beijing Institute of Technology,</span>
+              <span class="author-block"><sup>6</sup>National University of Singapore,</span>
+              <span class="author-block"><sup>7</sup>HKU,</span>
+              <span class="author-block"><sup>8</sup>University of Wisconsin Madison,</span>
+              <span class="author-block"><sup>9</sup>Xi'an University of Architecture and Technology,</span>
+              <span class="author-block"><sup>10</sup>Imperial College London,</span>
+              <span class="author-block"><sup>11</sup>Zhejiang University</span>
+            </div>
+
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <!-- <a href="https://arxiv.org/pdf/2011.12948" -->
+                  <a href="./static/data/CICAI_MARS_FullPaper.pdf" download="CICAI_MARS_FullPaper.pdf"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
                       <i class="fas fa-file-pdf"></i>
-                  </span>
-                  <span>Paper</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <!-- <a href="https://arxiv.org/abs/2011.12948" -->
-                <a href="https://open-air-sun.github.io/mars/"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv (Coming soon)</span>
-                </a>
-              </span>
-              <!-- Video Link. -->
-              <span class="link-block">
-                <a href="https://youtu.be/JUQyLk4s5bo"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fab fa-youtube"></i>
-                  </span>
-                  <span>Video</span>
-                </a>
-              </span>
-              <!-- Code Link. -->
-              <span class="link-block">
-                <a href="https://github.com/OPEN-AIR-SUN/mars"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fab fa-github"></i>
-                  </span>
-                  <span>Code (Coming soon)</span>
+                    </span>
+                    <span>Paper</span>
                   </a>
-              </span>
-              <!-- Dataset Link. -->
-              <!-- <span class="link-block">
+                </span>
+                <span class="link-block">
+                  <!-- <a href="https://arxiv.org/abs/2011.12948" -->
+                  <a href="https://open-air-sun.github.io/mars/"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv (Coming soon)</span>
+                  </a>
+                </span>
+                <!-- Video Link. -->
+                <span class="link-block">
+                  <a href="https://youtu.be/JUQyLk4s5bo" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                    </span>
+                    <span>Video</span>
+                  </a>
+                </span>
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/OPEN-AIR-SUN/mars"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code (Coming soon)</span>
+                  </a>
+                </span>
+                <!-- Dataset Link. -->
+                <!-- <span class="link-block">
                 <a href="https://github.com/google/nerfies/releases/tag/0.1"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
@@ -187,274 +186,277 @@
                   </span>
                   <span>Data</span>
                   </a> -->
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <video id="teaser" autoplay muted controls loop playsinline height="100%">
-        <source src="./static/videos/cicai_s.mp4"
-                type="video/mp4">
-      </video>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-          Nowadays, autonomous cars can drive smoothly in ordinary cases, and it is widely recognized that realistic sensor simulation will play a critical role in solving remaining corner cases by simulating them.
-          </p>
-          <p>
-          To this end, we propose an autonomous driving simulator based upon neural radiance fields (NeRFs). Compared with existing works, ours has three notable features: 
-          </p>
-          <p>
-          (1) <strong>Instance-aware</strong>. Our simulator models the foreground instances and background environments separately with independent networks so that the static (e.g., size and appearance) and dynamic (e.g., trajectory) properties of instances can be controlled separately. 
-          </p>
-          <p>
-          (2) <strong>Modular</strong>. Our simulator allows flexible switching between different modern NeRF-related backbones, sampling strategies, input modalities, etc. We expect this modular design to boost academic progress and industrial deployment of NeRF-based autonomous driving simulation.
-          </p>
-          <p>
-          (3) <strong>Realistic</strong>. Our simulator set new state-of-the-art photo-realism results given the best module selection. Our simulator will be <strong>open-sourced</strong> while most of our counterparts are not.
-        </div>
+  </section>
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <video id="teaser" autoplay muted controls loop playsinline height="100%">
+          <source src="./static/videos/cicai_s.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
-    <!--/ Abstract. -->
+  </section>
 
-</section>
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Nowadays, autonomous cars can drive smoothly in ordinary cases, and it is widely recognized that realistic
+              sensor simulation will play a critical role in solving remaining corner cases by simulating them.
+            </p>
+            <p>
+              To this end, we propose an autonomous driving simulator based upon neural radiance fields (NeRFs).
+              Compared with existing works, ours has three notable features:
+            </p>
+            <p>
+              (1) <strong>Instance-aware</strong>. Our simulator models the foreground instances and background
+              environments separately with independent networks so that the static (e.g., size and appearance) and
+              dynamic (e.g., trajectory) properties of instances can be controlled separately.
+            </p>
+            <p>
+              (2) <strong>Modular</strong>. Our simulator allows flexible switching between different modern
+              NeRF-related backbones, sampling strategies, input modalities, etc. We expect this modular design to boost
+              academic progress and industrial deployment of NeRF-based autonomous driving simulation.
+            </p>
+            <p>
+              (3) <strong>Realistic</strong>. Our simulator set new state-of-the-art photo-realism results given the
+              best module selection. Our simulator will be <strong>open-sourced</strong> while most of our counterparts
+              are not.
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
 
-<section> 
+  </section>
+
+  <section>
     <div class="container is-max-desktop">
       <div class="columns is-centered" align="center">
-        <img src="./static/images/main.jpg" class="interpolation-image" width="80%">
+        <img src="./static/images/main.jpg" class="interpolation-image">
         <br>
         <br>
       </div>
-      <h2 class="subtitle has-text-centered"> Our method pipeline.  </h2>  
-      <p>  
-      Left: We first calculate the ray-box intersection of the queried ray and all visible instance bounding boxes. For the background node, we directly use the selected scene representation model and the chosen sampler to infer point-wise properties, as in conventional NeRFs. For the foreground nodes, the ray is first transformed into the instance frame as before being processed through foreground node representations. Right: All the samples are composed and rendered into RGB images, depth maps, and semantics.
+      <p>
+        <strong>Our method pipeline:</strong> Left: We first calculate the ray-box intersection of the queried ray and
+        all visible instance bounding boxes. For the background node, we directly use the selected scene representation
+        model and the chosen sampler to infer point-wise properties, as in conventional NeRFs. For the foreground nodes,
+        the ray is first transformed into the instance frame as before being processed through foreground node
+        representations. Right: All the samples are composed and rendered into RGB images, depth maps, and semantics.
       </p>
-  </div>
-  <br>
-</section>
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3"> Results </h2>
-      </div>
     </div>
-    <div class="columns is-centered">
-      <div class="column">
-        <h2 class="title is-4"><a href="https://europe.naverlabs.com/research/computer-vision/proxy-virtual-worlds-vkitti-2/">Vitural-KITTI-2</a></h2>
-        <div class="columns is-centered">
-          <div class="column content">
-            <p>
-              A reconstruction of the Virtual-KITTI-2 dataset (Scene02).
-            </p>
-            <video id="matting-video" autoplay muted controls loop playsinline height="100%">
-              <source src="./static/videos/vkitti_demo.mp4"
-                      type="video/mp4">
-            </video>
-          </div>
+    <br>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3"> Results </h2>
         </div>
       </div>
-      <div class="column">
-        <h2 class="title is-4"><a href=https://www.cvlibs.net/datasets/kitti/eval_tracking.php>KITTI-MOT </a></h2>
-        <div class="columns is-centered">
-          <div class="column content">
-            <p>
-              A reconstruction of the KITTI dataset (Sequence 0006).
-            </p>
-            <video id="matting-video" autoplay muted controls loop playsinline height="100%">
-              <source src="./static/videos/kitti_demo.mp4"
-                      type="video/mp4">
-            </video>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Editing</h2>
-        <p>
-          We first show some editing clips on KITTI/V-KITTI. 
-        </p>
-        <br>
-        <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column">
+          <h2 class="title is-4"><a
+              href="https://europe.naverlabs.com/research/computer-vision/proxy-virtual-worlds-vkitti-2/">Vitural-KITTI-2</a>
+          </h2>
           <div class="columns is-centered">
-            <img src="./static/images/editing.jpg"
-            class="interpolation-image"
-            >
-        </div>
-      </div>
-      <br>
-      <br>
-      <br>
-        <h3 class="title is-4">Rotation & Translation</h3>
-        <div class="content has-text-justified">
-          <p>
-            You can also try playing with the widget in below that allows you to edit the scene by changing the pose of the camera. 
-          </p>
-        </div>
-        <div class="columns is-vcentered interpolation-panel">
-          <div class="column is-3 has-text-centered">
-            <img src="./static/images/rotate_start.jpg"
-                 class="interpolation-image"
-                 alt="Rotation start reference image."/>
-            <p>Start Frame</p>
-          </div>
-          <div class="column interpolation-video-column">
-            <div id="interpolation-image-wrapper">
-              Loading...
+            <div class="column content">
+              <p>
+                A reconstruction of the Virtual-KITTI-2 dataset (Scene02).
+              </p>
+              <video id="matting-video" autoplay muted controls loop playsinline height="100%">
+                <source src="./static/videos/vkitti_demo.mp4" type="video/mp4">
+              </video>
             </div>
-            <input class="slider is-fullwidth is-large is-info"
-                   id="interpolation-slider"
-                   step="1" min="0" max="88" value="0" type="range">
-          </div>
-          <div class="column is-3 has-text-centered">
-            <img src="./static/images/translation_end.jpg"
-                 class="interpolation-image"
-                 alt="Rotation end reference image."/>
-            <p class="is-bold">End Frame</p>
           </div>
         </div>
-        <br/>
-        <!--/ Interpolating. -->
-        <!-- Re-rendering. -->
-        <h3 class="title is-4">Waymo Open Dataset</h3>
-        <div class="content has-text-justified">
-          <p>
-            We also provide an extra editing result on the <a href="https://waymo.com/open/">Waymo-open dataset</a>.
-          </p>
+        <div class="column">
+          <h2 class="title is-4"><a href=https://www.cvlibs.net/datasets/kitti/eval_tracking.php>KITTI-MOT </a></h2>
+          <div class="columns is-centered">
+            <div class="column content">
+              <p>
+                A reconstruction of the KITTI dataset (Sequence 0006).
+              </p>
+              <video id="matting-video" autoplay muted controls loop playsinline height="100%">
+                <source src="./static/videos/kitti_demo.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
         </div>
-        <div class="content has-text-centered">
-          <video id="replay-video"
-                 controls
-                 muted
-                 preload
-                 playsinline
-                 width="75%">
-            <source src="./static/videos/waymo_demo.mp4"
-                    type="video/mp4">
-          </video>
-          <br>
-          <br>
-        </div>
-        <!--/ Re-rendering. -->
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Experiment results</h2>
-        <br>
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Editing</h2>
+          <p>
+            We first show some editing clips on KITTI/V-KITTI.
+          </p>
+          <br>
+          <div class="container is-max-desktop">
+            <div class="columns is-centered">
+              <img src="./static/images/editing.jpg" class="interpolation-image">
+            </div>
+          </div>
+          <br>
+          <br>
+          <br>
+          <h3 class="title is-4">Rotation & Translation</h3>
+          <div class="content has-text-justified">
+            <p>
+              You can also try playing with the widget in below that allows you to edit the scene by changing the pose
+              of the camera.
+            </p>
+          </div>
+          <div class="columns is-vcentered interpolation-panel">
+            <div class="column is-3 has-text-centered">
+              <img src="./static/images/rotate_start.jpg" class="interpolation-image"
+                alt="Rotation start reference image." />
+              <p>Start Frame</p>
+            </div>
+            <div class="column interpolation-video-column">
+              <div id="interpolation-image-wrapper">
+                Loading...
+              </div>
+              <input class="slider is-fullwidth is-large is-info" id="interpolation-slider" step="1" min="0" max="88"
+                value="0" type="range">
+            </div>
+            <div class="column is-3 has-text-centered">
+              <img src="./static/images/translation_end.jpg" class="interpolation-image"
+                alt="Rotation end reference image." />
+              <p class="is-bold">End Frame</p>
+            </div>
+          </div>
+          <br />
+          <!--/ Interpolating. -->
+          <!-- Re-rendering. -->
+          <h3 class="title is-4">Waymo Open Dataset</h3>
+          <div class="content has-text-justified">
+            <p>
+              We also provide an extra editing result on the <a href="https://waymo.com/open/">Waymo-open dataset</a>.
+            </p>
+          </div>
+          <div class="content has-text-centered">
+            <video id="replay-video" controls muted preload playsinline width="75%">
+              <source src="./static/videos/waymo_demo.mp4" type="video/mp4">
+            </video>
+            <br>
+            <br>
+          </div>
+          <!--/ Re-rendering. -->
+        </div>
       </div>
-    </div>        
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Experiment results</h2>
+          <br>
+        </div>
+      </div>
       <div class="columns is-centered">
         <img src="./static/images/qualitative.jpg" class="interpolation-image" width="80%">
       </div>
-    <div class="is-centered has-text-centered">
-      <p>
-        Gallery of different rendering channels.
-      </p>
-    </div>
-    <br>
-    <br>
-    <div class="columns is-centered">
-      <img src="./static/images/tab-nvs.jpg" class="interpolation-image" width="80%">    
-    </div>
-    <div class="is-centered has-text-centered">
-      <p>
-        Quantitative results on novel view synthesis.
-      </p>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Related Links</h2>
-        <div class="content has-text-justified">
-          <p>
-            There's a lot of excellent work that was introduced around the same time as ours.
-          </p>
-          <p>
-            <a href="https://arxiv.org/abs/2303.14536">SUDS: Scalable Urban Dynamic Scenes</a> factorizes the scene into three separate hash tables to efficiently encode static, dynamic, and far-field parts of the scene.
-          </p>
-          <p>
-            <a href=https://waabi.ai/unisim/>UniSim</a> creates manipulable digital twins from recorded sensor data.
-          </p>
-          <p>
-            Some excellent priors works, such as <a href="https://arxiv.org/abs/2011.10379">NeuralSceneGraph</a>, <a href="https://arxiv.org/abs/2205.04334">Panoptic Neural Fields</a>, etc.
-          </p>
+      <div class="is-centered has-text-centered">
+        <p>
+          Gallery of different rendering channels.
+        </p>
+      </div>
+      <br>
+      <br>
+      <div class="columns is-centered">
+        <img src="./static/images/tab-nvs.jpg" class="interpolation-image" width="80%">
+      </div>
+      <div class="is-centered has-text-centered">
+        <p>
+          Quantitative results on novel view synthesis.
+        </p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Related Links</h2>
+          <div class="content has-text-justified">
+            <p>
+              There's a lot of excellent work that was introduced around the same time as ours.
+            </p>
+            <p>
+              <a href="https://arxiv.org/abs/2303.14536">SUDS: Scalable Urban Dynamic Scenes</a> factorizes the scene
+              into three separate hash tables to efficiently encode static, dynamic, and far-field parts of the scene.
+            </p>
+            <p>
+              <a href=https://waabi.ai/unisim />UniSim</a> creates manipulable digital twins from recorded sensor data.
+            </p>
+            <p>
+              Some excellent priors works, such as <a href="https://arxiv.org/abs/2011.10379">NeuralSceneGraph</a>, <a
+                href="https://arxiv.org/abs/2205.04334">Panoptic Neural Fields</a>, etc.
+            </p>
+          </div>
+        </div>
+      </div>
+  </section>
 
 
 
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>@article{wu2023mars,
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{wu2023mars,
   author    = {Wu, Zirui and Liu, Tianyu and Luo, Liyi and Zhong, Zhide and Chen, Jianteng and Xiao, Hongmin and Hou, Chao and Lou, Haozhe and Chen, Yuantao and Yang, Runyi and Huang, Yuxin and Ye, Xiaoyu and Yan, Zike and Shi, Yongliang and Liao, Yiyi and Zhao, Hao},
   title     = {MARS: An Instance-aware, Modular and Realistic Simulator for Autonomous Driving},
   journal   = {CICAI},
   year      = {2023},
 }</code></pre>
-  </div>
-</section>
-<footer class="footer">
-  <div class="container">
-    <div class="content has-text-centered">
-      <a class="icon-link"
-         href="./static/data/CICAI_MARS_FullPaper.pdf">
-        <i class="fas fa-file-pdf"></i>
-      </a>
-      <a class="icon-link" href="https://github.com/wuzirui" class="external-link" disabled>
-        <i class="fab fa-github"></i>
-      </a>
     </div>
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <p>
-            This website is licensed under a <a rel="license"
-                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-          <p>
-            Webpage borrowed from <a href="https://nerfies.github.io/">Nerfies</a>. This web page is Zotero-connector friendly.
-          </p>
+  </section>
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <a class="icon-link" href="./static/data/CICAI_MARS_FullPaper.pdf">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+        <a class="icon-link" href="https://github.com/wuzirui" class="external-link" disabled>
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              Webpage borrowed from <a href="https://nerfies.github.io/">Nerfies</a>. This web page is Zotero-connector
+              friendly.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</footer>
+  </footer>
 </body>
+
 </html>

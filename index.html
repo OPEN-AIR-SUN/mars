@@ -239,29 +239,26 @@
         <img src="./static/images/main.jpg" class="interpolation-image" width="80%">
         <br>
         <br>
-    </div>
+      </div>
+      <h2 class="subtitle has-text-centered"> Our method pipeline.  </h2>  
+      <p>  
+      Left: We first calculate the ray-box intersection of the queried ray and all visible instance bounding boxes. For the background node, we directly use the selected scene representation model and the chosen sampler to infer point-wise properties, as in conventional NeRFs. For the foreground nodes, the ray is first transformed into the instance frame as before being processed through foreground node representations. Right: All the samples are composed and rendered into RGB images, depth maps, and semantics.
+      </p>
   </div>
-<br>
-<h2 class="subtitle has-text-centered"> Our method pipeline.  </h2>  Left: We first calculate the ray-box intersection of the queried ray and all visible instance bounding boxes. For the background node, we directly use the selected scene representation model and the chosen sampler to infer point-wise properties, as in conventional NeRFs. For the foreground nodes, the ray is first transformed into the instance frame as before being processed through foreground node representations. Right: All the samples are composed and rendered into RGB images, depth maps, and semantics.
-<br>
-<br>
+  <br>
 </section>
 
 
 <section class="section">
   <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="columns content">
-        <h2> Results </h2>
-          <br>
-          <br>
-          <br>
-          <br>
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3"> Results </h2>
       </div>
     </div>
     <div class="columns is-centered">
       <div class="column">
-        <h2 class="title is-3"><a href="https://europe.naverlabs.com/research/computer-vision/proxy-virtual-worlds-vkitti-2/">Vitural-KITTI-2</a></h2>
+        <h2 class="title is-4"><a href="https://europe.naverlabs.com/research/computer-vision/proxy-virtual-worlds-vkitti-2/">Vitural-KITTI-2</a></h2>
         <div class="columns is-centered">
           <div class="column content">
             <p>
@@ -275,7 +272,7 @@
         </div>
       </div>
       <div class="column">
-        <h2 class="title is-3"><a href=https://www.cvlibs.net/datasets/kitti/eval_tracking.php>KITTI-MOT </a></h2>
+        <h2 class="title is-4"><a href=https://www.cvlibs.net/datasets/kitti/eval_tracking.php>KITTI-MOT </a></h2>
         <div class="columns is-centered">
           <div class="column content">
             <p>
@@ -300,7 +297,6 @@
         <p>
           We first show some editing clips on KITTI/V-KITTI. 
         </p>
-        <br>
         <br>
         <div class="container is-max-desktop">
           <div class="columns is-centered">
@@ -365,32 +361,42 @@
         <!--/ Re-rendering. -->
       </div>
     </div>
+  </div>
+</section>
 
+<section class="section">
+  <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3">Experiment results</h2>
+        <br>
       </div>
-    </div>
-    <img src="./static/images/qualitative.jpg" class="interpolation-image" width="80%">
-    <br>
-    <div class="is-centered">
+    </div>        
+      <div class="columns is-centered">
+        <img src="./static/images/qualitative.jpg" class="interpolation-image" width="80%">
+      </div>
+    <div class="is-centered has-text-centered">
       <p>
         Gallery of different rendering channels.
       </p>
     </div>
     <br>
     <br>
-    <img src="./static/images/tab-nvs.jpg" class="interpolation-image" width="80%">    
-    <br>
-    <div class="is-centered">
+    <div class="columns is-centered">
+      <img src="./static/images/tab-nvs.jpg" class="interpolation-image" width="80%">    
+    </div>
+    <div class="is-centered has-text-centered">
       <p>
         Quantitative results on novel view synthesis.
       </p>
     </div>
   </div>
-  </div>
-  <br>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
     <div class="columns is-centered">
+      <div class="column is-full-width">
         <h2 class="title is-3">Related Links</h2>
         <div class="content has-text-justified">
           <p>

@@ -10,10 +10,6 @@
     <a href='https://open-air-sun.github.io/mars/static/data/MARS-poster.pdf'>
         <img src='https://img.shields.io/badge/Poster-PDF-pink' />
     </a>
-    <!-- license badge -->
-    <a href="https://github.com/xBeho1der/mars-release/blob/main/LICENSE">
-        <img alt="License" src="https://img.shields.io/badge/License-Apache_2.0-blue.svg">
-    </a>
 </p>
 <div align="center"><h4>CICAI 2023 Best Paper Runner-up Award</h4></div>
 <div align="center">

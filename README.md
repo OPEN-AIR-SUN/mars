@@ -182,7 +182,6 @@ Our pre-trained model is uploaded to Google Drive, you can refer to the below ta
 
 
 <center>
-</style>
 <table class="tg">
 <thead>
   <tr>

@@ -182,44 +182,61 @@ Our pre-trained model is uploaded to Google Drive, you can refer to the below ta
 
 
 <center>
+</style>
 <table class="tg">
 <thead>
   <tr>
-    <th class="tg-c3ow">Dataset</th>
-    <th class="tg-c3ow">Setting</th>
-    <th class="tg-c3ow">Download</th>
+    <th class="tg-9wq8">Dataset</th>
+    <th class="tg-9wq8">Setting</th>
+    <th class="tg-0lax">PSNR</th>
+    <th class="tg-0lax">SSIM</th>
+    <th class="tg-9wq8">Download</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td class="tg-9wq8" rowspan="4">KITTI-MOT</td>
-    <td class="tg-c3ow">Reconstruction</td>
-    <td class="tg-c3ow"><a href="https://drive.google.com/file/d/1g0eoq4QerA4kq21Nmoq9osl2RsZk-cYM/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td class="tg-9wq8">Reconstruction</td>
+    <td class="tg-0lax">29.06</td>
+    <td class="tg-0lax">0.885</td>
+    <td class="tg-9wq8"><a href="https://drive.google.com/file/d/1g0eoq4QerA4kq21Nmoq9osl2RsZk-cYM/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
   </tr>
   <tr>
-    <td class="tg-c3ow">Novel View Synthesis 75%</td>
-    <td class="tg-c3ow"><a href="https://drive.google.com/file/d/1NVBlmugj8W3Hdz-YaxLQlwr0R9N-FoC1/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td class="tg-9wq8">Novel View Synthesis 75%</td>
+    <td class="tg-0lax">24.23</td>
+    <td class="tg-0lax">0.845</td>
+    <td class="tg-9wq8"><a href="https://drive.google.com/file/d/1NVBlmugj8W3Hdz-YaxLQlwr0R9N-FoC1/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
   </tr>
   <tr>
-    <td class="tg-c3ow">Novel View Synthesis 50%</td>
-    <td class="tg-c3ow"><a href="https://drive.google.com/file/d/1xc7aLzU76gAgoOTuJlOYJ3LgoeLZOxSC/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td class="tg-9wq8">Novel View Synthesis 50%</td>
+    <td class="tg-0lax">24.00</td>
+    <td class="tg-0lax">0.801</td>
+    <td class="tg-9wq8"><a href="https://drive.google.com/file/d/1xc7aLzU76gAgoOTuJlOYJ3LgoeLZOxSC/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
   </tr>
   <tr>
-    <td class="tg-c3ow">Novel View Synthesis 25%</td>
-    <td class="tg-c3ow"><a href="https://drive.google.com/file/d/1jf8hT5603u1wO1JqE3gCJSVqHuK8oi99/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td class="tg-9wq8">Novel View Synthesis 25%</td>
+    <td class="tg-0lax">23.23</td>
+    <td class="tg-0lax">0.756</td>
+    <td class="tg-9wq8"><a href="https://drive.google.com/file/d/1jf8hT5603u1wO1JqE3gCJSVqHuK8oi99/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
   </tr>
   <tr>
     <td class="tg-9wq8" rowspan="3">Vitural KITTI-2</td>
-    <td class="tg-c3ow">Novel View Synthesis 75%</td>
-    <td class="tg-c3ow"><a href="https://drive.google.com/file/d/14uZ0Y-SyzBohUfKby72gibrhGo5i2FIZ/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td class="tg-9wq8">Novel View Synthesis 75%</td>
+    <td class="tg-0lax">29.79</td>
+    <td class="tg-0lax">0.917</td>
+    <td class="tg-9wq8"><a href="https://drive.google.com/file/d/14uZ0Y-SyzBohUfKby72gibrhGo5i2FIZ/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
   </tr>
   <tr>
-    <td class="tg-c3ow">Novel View Synthesis 50%</td>
-    <td class="tg-c3ow"><a href="https://drive.google.com/file/d/1IzfYP9bpqKr94Q93JtpOHb6YPo0WrRyq/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td class="tg-9wq8">Novel View Synthesis 50%</td>
+    <td class="tg-0lax">29.63</td>
+    <td class="tg-0lax">0.916</td>
+    <td class="tg-9wq8"><a href="https://drive.google.com/file/d/1IzfYP9bpqKr94Q93JtpOHb6YPo0WrRyq/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
   </tr>
   <tr>
-    <td class="tg-c3ow">Novel View Synthesis 25%</td>
-    <td class="tg-c3ow"><a href="https://drive.google.com/file/d/1W8JrjJ9izg3r3sgbK0jmTC9uur-pcUx2/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td class="tg-9wq8">Novel View Synthesis 25%</td>
+    <td class="tg-0lax">27.01</td>
+    <td class="tg-0lax">0.887</td>
+    <td class="tg-9wq8"><a href="https://drive.google.com/file/d/1W8JrjJ9izg3r3sgbK0jmTC9uur-pcUx2/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
   </tr>
 </tbody>
 </table>

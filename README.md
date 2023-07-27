@@ -2,20 +2,13 @@
 
 <p align="center">
     <!-- community badges -->
-    <a href="https://open-air-sun.github.io/mars/"><img src="https://img.shields.io/badge/Project-Page-blue"/></a>
+    <a href="https://open-air-sun.github.io/mars/"><img src="https://img.shields.io/badge/Project-Page-ffa"/></a>
     <!-- doc badges -->
     <a href='https://github.com/OPEN-AIR-SUN/mars'>
-        <img src='https://img.shields.io/badge/arxiv-Page-green'>
-    </a>
-    <!-- pi package badge -->
-    <a href="https://open-air-sun.github.io/mars/static/data/CICAI_MARS_FullPaper.pdf"><img src="https://img.shields.io/badge/CICAI-Paper-blue.svg"></a>
-    <!-- code check badges -->
-    <a href='https://www.youtube.com/watch?v=JUQyLk4s5bo'>
-        <img src='https://img.shields.io/badge/youtube-video-red
-' />
+        <img src='https://img.shields.io/badge/arXiv-Page-aff'>
     </a>
     <a href='https://open-air-sun.github.io/mars/static/data/MARS-poster.pdf'>
-        <img src='https://img.shields.io/badge/Poster-PDF-breen' />
+        <img src='https://img.shields.io/badge/Poster-PDF-pink' />
     </a>
     <!-- license badge -->
     <a href="https://github.com/xBeho1der/mars-release/blob/main/LICENSE">

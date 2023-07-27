@@ -1,0 +1,324 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "debug",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "3"
+      },
+      "args": [
+        "nsg-kitti-car-depth-nvs",
+        "--load-dir",
+        "/data1/chenjt/experiment/kitti-nvs-75/nsg-kitti-car-depth-nvs/2023-06-29_153047/nerfstudio_models",
+        "--data",
+        "/data1/luoly/datasets/NSGstudio/kitti/training/image_02/0006",
+        "--pipeline.datamanager.dataparser.car-nerf-state-dict-path",
+        "/data1/chenjt/datasets/ckpts/pretrain/car_nerf/epoch_670.ckpt",
+        "--pipeline.datamanager.dataparser.car-object-latents-path",
+        "/data41/luoly/kitti_mot/latents/latent_codes06.pt",
+        "--experiment_name",
+        "mars_output_test",
+      ]
+    },
+    {
+      "name": "nsg-vkitti-recon-depth-semantics",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "6"
+      },
+      "args": [
+        "nsg-vkitti-car-depth-recon-semantic",
+        "--experiment_name",
+        "nsg-vkitti-recon-02seq05to220",
+        "--data",
+        "/data/luoly/dataset/demo/vkitti/Scene02/clone",
+        "--max-num-iterations",
+        "600000",
+        "--pipeline.datamanager.dataparser.first-frame",
+        "5",
+        "--pipeline.datamanager.dataparser.last-frame",
+        "220"
+      ]
+    },
+    {
+      "name": "render",
+      "type": "python",
+      "request": "launch",
+      "program": "/data22/DISCOVER_summer2023/yexy2304/NSG-Studio/scripts/cicai_render.py",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--load-config",
+        "/data22/DISCOVER_summer2023/yexy2304/NSG-Studio/outputs/nsg-vkitti-recon-02seq05to220/nsg-vkitti-car-depth-recon/2023-05-30_230718/config.yml"
+      ]
+    },
+    {
+      "name": "KITTI_Recon_NSG_Car_Depth",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "args": [
+        "nsg-kitti-car-depth-recon",
+        "--experiment_name",
+        "NSG KITTI-0006",
+        "--data",
+        "/DATA_EDS/wuzr/data/kitti-MOT/training/image_02/0006",
+      ]
+    },
+    {
+      "name": "KITTI_Recon_NSG_Car",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "args": [
+        "ablation-no-depth-kitti",
+        "--experiment_name",
+        "NSG KITTI-0006 without depth",
+        "--data",
+        "/DATA_EDS/wuzr/data/kitti-MOT/training/image_02/0006",
+      ]
+    },
+    {
+      "name": "nsg-kitti-nvs-75",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "3"
+      },
+      "args": [
+        "nsg-kitti-car-depth-nvs",
+        "--experiment_name",
+        "nsg-kitti-nvs-75",
+        "--data",
+        "/DATA_EDS/wuzr/data/kitti-MOT/training/image_02/0006",
+      ]
+    },
+    {
+      "name": "nsg-vkitti-recon",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "3"
+      },
+      "args": [
+        "nsg-vkitti-car-depth-recon",
+        "--experiment_name",
+        "nsg-vkitti-recon w/ car nerf & depth",
+        "--data",
+        "/data22/luoly/dataset/demo/vkitti/Scene06/clone",
+      ]
+    },
+    {
+      "name": "Python: train neural scene graph",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "args": [
+        "neural-scene-graph",
+        "--pipeline.model.depth-weight-mode",
+        "learnable-global",
+        "--experiment_name",
+        "NSG KITTI-0006",
+        "--data",
+        "/DATA_EDS/wuzr/data/kitti-MOT/training/image_02/0006",
+        "--vis",
+        "wandb"
+      ]
+    },
+    {
+      "name": "NSG-Car KITTI 0006",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "args": [
+        "neural-scene-graph-car",
+        "--experiment_name",
+        "NSG-Car KITTI0006",
+        "--data",
+        "/data/luoly/dataset/nerfsg/data/kitti/training/image_02/0006",
+        "--vis",
+        "wandb"
+      ]
+    },
+    {
+      "name": "NSG-NeRF",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "args": [
+        "neural-scene-graph-nerf",
+        "--pipeline.model.depth-weight-mode",
+        "learnable-global",
+        "--data",
+        "/DATA_EDS/wuzr/data/kitti-MOT/training/image_02/0006",
+        "--vis",
+        "wandb"
+      ]
+    },
+    {
+      "name": "NSG-NeRF-vkitti",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "args": [
+        "neural-scene-graph-nerf-vkitti",
+        "--data",
+        "/data/luoly/dataset/demo/vkitti/Scene06/clone",
+        "--vis",
+        "wandb"
+      ]
+    },
+    {
+      "name": "(didi) NSG-NeRF-vkitti",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "args": [
+        "neural-scene-graph-nerf-vkitti",
+        "--data",
+        "/data1/luoly/datasets/NSGstudio/vkitti/Scene06/clone",
+        "--vis",
+        "wandb"
+      ]
+    },
+    {
+      "name": "(didi) train vKITTI",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "3"
+      },
+      "args": [
+        "neural-scene-graph-vkitti",
+        "--data",
+        "/data1/luoly/datasets/NSGstudio/vkitti/Scene06/clone",
+        "--vis",
+        "wandb"
+      ]
+    },
+    {
+      "name": "train vKITTI",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "args": [
+        "neural-scene-graph-vkitti",
+        "--data",
+        "/data22/luoly/dataset/demo/vkitti/Scene06/clone",
+        "--vis",
+        "wandb"
+      ]
+    },
+    {
+      "name": "(didi) Python: train neural scene graph",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "args": [
+        "neural-scene-graph",
+        "--pipeline.model.depth-weight-mode",
+        "learnable-global",
+        "--data",
+        "/data1/wuzr/data/kitti-MOT/training/image_02/0006",
+        "--vis",
+        "wandb"
+      ]
+    },
+    {
+      "name": "(didi) NSG-NeRF",
+      "type": "python",
+      "request": "launch",
+      "program": "scripts/train.py",
+      "console": "integratedTerminal",
+      "args": [
+        "neural-scene-graph-nerf",
+        "--pipeline.model.depth-weight-mode",
+        "learnable-global",
+        "--data",
+        "/data1/wuzr/data/kitti-MOT/training/image_02/0006",
+        "--vis",
+        "wandb"
+      ]
+    },
+    {
+      "name": "NSG-car-depth",
+      "type": "python",
+      "request": "launch",
+      "program": "nerfstudio/nerfstudio/scripts/train.py",
+      "console": "integratedTerminal",
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "3"
+      },
+      "args": [
+        "neural-scene-graph-car-depth",
+        "--experiment_name",
+        "NSG-Car-KITTI0006-depth",
+        "--pipeline.model.depth-weight-mode",
+        "learnable-global",
+        "--data",
+        "/data/luoly/dataset/nerfsg/data/kitti/training/image_02/0006",
+        "--vis",
+        "wandb"
+      ]
+    },
+    {
+      "name": "Python: render neural scene graph",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "3"
+      },
+      "args": [
+        "--load-config",
+        "/data22/DISCOVER_summer2023/chenjt2305/NSG-Studio/outputs/nvs75fullseq/nsg-vkitti-car-depth-nvs/2023-06-21_135412/config.yml",
+        "--traj",
+        "filename",
+        "--camera-path-filename",
+        "/home/luoly/code/nerfstudio/outputs/-data-luoly-indoornerf-360-air_2/nerfacto/2023-03-02_001608/camera_path.json",
+        "--output-path",
+        "renders/meng_output.mp4"
+      ]
+    },
+    // {
+    //   "name": "render",
+    //   "type": "python",
+    //   "request": "launch",
+    //   "program": "scripts/cicai_render.py",
+    //   "args": [
+    //     "--load-config",
+    //     "/data22/DISCOVER_summer2023/chenjt2305/NSG-Studio/outputs/nsg-vkitti-recon-02seq05to220/nsg-vkitti-car-depth-recon/2023-05-30_230718/config.yml",
+    //     "--output-path",
+    //     "renders/vkitti_edit_rotation"
+    //   ]
+    // }
+  ]
+}

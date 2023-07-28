@@ -251,6 +251,7 @@ model=SceneGraphModelConfig(
     object_ray_sample_strategy="remove-bg",
 )
 ```
+> If you choose to use the category-level object model, please make sure that the `use_car_latents=True` and the latent codes exists. We provide latent codes of some sequences on KITTI-MOT and vKITTI2 datasets [here](https://drive.google.com/drive/folders/1E4YjMwkDbRsF4Hb1UK0iBDkz-tFVx3Me?usp=sharing).
 
 For more information, please refer to our provided configurations at `nsg/cicai_configs.py`. We use wandb for logging by default, you can also specify other viewers (tensorboard/nerfstudio-viewer supported) with the `--vis` config. Please refer to the nerfstudio documentation for details.
 

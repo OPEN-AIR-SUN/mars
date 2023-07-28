@@ -18,6 +18,8 @@
 
 <div align="center"><h4>For business inquiries, please contact us at <a href="mailto:zhaohao@air.tsinghua.edu.cn">zhaohao@air.tsinghua.edu.cn</a>.</h4></div>
 
+> Please note that this is currently a pre-release version, several refactors will be made in the near future, which include removing the `nerfstudio/` and adapting to PyTorch 2.0 & nerfstudio 0.3.x, etc.
+
 ## 1. Installation: Setup the environment
 
 ### Prerequisites

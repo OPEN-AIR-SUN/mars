@@ -270,7 +270,7 @@ You can find our paper [here](https://open-air-sun.github.io/mars/static/data/CI
 
 ## Acknoledgement
 
-Part of our code is borrowed from [Nerfstudio](https://nerf.studio). This project is sponsored by Tsinghua-Toyota Joint Research Fund (20223930097) and Baidu Inc. through Apolo-AIR Joint Research Center.
+Part of our code is borrowed from [Nerfstudio](https://nerf.studio). This project is sponsored by Tsinghua-Toyota Joint Research Fund (20223930097) and Baidu Inc. through Apollo-AIR Joint Research Center.
 
 ## Notice
 

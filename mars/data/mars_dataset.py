@@ -16,6 +16,7 @@ nerual scene graph base dataset
 """
 
 import os
+from pathlib import Path
 from typing import Dict
 
 import imageio
@@ -24,7 +25,10 @@ import torch
 
 from nerfstudio.data.dataparsers.base_dataparser import DataparserOutputs
 from nerfstudio.data.datasets.base_dataset import InputDataset
-from nerfstudio.data.utils.data_utils import get_depth_image_from_path, get_semantics_and_mask_tensors_from_path
+from nerfstudio.data.utils.data_utils import (
+    get_depth_image_from_path,
+    get_semantics_and_mask_tensors_from_path,
+)
 
 
 class MarsDataset(InputDataset):
@@ -106,7 +110,7 @@ class MarsDataset(InputDataset):
             # Scale depth images to meter units and also by scaling applied to cameras
             scale_factor = self.depth_unit_scale_factor * self._dataparser_outputs.dataparser_scale
             depth_image = get_depth_image_from_path(
-                filepath=filepath, height=height, width=width, scale_factor=scale_factor
+                filepath=Path(filepath), height=height, width=width, scale_factor=scale_factor
             )  # default interpolation cv2.INTER_NEAREST
             depth_mask = torch.abs(depth_image / scale_factor - 65535) > 1e-6  # maskout no-depth input
 

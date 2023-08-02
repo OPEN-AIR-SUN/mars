@@ -32,6 +32,11 @@ from torchmetrics.functional import structural_similarity_index_measure
 from torchmetrics.image.lpip import LearnedPerceptualImagePatchSimilarity
 from typing_extensions import Literal
 
+from mars.model_components.losses import monosdf_depth_loss
+from mars.models.nerfacto import NerfactoModel, NerfactoModelConfig
+from mars.models.semantic_nerfw import SemanticNerfWModel
+from mars.models.sky_model import SkyModelConfig
+from mars.utils.neural_scene_graph_helper import box_pts, combine_z, world2object
 from nerfstudio.cameras.rays import Frustums, RayBundle, RaySamples
 from nerfstudio.data.dataparsers.base_dataparser import Semantics
 from nerfstudio.data.scene_box import SceneBox
@@ -60,11 +65,6 @@ from nerfstudio.model_components.scene_colliders import NearFarCollider
 from nerfstudio.model_components.shaders import NormalsShader
 from nerfstudio.models.base_model import Model, ModelConfig
 from nerfstudio.utils import colormaps
-from mars.model_components.losses import monosdf_depth_loss
-from mars.models.nerfacto import NerfactoModel, NerfactoModelConfig
-from mars.models.semantic_nerfw import SemanticNerfWModel
-from mars.models.sky_model import SkyModelConfig
-from mars.utils.neural_scene_graph_helper import box_pts, combine_z, world2object
 
 CONSOLE = Console()
 
@@ -233,7 +233,9 @@ class SceneGraphModel(Model):
         self.depth_loss = general_depth_loss
         self.monosdf_depth_loss = monosdf_depth_loss
         if self.use_semantic:
-            self.cross_entropy_loss = torch.nn.CrossEntropyLoss(reduction="mean", ignore_index=self.semantic_num)
+            self.cross_entropy_loss = torch.nn.CrossEntropyLoss(
+                reduction="mean", ignore_index=self.background_model.semantic_num
+            )
 
         # metrics
         self.psnr = PeakSignalNoiseRatio(data_range=1.0)
@@ -711,7 +713,7 @@ class SceneGraphModel(Model):
                         is_euclidean=self.config.is_euclidean_depth,
                         depth_loss_type=self.config.depth_loss_type,
                     ) / len(outputs["weights_list"])
-                    
+
             mono_depth_loss = monosdf_depth_loss(
                 termination_depth=depth_gt,
                 predicted_depth=predicted_depth,

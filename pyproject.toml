@@ -1,34 +1,35 @@
 [project]
-name = "neural_scene_graph"
-version = "0.2.1"
+name = "mars"
+version = "0.3.1"
 
 dependencies = [
-    "nerfstudio"
+    "nerfstudio>=0.3.2",
+    "torchtyping",
+    "torch>=2.0.1"
 ]
 
 [tool.setuptools.packages.find]
-include = ["nsg*"]
+include = ["mars*"]
 
 [project.entry-points.'nerfstudio.method_configs']
-nsg-vkitti-car-depth-recon-semantic = 'nsg.cicai_configs:VKITTI_Recon_NSG_Car_Depth_Semantic'
-nsg-kitti-car-depth-recon = 'nsg.cicai_configs:KITTI_Recon_NSG_Car_Depth'
-nsg-kitti-car-depth-nvs = 'nsg.cicai_configs:KITTI_NVS_NSG_Car_Depth'
-nsg-vkitti-car-depth-recon = 'nsg.cicai_configs:VKITTI_Recon_NSG_Car_Depth'
-nsg-vkitti-car-depth-nvs = 'nsg.cicai_configs:VKITTI_NVS_NSG_Car_Depth'
-ablation-background-nerf = 'nsg.cicai_configs:Ablation_BG_NeRF'
-ablation-background-mip-nerf = 'nsg.cicai_configs:Ablation_BG_MipNeRF'
-ablation-object-wise-nerf = 'nsg.cicai_configs:Ablation_object_wise_NeRF'
-ablation-object-wise-mip-nerf = 'nsg.cicai_configs:Ablation_object_wise_MipNeRF'
-ablation-object-wise-nerfacto = 'nsg.cicai_configs:Ablation_object_wise_NeRFacto'
-ablation-class-wise-nerf = 'nsg.cicai_configs:Ablation_class_wise_NeRF'
-ablation-class-wise-mip-nerf = 'nsg.cicai_configs:Ablation_class_wise_MipNeRF'
-ablation-class-wise-nerfacto = 'nsg.cicai_configs:Ablation_class_wise_NeRFacto'
-ablation-warmup = 'nsg.cicai_configs:Ablation_warmup'
-ablation-none-ray-sample = 'nsg.cicai_configs:Ablation_none_ray_sample'
-ablation-no-depth = 'nsg.cicai_configs:Ablation_no_depth'
-ablation-no-depth-kitti = 'nsg.cicai_configs:Ablation_no_depth_kitti'
-
+mars-vkitti-car-depth-recon-semantic = 'mars.cicai_configs:VKITTI_Recon_Mars_Car_Depth_Semantic'
+mars-kitti-car-depth-recon = 'mars.cicai_configs:KITTI_Recon_Mars_Car_Depth'
+mars-kitti-car-depth-nvs = 'mars.cicai_configs:KITTI_NVS_Mars_Car_Depth'
+mars-vkitti-car-depth-recon = 'mars.cicai_configs:VKITTI_Recon_Mars_Car_Depth'
+mars-vkitti-car-depth-nvs = 'mars.cicai_configs:VKITTI_NVS_Mars_Car_Depth'
+ablation-background-nerf = 'mars.cicai_configs:Ablation_BG_NeRF'
+ablation-background-mip-nerf = 'mars.cicai_configs:Ablation_BG_MipNeRF'
+ablation-object-wise-nerf = 'mars.cicai_configs:Ablation_object_wise_NeRF'
+ablation-object-wise-mip-nerf = 'mars.cicai_configs:Ablation_object_wise_MipNeRF'
+ablation-object-wise-nerfacto = 'mars.cicai_configs:Ablation_object_wise_NeRFacto'
+ablation-class-wise-nerf = 'mars.cicai_configs:Ablation_class_wise_NeRF'
+ablation-class-wise-mip-nerf = 'mars.cicai_configs:Ablation_class_wise_MipNeRF'
+ablation-class-wise-nerfacto = 'mars.cicai_configs:Ablation_class_wise_NeRFacto'
+ablation-warmup = 'mars.cicai_configs:Ablation_warmup'
+ablation-none-ray-sample = 'mars.cicai_configs:Ablation_none_ray_sample'
+ablation-no-depth = 'mars.cicai_configs:Ablation_no_depth'
+ablation-no-depth-kitti = 'mars.cicai_configs:Ablation_no_depth_kitti'
 
 [project.entry-points.'nerfstudio.dataparser_configs']
-NSGkittiDataParserConfig = 'nsg.data.nsg_dataparser:NSGkittiDataParserConfigSpecification'
-NSGvkittiDataParserConfig = 'nsg.data.nsg_vkitti_dataparser:NSGvkittiDataParserConfigSpecification'
+KittiData = 'mars.data.mars_kitti_dataparser:KittiParserSpec'
+VKittiData = 'mars.data.mars_vkitti_dataparser:VKittiParserSpec'

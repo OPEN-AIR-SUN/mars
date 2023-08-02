@@ -28,6 +28,7 @@ class SkyModelConfig(ModelConfig):
 
 class SkyModel(Model):
     """Nerfacto model
+
     Args:
         config: Nerfacto configuration to instantiate model
     """

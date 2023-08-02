@@ -38,7 +38,7 @@ from nerfstudio.data.scene_box import SceneBox
 from nerfstudio.plugins.registry_dataparser import DataParserSpecification
 from nerfstudio.utils.colors import get_color
 from nerfstudio.utils.io import load_from_json
-from nsg.utils.neural_scene_graph_helper import box_pts
+from mars.utils.neural_scene_graph_helper import box_pts
 
 CONSOLE = Console(width=120)
 _sem2label = {"Misc": -1, "Car": 0, "Van": 1, "Truck": 2, "Tram": 3, "Pedestrian": 4}
@@ -863,10 +863,10 @@ def extract_object_information(args, visible_objects, objects_meta):
 
 
 @dataclass
-class NSGkittiDataParserConfig(DataParserConfig):
+class MarsKittiDataParserConfig(DataParserConfig):
     """nerual scene graph dataset parser config"""
 
-    _target: Type = field(default_factory=lambda: NSGkitti)
+    _target: Type = field(default_factory=lambda: MarsKittiParser)
     """target class to instantiate"""
     data: Path = Path("data/kitti/training/image_02/0006")
     """Directory specifying location of data."""
@@ -924,12 +924,12 @@ class NSGkittiDataParserConfig(DataParserConfig):
 
 
 @dataclass
-class NSGkitti(DataParser):
+class MarsKittiParser(DataParser):
     """nerual scene graph kitti Dataset"""
 
-    config: NSGkittiDataParserConfig
+    config: MarsKittiDataParserConfig
 
-    def __init__(self, config: NSGkittiDataParserConfig):
+    def __init__(self, config: MarsKittiDataParserConfig):
         super().__init__(config=config)
         self.data: Path = config.data
         self.scale_factor: float = config.scale_factor
@@ -1335,4 +1335,4 @@ class NSGkitti(DataParser):
         return dataparser_outputs
 
 
-NSGkittiDataParserConfigSpecification = DataParserSpecification(config=NSGkittiDataParserConfig)
+KittiParserSpec = DataParserSpecification(config=MarsKittiDataParserConfig)

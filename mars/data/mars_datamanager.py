@@ -10,35 +10,35 @@ from nerfstudio.data.datamanagers.base_datamanager import (
     VanillaDataManager,
     VanillaDataManagerConfig,
 )
-from nsg.data.nsg_dataset import NSGkittiDataset
+from mars.data.mars_dataset import MarsDataset
 
 
 @dataclass
-class NSGkittiDataManagerConfig(VanillaDataManagerConfig):
+class MarsDataManagerConfig(VanillaDataManagerConfig):
     """A semantic datamanager - required to use with .setup()"""
 
-    _target: Type = field(default_factory=lambda: NSGkittiDataManager)
+    _target: Type = field(default_factory=lambda: MarsDataManager)
 
 
-class NSGkittiDataManager(VanillaDataManager):  # pylint: disable=abstract-method
+class MarsDataManager(VanillaDataManager):  # pylint: disable=abstract-method
     """Data manager implementation for data that also requires processing semantic data.
 
     Args:
         config: the DataManagerConfig used to instantiate class
     """
 
-    def create_train_dataset(self) -> NSGkittiDataset:
+    def create_train_dataset(self) -> MarsDataset:
         # self.train_dataparser_outputs = self.dataparser.get_dataparser_outputs(split="train")
-        return NSGkittiDataset(
+        return MarsDataset(
             dataparser_outputs=self.train_dataparser_outputs,
             scale_factor=self.config.camera_res_scale_factor,
             use_depth=self.config.dataparser.use_depth,
             use_semantic=self.config.dataparser.use_semantic,
         )
 
-    def create_eval_dataset(self) -> NSGkittiDataset:
+    def create_eval_dataset(self) -> MarsDataset:
 
-        return NSGkittiDataset(
+        return MarsDataset(
             dataparser_outputs=self.dataparser.get_dataparser_outputs(split=self.test_split),
             scale_factor=self.config.camera_res_scale_factor,
             use_depth=self.config.dataparser.use_depth,

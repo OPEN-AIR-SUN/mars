@@ -32,14 +32,14 @@ from nerfstudio.pipelines.base_pipeline import (
     VanillaPipelineConfig,
 )
 from nerfstudio.utils import profiler
-from nsg.data.nsg_datamanager import NSGkittiDataManager
+from mars.data.mars_datamanager import MarsDataManagerConfig
 
 
 @dataclass
-class NSGPipelineConfig(VanillaPipelineConfig):
+class MarsPipelineConfig(VanillaPipelineConfig):
     """Configuration for pipeline instantiation"""
 
-    _target: Type = field(default_factory=lambda: NSGPipeline)
+    _target: Type = field(default_factory=lambda: MarsPipeline)
     """target class to instantiate"""
     datamanager: DataManagerConfig = VanillaDataManagerConfig()
     """specifies the datamanager config"""
@@ -47,7 +47,7 @@ class NSGPipelineConfig(VanillaPipelineConfig):
     """specifies the model config"""
 
 
-class NSGPipeline(Pipeline):
+class MarsPipeline(Pipeline):
     """The pipeline class for the vanilla nerf setup of multiple cameras for one or a few scenes.
 
     Args:
@@ -67,7 +67,7 @@ class NSGPipeline(Pipeline):
 
     def __init__(
         self,
-        config: NSGPipelineConfig,
+        config: MarsPipelineConfig,
         device: str,
         test_mode: Literal["test", "val", "inference"] = "val",
         world_size: int = 1,

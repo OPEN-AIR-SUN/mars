@@ -312,10 +312,10 @@ def get_semantic_information(path):
 
 
 @dataclass
-class NSGvkittiDataParserConfig(DataParserConfig):
+class MarsVKittiDataParserConfig(DataParserConfig):
     """nerual scene graph dataset parser config"""
 
-    _target: Type = field(default_factory=lambda: NSGvkitti)
+    _target: Type = field(default_factory=lambda: MarsVKittiParser)
     """target class to instantiate"""
     data: Path = Path("/data1/vkitti/Scene06/clone")
     """Directory specifying location of data."""
@@ -374,12 +374,12 @@ class NSGvkittiDataParserConfig(DataParserConfig):
 
 
 @dataclass
-class NSGvkitti(DataParser):
+class MarsVKittiParser(DataParser):
     """nerual scene graph kitti Dataset"""
 
-    config: NSGvkittiDataParserConfig
+    config: MarsVKittiDataParserConfig
 
-    def __init__(self, config: NSGvkittiDataParserConfig):
+    def __init__(self, config: MarsVKittiDataParserConfig):
         super().__init__(config=config)
         self.data: Path = config.data
         self.scale_factor: float = config.scale_factor
@@ -688,4 +688,4 @@ class NSGvkitti(DataParser):
         return dataparser_outputs
 
 
-NSGvkittiDataParserConfigSpecification = DataParserSpecification(config=NSGvkittiDataParserConfig)
+VKittiParserSpec = DataParserSpecification(config=MarsVKittiDataParserConfig)

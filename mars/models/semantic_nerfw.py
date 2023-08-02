@@ -49,8 +49,8 @@ from nerfstudio.model_components.renderers import (
 )
 from nerfstudio.model_components.scene_colliders import NearFarCollider
 from nerfstudio.models.base_model import Model
-from nsg.fields.nerfacto_field import TCNNNerfactoField as NerfactoField
-from nsg.models.nerfacto import NerfactoModelConfig
+from mars.fields.nerfacto_field import NerfactoField
+from mars.models.nerfacto import NerfactoModelConfig
 
 
 @dataclass

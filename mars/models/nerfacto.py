@@ -1,4 +1,4 @@
-# Copyright 2022 The Nerfstudio Team. All rights reserved.
+# Copyright 2022 the Regents of the University of California, Nerfstudio Team and contributors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ NeRF implementation that combines many recent advancements.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Tuple, Type
+from typing import Dict, List, Literal, Optional, Tuple, Type
 
 import numpy as np
 import torch
@@ -27,9 +27,9 @@ from torch.nn import Parameter
 from torchmetrics import PeakSignalNoiseRatio
 from torchmetrics.functional import structural_similarity_index_measure
 from torchmetrics.image.lpip import LearnedPerceptualImagePatchSimilarity
-from typing_extensions import Literal
 
-from nerfstudio.cameras.rays import RayBundle
+from mars.fields.nerfacto_field import NerfactoField
+from nerfstudio.cameras.rays import RayBundle, RaySamples
 from nerfstudio.engine.callbacks import (
     TrainingCallback,
     TrainingCallbackAttributes,
@@ -44,9 +44,9 @@ from nerfstudio.model_components.losses import (
     interlevel_loss,
     orientation_loss,
     pred_normal_loss,
+    scale_gradients_by_distance_squared,
 )
 from nerfstudio.model_components.ray_samplers import (
-    PDFSampler,
     ProposalNetworkSampler,
     UniformSampler,
 )
@@ -60,7 +60,6 @@ from nerfstudio.model_components.scene_colliders import NearFarCollider
 from nerfstudio.model_components.shaders import NormalsShader
 from nerfstudio.models.base_model import Model, ModelConfig
 from nerfstudio.utils import colormaps
-from nsg.fields.nerfacto_field import TCNNNerfactoField
 
 
 @dataclass
@@ -82,28 +81,16 @@ class NerfactoModelConfig(ModelConfig):
     """Dimension of hidden layers for transient network"""
     num_levels: int = 16
     """Number of levels of the hashmap for the base mlp."""
+    base_res: int = 16
+    """Resolution of the base grid for the hashgrid."""
     max_res: int = 2048
     """Maximum resolution of the hashmap for the base mlp."""
     log2_hashmap_size: int = 19
     """Size of the hashmap for the base mlp"""
-    num_coarse_samples: int = 24
-    """Number of coarse samples per ray for the nerf network."""
-    distortion_loss_mult: float = 0.002
-    """Distortion loss multiplier."""
-    orientation_loss_mult: float = 0.0001
-    """Orientation loss multiplier on computed normals."""
-    pred_normal_loss_mult: float = 0.001
-    """Predicted normal loss multiplier."""
-    use_average_appearance_embedding: bool = True
-    """Whether to use average appearance embedding or zeros for inference."""
-    predict_normals: bool = False
-    """Whether to predict normals or not."""
+    features_per_level: int = 2
+    """How many hashgrid features per level"""
     obj_feat_dim: int = 0
     """Dimension of the object latent code"""
-    disable_scene_contraction: bool = False
-    """Whether to disable scene contraction or not."""
-    sampler: Literal["proposal", "coarse2fine"] = "proposal"
-    """What sampler to use"""
     num_proposal_samples_per_ray: Tuple[int, ...] = (256, 128)
     """Number of samples per ray for each proposal network."""
     num_nerf_samples_per_ray: int = 97
@@ -123,16 +110,36 @@ class NerfactoModelConfig(ModelConfig):
         ]
     )
     """Arguments for the proposal density fields."""
-    use_single_jitter: bool = True
-    """Whether use single jitter or not for the proposal networks."""
+    proposal_initial_sampler: Literal["piecewise", "uniform"] = "piecewise"
+    """Initial sampler for the proposal network. Piecewise is preferred for unbounded scenes."""
+    interlevel_loss_mult: float = 1.0
+    """Proposal loss multiplier."""
+    distortion_loss_mult: float = 0.002
+    """Distortion loss multiplier."""
+    orientation_loss_mult: float = 0.0001
+    """Orientation loss multiplier on computed normals."""
+    pred_normal_loss_mult: float = 0.001
+    """Predicted normal loss multiplier."""
     use_proposal_weight_anneal: bool = True
     """Whether to use proposal weight annealing."""
+    use_average_appearance_embedding: bool = True
+    """Whether to use average appearance embedding or zeros for inference."""
     proposal_weights_anneal_slope: float = 10.0
     """Slope of the annealing function for the proposal weights."""
     proposal_weights_anneal_max_num_iters: int = 1000
     """Max num iterations for the annealing function."""
+    use_single_jitter: bool = True
+    """Whether use single jitter or not for the proposal networks."""
+    predict_normals: bool = False
+    """Whether to predict normals or not."""
+    disable_scene_contraction: bool = False
+    """Whether to disable scene contraction or not."""
     use_gradient_scaling: bool = False
     """Use gradient scaler where the gradients are lower for points closer to the camera."""
+    implementation: Literal["tcnn", "torch"] = "tcnn"
+    """Which implementation to use for the model."""
+    appearance_embed_dim: int = 32
+    """Dimension of the appearance embedding."""
 
 
 class NerfactoModel(Model):
@@ -145,6 +152,7 @@ class NerfactoModel(Model):
     config: NerfactoModelConfig
     object_meta: Dict
     obj_feat_dim: Optional[int]
+    predict_normals: bool
 
     def populate_modules(self):
         """Set the fields and modules."""
@@ -159,9 +167,8 @@ class NerfactoModel(Model):
             scene_contraction = SceneContraction(order=float("inf"))
 
         self.num_objs = int(max(self.object_meta["scene_obj"])) + 1 if self.object_meta is not None else 0
-        # self.num_objs = int(max(self.object_meta["scene_obj"])) if self.object_meta is not None else 0
         # Fields
-        self.field = TCNNNerfactoField(
+        self.field = NerfactoField(
             self.scene_box.aabb,
             hidden_dim=self.config.hidden_dim,
             num_levels=self.config.num_levels,
@@ -173,54 +180,60 @@ class NerfactoModel(Model):
             num_images=self.num_train_data,
             use_pred_normals=self.config.predict_normals,
             use_average_appearance_embedding=self.config.use_average_appearance_embedding,
+            appearance_embedding_dim=self.config.appearance_embed_dim,
+            implementation=self.config.implementation,
             num_objs=self.num_objs,
             obj_feat_dim=self.obj_feat_dim,
         )
 
-        if self.config.sampler == "coarse2fine":
-            self.sampler_uniform = UniformSampler(num_samples=self.config.num_coarse_samples)
-            self.sampler_pdf = PDFSampler(num_samples=self.config.num_nerf_samples_per_ray, include_original=False)
-        elif self.config.sampler == "proposal":
-            self.density_fns = []
-            num_prop_nets = self.config.num_proposal_iterations
-            # Build the proposal network(s)
-            self.proposal_networks = torch.nn.ModuleList()
-            if self.config.use_same_proposal_network:
-                assert len(self.config.proposal_net_args_list) == 1, "Only one proposal network is allowed."
-                prop_net_args = self.config.proposal_net_args_list[0]
+        self.density_fns = []
+        num_prop_nets = self.config.num_proposal_iterations
+        # Build the proposal network(s)
+        self.proposal_networks = torch.nn.ModuleList()
+        if self.config.use_same_proposal_network:
+            assert len(self.config.proposal_net_args_list) == 1, "Only one proposal network is allowed."
+            prop_net_args = self.config.proposal_net_args_list[0]
+            network = HashMLPDensityField(
+                self.scene_box.aabb,
+                spatial_distortion=scene_contraction,
+                **prop_net_args,
+                implementation=self.config.implementation,
+            )
+            self.proposal_networks.append(network)
+            self.density_fns.extend([network.density_fn for _ in range(num_prop_nets)])
+        else:
+            for i in range(num_prop_nets):
+                prop_net_args = self.config.proposal_net_args_list[min(i, len(self.config.proposal_net_args_list) - 1)]
                 network = HashMLPDensityField(
-                    self.scene_box.aabb, spatial_distortion=scene_contraction, **prop_net_args
+                    self.scene_box.aabb,
+                    spatial_distortion=scene_contraction,
+                    **prop_net_args,
+                    implementation=self.config.implementation,
                 )
                 self.proposal_networks.append(network)
-                self.density_fns.extend([network.density_fn for _ in range(num_prop_nets)])
-            else:
-                for i in range(num_prop_nets):
-                    prop_net_args = self.config.proposal_net_args_list[
-                        min(i, len(self.config.proposal_net_args_list) - 1)
-                    ]
-                    network = HashMLPDensityField(
-                        self.scene_box.aabb,
-                        spatial_distortion=scene_contraction,
-                        **prop_net_args,
-                    )
-                    self.proposal_networks.append(network)
-                self.density_fns.extend([network.density_fn for network in self.proposal_networks])
+            self.density_fns.extend([network.density_fn for network in self.proposal_networks])
 
-            initial_sampler = UniformSampler(single_jitter=self.config.use_single_jitter)
-
-            update_schedule = lambda step: np.clip(
+        # Samplers
+        def update_schedule(step):
+            return np.clip(
                 np.interp(step, [0, self.config.proposal_warmup], [0, self.config.proposal_update_every]),
                 1,
                 self.config.proposal_update_every,
             )
-            self.proposal_sampler = ProposalNetworkSampler(
-                num_nerf_samples_per_ray=self.config.num_nerf_samples_per_ray,
-                num_proposal_samples_per_ray=self.config.num_proposal_samples_per_ray,
-                num_proposal_network_iterations=self.config.num_proposal_iterations,
-                single_jitter=self.config.use_single_jitter,
-                update_sched=update_schedule,
-                initial_sampler=initial_sampler,
-            )
+
+        # Change proposal network initial sampler if uniform
+        initial_sampler = None  # None is for piecewise as default (see ProposalNetworkSampler)
+        if self.config.proposal_initial_sampler == "uniform":
+            initial_sampler = UniformSampler(single_jitter=self.config.use_single_jitter)
+
+        self.proposal_sampler = ProposalNetworkSampler(
+            num_nerf_samples_per_ray=self.config.num_nerf_samples_per_ray,
+            num_proposal_samples_per_ray=self.config.num_proposal_samples_per_ray,
+            num_proposal_network_iterations=self.config.num_proposal_iterations,
+            single_jitter=self.config.use_single_jitter,
+            update_sched=update_schedule,
+            initial_sampler=initial_sampler,
+        )
 
         # Collider
         self.collider = NearFarCollider(near_plane=self.config.near_plane, far_plane=self.config.far_plane)
@@ -247,22 +260,25 @@ class NerfactoModel(Model):
 
     def get_param_groups(self) -> List[Parameter]:
         param_groups = []
-        param_groups += list(self.field.parameters())
         param_groups += list(self.proposal_networks.parameters())
+        param_groups += list(self.field.parameters())
         return param_groups
 
     def get_training_callbacks(
         self, training_callback_attributes: TrainingCallbackAttributes
     ) -> List[TrainingCallback]:
         callbacks = []
-        if self.config.use_proposal_weight_anneal and self.config.sampler == "proposal":
+        if self.config.use_proposal_weight_anneal:
             # anneal the weights of the proposal network before doing PDF sampling
             N = self.config.proposal_weights_anneal_max_num_iters
 
             def set_anneal(step):
                 # https://arxiv.org/pdf/2111.12077.pdf eq. 18
                 train_frac = np.clip(step / N, 0, 1)
-                bias = lambda x, b: (b * x) / ((b - 1) * x + 1)
+
+                def bias(x, b):
+                    return b * x / ((b - 1) * x + 1)
+
                 anneal = bias(train_frac, self.config.proposal_weights_anneal_slope)
                 self.proposal_sampler.set_anneal(anneal)
 
@@ -283,56 +299,31 @@ class NerfactoModel(Model):
         return callbacks
 
     def inference_without_render(self, ray_bundle: RayBundle):
-        if self.config.sampler == "coarse2fine":
-            ray_samples_uniform = self.sampler_uniform(ray_bundle)
-            field_outputs_uniform = self.field(ray_samples_uniform)
-            weights_uniform = ray_samples_uniform.get_weights(field_outputs_uniform[FieldHeadNames.DENSITY])
-            ray_samples_pdf = self.sampler_pdf(ray_bundle, ray_samples_uniform, weights_uniform)
-            field_outputs_pdf = self.field(ray_samples_pdf, compute_normals=self.config.predict_normals)
-            weights_pdf = ray_samples_pdf.get_weights(field_outputs_pdf[FieldHeadNames.DENSITY])
-            return {
-                "ray_samples_list": [ray_samples_uniform, ray_samples_pdf],
-                "weights_list": [weights_uniform, weights_pdf],
-                "field_outputs": field_outputs_pdf,
-            }
-        else:
-            ray_samples, weights_list, ray_samples_list = self.proposal_sampler(
-                ray_bundle, density_fns=self.density_fns
-            )
-            field_outputs = self.field(ray_samples, compute_normals=self.config.predict_normals)
+        ray_samples: RaySamples
+        ray_samples, weights_list, ray_samples_list = self.proposal_sampler(ray_bundle, density_fns=self.density_fns)
+        field_outputs = self.field.forward(ray_samples, compute_normals=self.config.predict_normals)
+        if self.config.use_gradient_scaling:
+            field_outputs = scale_gradients_by_distance_squared(field_outputs, ray_samples)
 
-            if self.config.use_gradient_scaling:
-                field_outputs = scale_gradients_by_distance_squared(field_outputs, ray_samples)
-            weights = ray_samples.get_weights(field_outputs[FieldHeadNames.DENSITY])
-            weights_list.append(weights)
-            ray_samples_list.append(ray_samples)
-            return {"ray_samples_list": ray_samples_list, "weights_list": weights_list, "field_outputs": field_outputs}
+        weights = ray_samples.get_weights(field_outputs[FieldHeadNames.DENSITY])
+        weights_list.append(weights)
+        ray_samples_list.append(ray_samples)
+        return {"ray_samples_list": ray_samples_list, "weights_list": weights_list, "field_outputs": field_outputs}
 
     def get_outputs(self, ray_bundle: RayBundle):
-        if self.config.sampler == "coarse2fine":
-            ray_samples_uniform = self.sampler_uniform(ray_bundle)
-            field_outputs_uniform = self.field(ray_samples_uniform)
-            weights_uniform = ray_samples_uniform.get_weights(field_outputs_uniform[FieldHeadNames.DENSITY])
-            ray_samples_pdf = self.sampler_pdf(ray_bundle, ray_samples_uniform, weights_uniform)
-            field_outputs = self.field(ray_samples_pdf, compute_normals=self.config.predict_normals)
-            weights_pdf = ray_samples_pdf.get_weights(field_outputs[FieldHeadNames.DENSITY])
-            ray_samples_list = [ray_samples_uniform, ray_samples_pdf]
-            weights_list = [weights_uniform, weights_pdf]
-        else:
-            ray_samples, weights_list, ray_samples_list = self.proposal_sampler(
-                ray_bundle, density_fns=self.density_fns
-            )
-            field_outputs = self.field(ray_samples, compute_normals=self.config.predict_normals)
-            if self.config.use_gradient_scaling:
-                field_outputs = scale_gradients_by_distance_squared(field_outputs, ray_samples)
+        ray_samples: RaySamples
+        ray_samples, weights_list, ray_samples_list = self.proposal_sampler(ray_bundle, density_fns=self.density_fns)
+        field_outputs = self.field.forward(ray_samples, compute_normals=self.config.predict_normals)
+        if self.config.use_gradient_scaling:
+            field_outputs = scale_gradients_by_distance_squared(field_outputs, ray_samples)
 
-            weights = ray_samples.get_weights(field_outputs[FieldHeadNames.DENSITY])
-            weights_list.append(weights)
-            ray_samples_list.append(ray_samples)
+        weights = ray_samples.get_weights(field_outputs[FieldHeadNames.DENSITY])
+        weights_list.append(weights)
+        ray_samples_list.append(ray_samples)
 
-        rgb = self.renderer_rgb(rgb=field_outputs[FieldHeadNames.RGB], weights=weights_list[-1])
-        depth = self.renderer_depth(weights=weights_list[-1], ray_samples=ray_samples_list[-1])
-        accumulation = self.renderer_accumulation(weights=weights_list[-1])
+        rgb = self.renderer_rgb(rgb=field_outputs[FieldHeadNames.RGB], weights=weights)
+        depth = self.renderer_depth(weights=weights, ray_samples=ray_samples)
+        accumulation = self.renderer_accumulation(weights=weights)
 
         outputs = {
             "rgb": rgb,
@@ -341,11 +332,10 @@ class NerfactoModel(Model):
         }
 
         if self.config.predict_normals:
-            normals = self.renderer_normals(normals=field_outputs[FieldHeadNames.NORMALS], weights=weights_list[-1])
-            pred_normals = self.renderer_normals(field_outputs[FieldHeadNames.PRED_NORMALS], weights=weights_list[-1])
+            normals = self.renderer_normals(normals=field_outputs[FieldHeadNames.NORMALS], weights=weights)
+            pred_normals = self.renderer_normals(field_outputs[FieldHeadNames.PRED_NORMALS], weights=weights)
             outputs["normals"] = self.normals_shader(normals)
             outputs["pred_normals"] = self.normals_shader(pred_normals)
-
         # These use a lot of GPU memory, so we avoid storing them for eval.
         if self.training:
             outputs["weights_list"] = weights_list
@@ -353,20 +343,17 @@ class NerfactoModel(Model):
 
         if self.training and self.config.predict_normals:
             outputs["rendered_orientation_loss"] = orientation_loss(
-                weights_list[-1].detach(), field_outputs[FieldHeadNames.NORMALS], ray_bundle.directions
+                weights.detach(), field_outputs[FieldHeadNames.NORMALS], ray_bundle.directions
             )
 
             outputs["rendered_pred_normal_loss"] = pred_normal_loss(
-                weights_list[-1].detach(),
+                weights.detach(),
                 field_outputs[FieldHeadNames.NORMALS].detach(),
                 field_outputs[FieldHeadNames.PRED_NORMALS],
             )
 
-        if self.config.sampler == "proposal":
-            for i in range(self.config.num_proposal_iterations):
-                outputs[f"prop_depth_{i}"] = self.renderer_depth(
-                    weights=weights_list[i], ray_samples=ray_samples_list[i]
-                )
+        for i in range(self.config.num_proposal_iterations):
+            outputs[f"prop_depth_{i}"] = self.renderer_depth(weights=weights_list[i], ray_samples=ray_samples_list[i])
 
         return outputs
 

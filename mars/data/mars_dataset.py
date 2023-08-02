@@ -27,7 +27,7 @@ from nerfstudio.data.datasets.base_dataset import InputDataset
 from nerfstudio.data.utils.data_utils import get_depth_image_from_path, get_semantics_and_mask_tensors_from_path
 
 
-class NSGkittiDataset(InputDataset):
+class MarsDataset(InputDataset):
     """Dataset that returns nerual scene graph needed: images, pose, render_pose,
     visible_objects, render_objects, objects_meta, hwf, bbox/object_mask.
 

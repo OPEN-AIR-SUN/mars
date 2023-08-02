@@ -5,21 +5,21 @@ from typing import Dict
 
 import tyro
 
-from nsg.models.semantic_nerfw import SemanticNerfWModelConfig
+from mars.data.mars_datamanager import MarsDataManagerConfig
+from mars.data.mars_kitti_dataparser import MarsKittiDataParserConfig
+from mars.data.mars_vkitti_dataparser import MarsVKittiDataParserConfig
+from mars.mars_pipeline import MarsPipelineConfig
+from mars.models.car_nerf import CarNeRF, CarNeRFModelConfig
+from mars.models.mipnerf import MipNerfModel
+from mars.models.nerfacto import NerfactoModelConfig
+from mars.models.scene_graph import SceneGraphModelConfig
+from mars.models.semantic_nerfw import SemanticNerfWModelConfig
+from mars.models.vanilla_nerf import NeRFModel, VanillaModelConfig
 from nerfstudio.cameras.camera_optimizers import CameraOptimizerConfig
 from nerfstudio.engine.optimizers import RAdamOptimizerConfig
 from nerfstudio.engine.schedulers import ExponentialDecaySchedulerConfig
 from nerfstudio.engine.trainer import TrainerConfig
 from nerfstudio.plugins.types import MethodSpecification
-from nsg.data.nsg_datamanager import NSGkittiDataManagerConfig
-from nsg.data.nsg_dataparser import NSGkittiDataParserConfig
-from nsg.data.nsg_vkitti_dataparser import NSGvkittiDataParserConfig
-from nsg.models.car_nerf import CarNeRF, CarNeRFModelConfig
-from nsg.models.mipnerf import MipNerfModel
-from nsg.models.nerfacto import NerfactoModelConfig
-from nsg.models.scene_graph import SceneGraphModelConfig
-from nsg.models.vanilla_nerf import NeRFModel, VanillaModelConfig
-from nsg.nsg_pipeline import NSGPipelineConfig
 
 MAX_NUM_ITERATIONS = 600000
 STEPS_PER_SAVE = 2000
@@ -28,7 +28,7 @@ STEPS_PER_EVAL_ALL_IMAGES = 5000
 
 VKITTI_Recon_NSG_Car_Depth_Semantic = MethodSpecification(
     config=TrainerConfig(
-        method_name="nsg-vkitti-car-depth-recon-semantic",
+        method_name="mars-vkitti-car-depth-recon-semantic",
         steps_per_eval_image=STEPS_PER_EVAL_IMAGE,
         steps_per_eval_all_images=STEPS_PER_EVAL_ALL_IMAGES,
         steps_per_save=STEPS_PER_SAVE,
@@ -37,19 +37,19 @@ VKITTI_Recon_NSG_Car_Depth_Semantic = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     use_semantic=True,
-                    semantic_mask_classes=['Van', 'Undefined'],
+                    semantic_mask_classes=["Van", "Undefined"],
                     car_object_latents_path=Path(
                         "/DATA_EDS/liuty/ckpts/pretrain/car_nerf/vkitti/latents/latent_codes02.pt"
                     ),
                     split_setting="reconstruction",
                     car_nerf_state_dict_path=Path("/DATA_EDS/liuty/ckpts/pretrain/car_nerf/vkitti/epoch_805.ckpt"),
-                    semantic_path=Path("/data22/DISCOVER_summer2023/xiaohm2306/Scene02/clone/frames/classSegmentation")
+                    semantic_path=Path("/data22/DISCOVER_summer2023/xiaohm2306/Scene02/clone/frames/classSegmentation"),
                 ),
                 train_num_rays_per_batch=4096,
                 eval_num_rays_per_batch=4096,
@@ -61,7 +61,7 @@ VKITTI_Recon_NSG_Car_Depth_Semantic = MethodSpecification(
                     num_proposal_samples_per_ray=[48],
                     num_nerf_samples_per_ray=97,
                     use_single_jitter=False,
-                    semantic_loss_weight=0.1
+                    semantic_loss_weight=0.1,
                 ),
                 object_model_template=CarNeRFModelConfig(_target=CarNeRF),
                 object_representation="class-wise",
@@ -86,7 +86,7 @@ VKITTI_Recon_NSG_Car_Depth_Semantic = MethodSpecification(
 
 KITTI_Recon_NSG_Car_Depth = MethodSpecification(
     config=TrainerConfig(
-        method_name="nsg-kitti-car-depth-recon",
+        method_name="mars-kitti-car-depth-recon",
         steps_per_eval_image=STEPS_PER_EVAL_IMAGE,
         steps_per_eval_all_images=STEPS_PER_EVAL_ALL_IMAGES,
         steps_per_save=STEPS_PER_SAVE,
@@ -95,9 +95,9 @@ KITTI_Recon_NSG_Car_Depth = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -148,9 +148,9 @@ Ablation_no_depth_kitti = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=False,
                     car_object_latents_path=Path(
@@ -193,7 +193,7 @@ Ablation_no_depth_kitti = MethodSpecification(
 
 KITTI_NVS_NSG_Car_Depth = MethodSpecification(
     config=TrainerConfig(
-        method_name="nsg-kitti-car-depth-nvs",
+        method_name="mars-kitti-car-depth-nvs",
         steps_per_eval_image=STEPS_PER_EVAL_IMAGE,
         steps_per_eval_all_images=STEPS_PER_EVAL_ALL_IMAGES,
         steps_per_save=STEPS_PER_SAVE,
@@ -202,14 +202,12 @@ KITTI_NVS_NSG_Car_Depth = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=False,
-                    car_object_latents_path=Path(
-                        "/data41/luoly/kitti_mot/latents/latent_codes06.pt"
-                    ),
+                    car_object_latents_path=Path("/data41/luoly/kitti_mot/latents/latent_codes06.pt"),
                     split_setting="nvs-75",
                     car_nerf_state_dict_path=Path("/data1/chenjt/datasets/ckpts/pretrain/car_nerf/epoch_670.ckpt"),
                 ),
@@ -246,7 +244,7 @@ KITTI_NVS_NSG_Car_Depth = MethodSpecification(
 
 VKITTI_Recon_NSG_Car_Depth = MethodSpecification(
     config=TrainerConfig(
-        method_name="nsg-vkitti-car-depth-recon",
+        method_name="mars-vkitti-car-depth-recon",
         steps_per_eval_image=STEPS_PER_EVAL_IMAGE,
         steps_per_eval_all_images=STEPS_PER_EVAL_ALL_IMAGES,
         steps_per_save=STEPS_PER_SAVE,
@@ -255,9 +253,9 @@ VKITTI_Recon_NSG_Car_Depth = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -296,7 +294,7 @@ VKITTI_Recon_NSG_Car_Depth = MethodSpecification(
 
 VKITTI_NVS_NSG_Car_Depth = MethodSpecification(
     config=TrainerConfig(
-        method_name="nsg-vkitti-car-depth-nvs",
+        method_name="mars-vkitti-car-depth-nvs",
         steps_per_eval_image=STEPS_PER_EVAL_IMAGE,
         steps_per_eval_all_images=STEPS_PER_EVAL_ALL_IMAGES,
         steps_per_save=STEPS_PER_SAVE,
@@ -305,9 +303,9 @@ VKITTI_NVS_NSG_Car_Depth = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -354,9 +352,9 @@ Ablation_BG_NeRF = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -407,9 +405,9 @@ Ablation_BG_MipNeRF = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -460,9 +458,9 @@ Ablation_object_wise_NeRF = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -513,9 +511,9 @@ Ablation_object_wise_MipNeRF = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -566,9 +564,9 @@ Ablation_object_wise_NeRFacto = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=False,
                     use_depth=True,
                     split_setting="reconstruction",
@@ -611,9 +609,9 @@ Ablation_class_wise_NeRF = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -664,9 +662,9 @@ Ablation_class_wise_MipNeRF = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -717,9 +715,9 @@ Ablation_class_wise_NeRFacto = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -766,9 +764,9 @@ Ablation_warmup = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -816,9 +814,9 @@ Ablation_none_ray_sample = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
@@ -865,9 +863,9 @@ Ablation_no_depth = MethodSpecification(
         mixed_precision=False,
         use_grad_scaler=True,
         log_gradients=True,
-        pipeline=NSGPipelineConfig(
-            datamanager=NSGkittiDataManagerConfig(
-                dataparser=NSGvkittiDataParserConfig(
+        pipeline=MarsPipelineConfig(
+            datamanager=MarsDataManagerConfig(
+                dataparser=MarsVKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=False,
                     car_object_latents_path=Path(

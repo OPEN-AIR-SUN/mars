@@ -60,15 +60,15 @@ from nerfstudio.model_components.scene_colliders import NearFarCollider
 from nerfstudio.model_components.shaders import NormalsShader
 from nerfstudio.models.base_model import Model, ModelConfig
 from nerfstudio.utils import colormaps
-from nsg.model_components.losses import monosdf_depth_loss
-from nsg.models.nerfacto import NerfactoModel, NerfactoModelConfig
-from nsg.models.semantic_nerfw import SemanticNerfWModel
-from nsg.models.sky_model import SkyModelConfig
-from nsg.utils.neural_scene_graph_helper import box_pts, combine_z, world2object
+from mars.model_components.losses import monosdf_depth_loss
+from mars.models.nerfacto import NerfactoModel, NerfactoModelConfig
+from mars.models.semantic_nerfw import SemanticNerfWModel
+from mars.models.sky_model import SkyModelConfig
+from mars.utils.neural_scene_graph_helper import box_pts, combine_z, world2object
 
 CONSOLE = Console()
 
-# warning: correlating with the dict "_sem2label" in "NSG-Studio/nsg/data/nsg_dataparser.py"
+# warning: correlating with the dict "_sem2label" in "NSG-Studio/mars/data/mars_dataparser.py"
 _type2str = ["Car", None, "Truck"]
 
 

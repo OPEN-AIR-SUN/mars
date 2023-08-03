@@ -275,6 +275,16 @@ model=SceneGraphModelConfig(
 
 For more information, please refer to our provided configurations at `nsg/cicai_configs.py`. We use wandb for logging by default, you can also specify other viewers (tensorboard/nerfstudio-viewer supported) with the `--vis` config. Please refer to the nerfstudio documentation for details.
 
+## Render
+
+If you want to render with our pre-trained model, you may visit [here](https://drive.google.com/drive/folders/1Yp-dQ7ijPpPC50SvJHfnYzxCAV9gMygX?usp=drive_link) to download our checkpoints and **config**. To run the render script, you need to ensure that your config is the same as the `config.yml` that you load in. 
+
+You can use the following command to render:
+
+```bash
+python scripts/cicai_render.py --load-config /data1/chenjt/mars-release/outputs/nvs75fullseq/nsg-vkitti-car-depth-nvs/2023-06-21_135412/config.yml --output-path renders/
+```
+
 ## Citation
 
 You can find our paper [here](https://open-air-sun.github.io/mars/static/data/CICAI_MARS_FullPaper.pdf). If you use this library or find the repo useful for your research, please consider citing:

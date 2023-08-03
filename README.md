@@ -18,7 +18,7 @@
 
 <div align="center"><h4>For business inquiries, please contact us at <a href="mailto:zhaohao@air.tsinghua.edu.cn">zhaohao@air.tsinghua.edu.cn</a>.</h4></div>
 
-> Please note that this is currently a pre-release version, several refactors will be made in the near future, which include removing the `nerfstudio/` and adapting to PyTorch 2.0 & nerfstudio 0.3.x, etc.
+> Please note that this is currently a pre-release version, [several refactors](https://github.com/OPEN-AIR-SUN/mars/tree/wuzirui/refactor) will be made in the near future, which include removing the `nerfstudio/` and adapting to PyTorch 2.0 & nerfstudio 0.3.x, etc. After that, this version will no longer be maintained.
 
 ## 1. Installation: Setup the environment
 
@@ -63,7 +63,7 @@ Our repository provides dataparser for KITTI and vKITTI2 datasets, for your own 
 
 #### Data Preparation
 
-The data used in our experiments should contain both the pose parameters of cameras and object tracklets. The camera parameters include the intrinsics and the extrinsics. The object tracklets include the bounding box poses, types, ids, etc. For more information, you can refer to KITTI-MOT or vKITTI2 datasets below.
+The data used in our experiments should contain both the pose parameters of cameras and object tracklets. The camera parameters include the intrinsics and the extrinsic. The object tracklets include the bounding box poses, types, ids, etc. For more information, you can refer to KITTI-MOT or vKITTI2 datasets below.
 
 #### KITTI
 

@@ -114,7 +114,7 @@ python nerfstudio/nerfstudio/scripts/train.py nsg-kitti-car-depth-recon --data /
 
 #### vKITTI2
 
-Your data structure should look like this:
+The [vKITTI2](https://europe.naverlabs.com/research/computer-vision/proxy-virtual-worlds-vkitti-2/) dataset should look like this:
 
 ```
 .(vKITTI2_ROOT)

@@ -984,12 +984,6 @@ class MarsKittiParser(DataParser):
         tr_imu2velo = tracking_calibration["Tr_imu2velo"]
         tr_velo2imu = invert_transformation(tr_imu2velo[:3, :3], tr_imu2velo[:3, 3])
         poses_velo_w_tracking = np.matmul(poses_imu_w_tracking, tr_velo2imu)  # (n_frames, 4, 4) velodyne pose
-        if self.use_semantic:
-            semantics = pd.read_csv(
-                "/data22/DISCOVER_summer2023/chenjt2305/datasets/kitti-step/panoptic_maps/mapping/colors/0006.txt",
-                sep=" ",
-                index_col=False,
-            )
 
         if self.use_semantic:
             semantics = pd.read_csv(

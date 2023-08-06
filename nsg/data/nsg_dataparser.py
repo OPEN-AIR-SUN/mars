@@ -41,7 +41,7 @@ from nerfstudio.utils.io import load_from_json
 from nsg.utils.neural_scene_graph_helper import box_pts
 
 CONSOLE = Console(width=120)
-_sem2label = {"Misc": -1, "Car": 0, "Van": 1, "Truck": 2, "Tram": 3, "Pedestrian": 4}
+_sem2label = {"Misc": -1, "Car": 0, "Van": 0, "Truck": 2, "Tram": 3, "Pedestrian": 4}
 camera_ls = [2, 3]
 
 

@@ -4,7 +4,7 @@
     <!-- community badges -->
     <a href="https://open-air-sun.github.io/mars/"><img src="https://img.shields.io/badge/Project-Page-ffa"/></a>
     <!-- doc badges -->
-    <a href='https://github.com/OPEN-AIR-SUN/mars'>
+    <a href="https://arxiv.org/abs/2307.15058">
         <img src='https://img.shields.io/badge/arXiv-Page-aff'>
     </a>
     <a href='https://open-air-sun.github.io/mars/static/data/MARS-poster.pdf'>

@@ -233,7 +233,7 @@ class SceneGraphModel(Model):
         self.depth_loss = general_depth_loss
         self.monosdf_depth_loss = monosdf_depth_loss
         if self.use_semantic:
-            self.cross_entropy_loss = torch.nn.CrossEntropyLoss(reduction="mean", ignore_index=self.semantic_num)
+            self.cross_entropy_loss = torch.nn.CrossEntropyLoss(reduction="mean", ignore_index=self.background_model.semantic_num)
 
         # metrics
         self.psnr = PeakSignalNoiseRatio(data_range=1.0)

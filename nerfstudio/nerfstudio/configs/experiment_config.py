@@ -68,16 +68,22 @@ class ExperimentConfig(InstantiateConfig):
         }
     )
     """Dictionary of optimizer groups and their schedulers"""
-    vis: Literal["viewer", "wandb", "tensorboard", "viewer+wandb", "viewer+tensorboard"] = "wandb"
+    vis: Literal["viewer", "wandb", "tensorboard", "viewer+wandb", "viewer+tensorboard", "viewer_beta"] = "wandb"
     """Which visualizer to use."""
     data: Optional[Path] = None
     """Alias for --pipeline.datamanager.data"""
+    prompt: Optional[str] = None
+    """Alias for --pipeline.model.prompt"""
     relative_model_dir: Path = Path("nerfstudio_models/")
     """Relative path to save all checkpoints."""
 
     def is_viewer_enabled(self) -> bool:
         """Checks if a viewer is enabled."""
         return ("viewer" == self.vis) | ("viewer+wandb" == self.vis) | ("viewer+tensorboard" == self.vis)
+
+    def is_viewer_beta_enabled(self) -> bool:
+        """Checks if a viewer beta is enabled."""
+        return "viewer_beta" == self.vis
 
     def is_wandb_enabled(self) -> bool:
         """Checks if wandb is enabled."""

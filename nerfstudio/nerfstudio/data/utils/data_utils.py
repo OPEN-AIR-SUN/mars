@@ -74,7 +74,7 @@ def get_depth_image_from_path(
         interpolation: Depth value interpolation for resizing.
 
     Returns:
-        Depth image torch tensor with shape [width, height, 1].
+        Depth image torch tensor with shape [height, width, 1].
     """
     
     # resolve the filepath

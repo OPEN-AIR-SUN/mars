@@ -34,6 +34,8 @@ class SDFDataset(InputDataset):
         scale_factor: The scaling factor for the dataparser outputs.
     """
 
+    exclude_batch_keys_from_device = InputDataset.exclude_batch_keys_from_device + ["depth", "normal"]
+
     def __init__(self, dataparser_outputs: DataparserOutputs, scale_factor: float = 1.0):
         super().__init__(dataparser_outputs, scale_factor)
 
@@ -81,7 +83,7 @@ class SDFDataset(InputDataset):
         normal = normal * 2.0 - 1.0  # omnidata output is normalized so we convert it back to normal here
         normal = torch.from_numpy(normal).float()
 
-        rot = camtoworld[:3, :3]
+        rot = torch.from_numpy(camtoworld[:3, :3])
 
         normal_map = normal.reshape(3, -1)
         normal_map = torch.nn.functional.normalize(normal_map, p=2, dim=0)

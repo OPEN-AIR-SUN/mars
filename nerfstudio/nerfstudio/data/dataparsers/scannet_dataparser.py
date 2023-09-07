@@ -81,7 +81,7 @@ class ScanNet(DataParser):
         depth_dir_sorted = list(sorted(depth_dir.iterdir(), key=lambda x: int(x.name.split(".")[0])))
         pose_dir_sorted = list(sorted(pose_dir.iterdir(), key=lambda x: int(x.name.split(".")[0])))
 
-        first_img = cv2.imread(img_dir_sorted[0].as_posix())
+        first_img = cv2.imread(str(img_dir_sorted[0].absolute()))  # type: ignore
         h, w, _ = first_img.shape
 
         image_filenames, depth_filenames, intrinsics, poses = [], [], [], []
@@ -89,10 +89,10 @@ class ScanNet(DataParser):
         K = np.loadtxt(self.config.data / "intrinsic" / "intrinsic_color.txt")
         for img, depth, pose in zip(img_dir_sorted, depth_dir_sorted, pose_dir_sorted):
             pose = np.loadtxt(pose)
-            pose[0:3, 1:3] *= -1
-            pose = pose[np.array([1, 0, 2, 3]), :]
-            pose[2, :] *= -1
-
+            pose = np.array(pose).reshape(4, 4)
+            pose[:3, 1] *= -1
+            pose[:3, 2] *= -1
+            pose = torch.from_numpy(pose).float()
             # We cannot accept files directly, as some of the poses are invalid
             if np.isinf(pose).any():
                 continue

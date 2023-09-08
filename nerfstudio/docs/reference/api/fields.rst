@@ -10,45 +10,10 @@ Base
    :members:
    :show-inheritance:
 
-Density
+Instant NGP
 ----------------
 
-.. automodule:: nerfstudio.fields.density_fields
-   :members:
-   :show-inheritance:
-
-Nerfacto
-----------------
-
-.. automodule:: nerfstudio.fields.nerfacto_field
-   :members:
-   :show-inheritance:
-
-Nerf-W
-----------------
-
-.. automodule:: nerfstudio.fields.nerfw_field
-   :members:
-   :show-inheritance:
-
-SDF
-----------------
-
-.. automodule:: nerfstudio.fields.sdf_field
-   :members:
-   :show-inheritance:
-
-Semantic NeRF
-----------------
-
-.. automodule:: nerfstudio.fields.semantic_nerf_field
-   :members:
-   :show-inheritance:
-
-TensoRF
-----------------
-
-.. automodule:: nerfstudio.fields.tensorf_field
+.. automodule:: nerfstudio.fields.instant_ngp_field
    :members:
    :show-inheritance:
 

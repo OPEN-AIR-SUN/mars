@@ -21,7 +21,7 @@ from __future__ import annotations
 from abc import abstractmethod
 from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Dict, List, Optional, Tuple, Type
 
 import torch
 from torch import nn
@@ -50,8 +50,6 @@ class ModelConfig(InstantiateConfig):
     """parameters to instantiate density field with"""
     eval_num_rays_per_chunk: int = 4096
     """specifies number of rays per chunk during eval"""
-    prompt: Optional[str] = None
-    """A prompt to be used in text to NeRF models"""
 
 
 class Model(nn.Module):
@@ -76,7 +74,7 @@ class Model(nn.Module):
         super().__init__()
         self.config = config
         self.scene_box = scene_box
-        self.render_aabb: Optional[SceneBox] = None  # the box that we want to render - should be a subset of scene_box
+        self.render_aabb = None  # the box that we want to render - should be a subset of scene_box
         self.num_train_data = num_train_data
         self.kwargs = kwargs
         self.collider = None
@@ -91,8 +89,8 @@ class Model(nn.Module):
         """Returns the device that the model is on."""
         return self.device_indicator_param.device
 
-    def get_training_callbacks(
-        self, training_callback_attributes: TrainingCallbackAttributes
+    def get_training_callbacks(  # pylint:disable=no-self-use
+        self, training_callback_attributes: TrainingCallbackAttributes  # pylint: disable=unused-argument
     ) -> List[TrainingCallback]:
         """Returns a list of callbacks that run functions at the specified training iterations."""
         return []
@@ -117,7 +115,7 @@ class Model(nn.Module):
         """
 
     @abstractmethod
-    def get_outputs(self, ray_bundle: RayBundle) -> Dict[str, Union[torch.Tensor, List]]:
+    def get_outputs(self, ray_bundle: RayBundle) -> Dict[str, torch.Tensor]:
         """Takes in a Ray Bundle and returns a dictionary of outputs.
 
         Args:
@@ -128,7 +126,7 @@ class Model(nn.Module):
             Outputs of model. (ie. rendered colors)
         """
 
-    def forward(self, ray_bundle: RayBundle) -> Dict[str, Union[torch.Tensor, List]]:
+    def forward(self, ray_bundle: RayBundle) -> Dict[str, torch.Tensor]:
         """Run forward starting with a ray bundle. This outputs different things depending on the configuration
         of the model and whether or not the batch is provided (whether or not we are training basically)
 
@@ -148,7 +146,8 @@ class Model(nn.Module):
             outputs: the output to compute loss dict to
             batch: ground truth batch corresponding to outputs
         """
-
+        # pylint: disable=unused-argument
+        # pylint: disable=no-self-use
         return {}
 
     @abstractmethod

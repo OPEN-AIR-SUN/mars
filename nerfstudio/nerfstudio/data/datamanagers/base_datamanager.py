@@ -18,31 +18,16 @@ Datamanager.
 
 from __future__ import annotations
 
+import functools
 from abc import abstractmethod
-from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
-from functools import cached_property
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    Generic,
-    List,
-    Literal,
-    Optional,
-    Tuple,
-    Type,
-    Union,
-    cast,
-    ForwardRef,
-    get_origin,
-    get_args,
-)
+from typing import Any, Dict, Generic, List, Literal, Optional, Tuple, Type, Union
 
 import torch
 from torch import nn
 from torch.nn import Parameter
+from torch.utils.data import Dataset
 from torch.utils.data.distributed import DistributedSampler
 from typing_extensions import TypeVar
 
@@ -69,7 +54,6 @@ from nerfstudio.engine.callbacks import TrainingCallback, TrainingCallbackAttrib
 from nerfstudio.model_components.ray_generators import RayGenerator
 from nerfstudio.utils.misc import IterableWrapper
 from nerfstudio.utils.rich_utils import CONSOLE
-from nerfstudio.utils.misc import get_orig_class
 
 
 def variable_res_collate(batch: List[Dict]) -> Dict:
@@ -80,24 +64,18 @@ def variable_res_collate(batch: List[Dict]) -> Dict:
         Collated batch.
     """
     images = []
-    imgdata_lists = defaultdict(list)
+    masks = []
     for data in batch:
         image = data.pop("image")
+        mask = data.pop("mask", None)
         images.append(image)
-        topop = []
-        for key, val in data.items():
-            if isinstance(val, torch.Tensor):
-                # if the value has same height and width as the image, assume that it should be collated accordingly.
-                if len(val.shape) >= 2 and val.shape[:2] == image.shape[:2]:
-                    imgdata_lists[key].append(val)
-                    topop.append(key)
-        # now that iteration is complete, the image data items can be removed from the batch
-        for key in topop:
-            del data[key]
+        if mask is not None:
+            masks.append(mask)
 
-    new_batch = nerfstudio_collate(batch)
+    new_batch: dict = nerfstudio_collate(batch)
     new_batch["image"] = images
-    new_batch.update(imgdata_lists)
+    if masks:
+        new_batch["mask"] = masks
 
     return new_batch
 
@@ -115,8 +93,6 @@ class DataManagerConfig(InstantiateConfig):
     """Source of data, may not be used by all models."""
     camera_optimizer: Optional[CameraOptimizerConfig] = None
     """Specifies the camera pose optimizer used during training. Helpful if poses are noisy."""
-    masks_on_gpu: Optional[bool] = None
-    """Process masks on GPU for speed at the expense of memory, if True."""
 
 
 class DataManager(nn.Module):
@@ -167,8 +143,8 @@ class DataManager(nn.Module):
 
     """
 
-    train_dataset: Optional[InputDataset] = None
-    eval_dataset: Optional[InputDataset] = None
+    train_dataset: Optional[Dataset] = None
+    eval_dataset: Optional[Dataset] = None
     train_sampler: Optional[DistributedSampler] = None
     eval_sampler: Optional[DistributedSampler] = None
     includes_time: bool = False
@@ -253,7 +229,7 @@ class DataManager(nn.Module):
             step: the step number of the eval image to retrieve
         Returns:
             A tuple of the ray bundle for the image, and a dictionary of additional batch information
-            such as the groundtruth image.
+            such as the groudtruth image.
         """
         raise NotImplementedError
 
@@ -265,19 +241,19 @@ class DataManager(nn.Module):
             step: the step number of the eval image to retrieve
         Returns:
             A tuple of the ray bundle for the image, and a dictionary of additional batch information
-            such as the groundtruth image.
+            such as the groudtruth image.
         """
         raise NotImplementedError
 
     @abstractmethod
     def next_eval_image(self, step: int) -> Tuple[int, RayBundle, Dict]:
-        """Retrieve the next eval image.
+        """Retreive the next eval image.
 
         Args:
             step: the step number of the eval image to retrieve
         Returns:
             A tuple of the step number, the ray bundle for the image, and a dictionary of
-            additional batch information such as the groundtruth image.
+            additional batch information such as the groudtruth image.
         """
         raise NotImplementedError
 
@@ -291,18 +267,18 @@ class DataManager(nn.Module):
         """Returns the number of rays per batch for evaluation."""
         raise NotImplementedError
 
-    @abstractmethod
-    def get_datapath(self) -> Path:
+    def get_datapath(self) -> Optional[Path]:  # pylint:disable=no-self-use
         """Returns the path to the data. This is used to determine where to save camera paths."""
+        return None
 
-    def get_training_callbacks(
-        self, training_callback_attributes: TrainingCallbackAttributes
+    def get_training_callbacks(  # pylint:disable=no-self-use
+        self, training_callback_attributes: TrainingCallbackAttributes  # pylint: disable=unused-argument
     ) -> List[TrainingCallback]:
         """Returns a list of callbacks to be used during training."""
         return []
 
     @abstractmethod
-    def get_param_groups(self) -> Dict[str, List[Parameter]]:
+    def get_param_groups(self) -> Dict[str, List[Parameter]]:  # pylint: disable=no-self-use
         """Get the param groups for the data manager.
 
         Returns:
@@ -338,7 +314,7 @@ class VanillaDataManagerConfig(DataManagerConfig):
     camera_optimizer: CameraOptimizerConfig = CameraOptimizerConfig()
     """Specifies the camera pose optimizer used during training. Helpful if poses are noisy, such as for data from
     Record3D."""
-    collate_fn: Callable[[Any], Any] = cast(Any, staticmethod(nerfstudio_collate))
+    collate_fn = staticmethod(nerfstudio_collate)
     """Specifies the collate function to use for the train and eval dataloaders."""
     camera_res_scale_factor: float = 1.0
     """The scale factor for scaling spatial data such as images, mask, semantics
@@ -351,7 +327,7 @@ class VanillaDataManagerConfig(DataManagerConfig):
 TDataset = TypeVar("TDataset", bound=InputDataset, default=InputDataset)
 
 
-class VanillaDataManager(DataManager, Generic[TDataset]):
+class VanillaDataManager(DataManager, Generic[TDataset]):  # pylint: disable=abstract-method
     """Basic stored data manager implementation.
 
     This is pretty much a port over from our old dataloading utilities, and is a little jank
@@ -378,8 +354,9 @@ class VanillaDataManager(DataManager, Generic[TDataset]):
         test_mode: Literal["test", "val", "inference"] = "val",
         world_size: int = 1,
         local_rank: int = 0,
-        **kwargs,
+        **kwargs,  # pylint: disable=unused-argument
     ):
+        self.dataset_type: Type[TDataset] = kwargs.get("_dataset_type", TDataset.__default__)
         self.config = config
         self.device = device
         self.world_size = world_size
@@ -393,16 +370,13 @@ class VanillaDataManager(DataManager, Generic[TDataset]):
         else:
             self.config.data = self.config.dataparser.data
         self.dataparser = self.dataparser_config.setup()
-        if test_mode == "inference":
-            self.dataparser.downscale_factor = 1  # Avoid opening images
+        # TODO: Jianteng Chen, Time conditioned viewer
         self.includes_time = self.dataparser.includes_time
-        self.train_dataparser_outputs: DataparserOutputs = self.dataparser.get_dataparser_outputs(split="train")
+        # self.includes_time = True
+        self.train_dataparser_outputs = self.dataparser.get_dataparser_outputs(split="train")
 
         self.train_dataset = self.create_train_dataset()
         self.eval_dataset = self.create_eval_dataset()
-        self.exclude_batch_keys_from_device = self.train_dataset.exclude_batch_keys_from_device
-        if self.config.masks_on_gpu is True:
-            self.exclude_batch_keys_from_device.remove("mask")
 
         if self.train_dataparser_outputs is not None:
             cameras = self.train_dataparser_outputs.cameras
@@ -412,32 +386,15 @@ class VanillaDataManager(DataManager, Generic[TDataset]):
                         CONSOLE.print("Variable resolution, using variable_res_collate")
                         self.config.collate_fn = variable_res_collate
                         break
+
         super().__init__()
 
-    @cached_property
-    def dataset_type(self) -> Type[TDataset]:
-        """Returns the dataset type passed as the generic argument"""
-        default: Type[TDataset] = cast(TDataset, TDataset.__default__)  # type: ignore
-        orig_class: Type[VanillaDataManager] = get_orig_class(self, default=None)  # type: ignore
-        if type(self) is VanillaDataManager and orig_class is None:
-            return default
-        if orig_class is not None and get_origin(orig_class) is VanillaDataManager:
-            return get_args(orig_class)[0]
-
-        # For inherited classes, we need to find the correct type to instantiate
-        for base in getattr(self, "__orig_bases__", []):
-            if get_origin(base) is VanillaDataManager:
-                for value in get_args(base):
-                    if isinstance(value, ForwardRef):
-                        if value.__forward_evaluated__:
-                            value = value.__forward_value__
-                        elif value.__forward_module__ is None:
-                            value.__forward_module__ = type(self).__module__
-                            value = getattr(value, "_evaluate")(None, None, set())
-                    assert isinstance(value, type)
-                    if issubclass(value, InputDataset):
-                        return cast(Type[TDataset], value)
-        return default
+    def __class_getitem__(cls, item):
+        return type(
+            cls.__name__,
+            (cls,),
+            {"__module__": cls.__module__, "__init__": functools.partialmethod(cls.__init__, _dataset_type=item)},
+        )
 
     def create_train_dataset(self) -> TDataset:
         """Sets up the data loaders for training"""
@@ -453,7 +410,9 @@ class VanillaDataManager(DataManager, Generic[TDataset]):
             scale_factor=self.config.camera_res_scale_factor,
         )
 
-    def _get_pixel_sampler(self, dataset: TDataset, *args: Any, **kwargs: Any) -> PixelSampler:
+    def _get_pixel_sampler(  # pylint: disable=no-self-use
+        self, dataset: TDataset, *args: Any, **kwargs: Any
+    ) -> PixelSampler:
         """Infer pixel sampler to use."""
         if self.config.patch_size > 1:
             return PatchPixelSampler(*args, **kwargs, patch_size=self.config.patch_size)
@@ -479,7 +438,6 @@ class VanillaDataManager(DataManager, Generic[TDataset]):
             num_workers=self.world_size * 4,
             pin_memory=True,
             collate_fn=self.config.collate_fn,
-            exclude_batch_keys_from_device=self.exclude_batch_keys_from_device,
         )
         self.iter_train_image_dataloader = iter(self.train_image_dataloader)
         self.train_pixel_sampler = self._get_pixel_sampler(self.train_dataset, self.config.train_num_rays_per_batch)
@@ -503,7 +461,6 @@ class VanillaDataManager(DataManager, Generic[TDataset]):
             num_workers=self.world_size * 4,
             pin_memory=True,
             collate_fn=self.config.collate_fn,
-            exclude_batch_keys_from_device=self.exclude_batch_keys_from_device,
         )
         self.iter_eval_image_dataloader = iter(self.eval_image_dataloader)
         self.eval_pixel_sampler = self._get_pixel_sampler(self.eval_dataset, self.config.eval_num_rays_per_batch)
@@ -531,7 +488,6 @@ class VanillaDataManager(DataManager, Generic[TDataset]):
         self.train_count += 1
         image_batch = next(self.iter_train_image_dataloader)
         assert self.train_pixel_sampler is not None
-        assert isinstance(image_batch, dict)
         batch = self.train_pixel_sampler.sample(image_batch)
         ray_indices = batch["indices"]
         ray_bundle = self.train_ray_generator(ray_indices)
@@ -542,7 +498,6 @@ class VanillaDataManager(DataManager, Generic[TDataset]):
         self.eval_count += 1
         image_batch = next(self.iter_eval_image_dataloader)
         assert self.eval_pixel_sampler is not None
-        assert isinstance(image_batch, dict)
         batch = self.eval_pixel_sampler.sample(image_batch)
         ray_indices = batch["indices"]
         ray_bundle = self.eval_ray_generator(ray_indices)
@@ -564,7 +519,7 @@ class VanillaDataManager(DataManager, Generic[TDataset]):
     def get_datapath(self) -> Path:
         return self.config.dataparser.data
 
-    def get_param_groups(self) -> Dict[str, List[Parameter]]:
+    def get_param_groups(self) -> Dict[str, List[Parameter]]:  # pylint: disable=no-self-use
         """Get the param groups for the data manager.
         Returns:
             A list of dictionaries containing the data manager's param groups.

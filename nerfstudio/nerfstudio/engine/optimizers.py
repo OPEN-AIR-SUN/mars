@@ -127,8 +127,7 @@ class Optimizers:
             if max_norm is not None:
                 grad_scaler.unscale_(optimizer)
                 torch.nn.utils.clip_grad_norm_(self.parameters[param_group], max_norm)
-            if any(any(p.grad is not None for p in g["params"]) for g in optimizer.param_groups):
-                grad_scaler.step(optimizer)
+            grad_scaler.step(optimizer)
 
     def optimizer_step_all(self) -> None:
         """Run step for all optimizers."""
@@ -159,12 +158,3 @@ class Optimizers:
         """
         for k, v in loaded_state.items():
             self.optimizers[k].load_state_dict(v)
-
-    def load_schedulers(self, loaded_state: Dict[str, Any]) -> None:
-        """Helper to load the scheduler state from previous checkpoint
-
-        Args:
-            loaded_state: the state from the previous checkpoint
-        """
-        for k, v in loaded_state.items():
-            self.schedulers[k].load_state_dict(v)

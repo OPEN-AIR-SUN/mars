@@ -2,13 +2,9 @@
 
 **💝 We're excited to have you join the nerfstudio family 💝**
 
-We welcome community contributions to Nerfstudio! Whether you want to fix bugs, improve the documentation, or introduce new features, we appreciate your input.
+Below, we document the contribution pipeline and good-to-knows for when you're ready to submit a PR. If you have any questions at all, please don't hesitate to reach out to us on [Discord](https://discord.gg/uMbNqcraFc). We'd love to hear from you!
 
-Bug fixes and documentation improvements are highly valuable to us. If you come across any bugs or find areas where the documentation can be enhanced, please don't hesitate to submit a pull request (PR) with your proposed changes. We'll gladly review and integrate them into the project.
-
-For larger feature additions, we kindly request you to reach out to us on [Discord](https://discord.gg/uMbNqcraFc) in the `#contributing` channel and create an issue on GitHub. This will allow us to discuss the feature in more detail and ensure that it aligns with the goals and direction of the repository. We cannot guarantee that the feature will be added to Nerfstudio.
-
-In addition to code contributions, we also encourage contributors to add their own methods to our documentation. For more information on how to contribute new methods, please refer to the documentation [here](../developer_guides/new_methods.md).
+The project is set up for development in VSCode, we recommend using it if you plan to contribute.
 
 ## Overview
 
@@ -16,26 +12,21 @@ Below are the various tooling features our team uses to maintain this codebase.
 
 | Tooling         | Support                                                    |
 | --------------- | ---------------------------------------------------------- |
-| Formatting      | [Black](https://black.readthedocs.io/en/stable/)           |
-| Linter          | [Ruff](https://beta.ruff.rs/docs/)                         |
-| Type checking   | [Pyright](https://github.com/microsoft/pyright)            |
-| Testing         | [pytest](https://docs.pytest.org/en/7.1.x/)                |
+| Linter          | [Black](https://black.readthedocs.io/en/stable/)           |
+| Testing         | [PyTest](https://docs.pytest.org/en/7.1.x/)                |
 | Docs            | [Sphinx](https://www.sphinx-doc.org/en/master/)            |
 | Docstring style | [Google](https://google.github.io/styleguide/pyguide.html) |
-| JS Linting      | [eslint](https://eslint.org/)                              |
 
 ## Requirements
 
-To install the required packages and register the pre-commit hook:
+To install the required packages:
 
 ```bash
 pip install -e .[dev]
 pip install -e .[docs]
-pre-commit install
 ```
 
 This will ensure you have the required packages to run the tests, linter, build the docs, etc.
-The pre-commit hook will ensure your commits comply with the repository's code style rules.
 
 You may also need to install [pandoc](https://pandoc.org/). If you are using `conda` you can run the following:
 
@@ -56,8 +47,7 @@ conda install -c conda-forge pandoc
 
    This will perform the following checks and actions:
 
-   - Formatting and linting: Ensures code is consistently and properly formatted.
-   - Type checking: Ensures static type safety.
+   - Black/ Linting style check: Ensures code is consistently and properly formatted.
    - Pytests: Runs pytests locally to make sure added code does not break existing logic.
    - Documentation build: Builds docs locally. Ensures changes do not result in warnings/errors.
    - Licensing: Automatically adds licensing headers to the correct files.
@@ -68,12 +58,6 @@ conda install -c conda-forge pandoc
    :::
 
 3. Open pull request! 💌
-
-:::{admonition} Note
-:class: info
-
-We will not review the pull request until it is passing all checks.
-:::
 
 ## Maintaining documentation
 

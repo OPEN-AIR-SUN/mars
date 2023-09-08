@@ -14,13 +14,12 @@
 
 """Space distortions which occur as a function of time."""
 
-import abc
 from enum import Enum
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import torch
-from jaxtyping import Float
-from torch import Tensor, nn
+from torch import nn
+from torchtyping import TensorType
 
 from nerfstudio.field_components.encodings import Encoding, NeRFEncoding
 from nerfstudio.field_components.mlp import MLP
@@ -29,8 +28,7 @@ from nerfstudio.field_components.mlp import MLP
 class TemporalDistortion(nn.Module):
     """Apply spatial distortions as a function of time"""
 
-    @abc.abstractmethod
-    def forward(self, positions: Float[Tensor, "*bs 3"], times: Float[Tensor, "*bs 1"]) -> Float[Tensor, "*bs 3"]:
+    def forward(self, positions: TensorType["bs":..., 3], times: Optional[TensorType[1]]) -> TensorType["bs":..., 3]:
         """
         Args:
             positions: Samples to translate as a function of time
@@ -86,7 +84,9 @@ class DNeRFDistortion(TemporalDistortion):
             skip_connections=skip_connections,
         )
 
-    def forward(self, positions: Float[Tensor, "*bs 3"], times: Float[Tensor, "*bs 1"]) -> Float[Tensor, "*bs 3"]:
+    def forward(self, positions, times=None):
+        if times is None:
+            return None
         p = self.position_encoding(positions)
         t = self.temporal_encoding(times)
         return self.mlp_deform(torch.cat([p, t], dim=-1))

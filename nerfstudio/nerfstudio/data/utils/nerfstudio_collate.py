@@ -19,20 +19,23 @@ Custom collate function that includes cases for nerfstudio types.
 import collections
 import collections.abc
 import re
-from typing import Any, Callable, Dict, Union
+from typing import Callable, Dict, Union
 
 import torch
 import torch.utils.data
 
 from nerfstudio.cameras.cameras import Cameras
 
+# pylint: disable=implicit-str-concat
 NERFSTUDIO_COLLATE_ERR_MSG_FORMAT = (
     "default_collate: batch must contain tensors, numpy arrays, numbers, " "dicts, lists or anything in {}; found {}"
 )
 np_str_obj_array_pattern = re.compile(r"[SaUO]")
 
 
-def nerfstudio_collate(batch: Any, extra_mappings: Union[Dict[type, Callable], None] = None) -> Any:
+def nerfstudio_collate(
+    batch, extra_mappings: Union[Dict[type, Callable], None] = None
+):  # pylint: disable=too-many-return-statements
     r"""
     This is the default pytorch collate function, but with support for nerfstudio types. All documentation
     below is copied straight over from pytorch's default_collate function, python version 3.8.13,
@@ -92,16 +95,17 @@ def nerfstudio_collate(batch: Any, extra_mappings: Union[Dict[type, Callable], N
         extra_mappings = {}
     elem = batch[0]
     elem_type = type(elem)
-    if isinstance(elem, torch.Tensor):
+    if isinstance(elem, torch.Tensor):  # pylint: disable=no-else-return
         out = None
         if torch.utils.data.get_worker_info() is not None:
             # If we're in a background process, concatenate directly into a
             # shared memory tensor to avoid an extra copy
             numel = sum(x.numel() for x in batch)
-            storage = elem.storage()._new_shared(numel, device=elem.device)
+            storage = elem.storage()._new_shared(numel, device=elem.device)  # pylint: disable=protected-access
             out = elem.new(storage).resize_(len(batch), *list(elem.size()))
         return torch.stack(batch, 0, out=out)
     elif elem_type.__module__ == "numpy" and elem_type.__name__ != "str_" and elem_type.__name__ != "string_":
+        # pylint: disable=no-else-return, consider-using-in
         if elem_type.__name__ == "ndarray" or elem_type.__name__ == "memmap":
             # array of string classes and object
             if np_str_obj_array_pattern.search(elem.dtype.str) is not None:
@@ -162,13 +166,6 @@ def nerfstudio_collate(batch: Any, extra_mappings: Union[Dict[type, Callable], N
         else:
             op = torch.cat
 
-        # Create metadata dictionary
-        metadata_keys = batch[0].metadata.keys()
-        assert all(
-            (cam.metadata.keys() == metadata_keys for cam in batch)
-        ), "All cameras must have the same metadata keys."
-        metadata = {key: op([cam.metadata[key] for cam in batch], dim=0) for key in metadata_keys}
-
         return Cameras(
             op([cameras.camera_to_worlds for cameras in batch], dim=0),
             op([cameras.fx for cameras in batch], dim=0),
@@ -191,7 +188,6 @@ def nerfstudio_collate(batch: Any, extra_mappings: Union[Dict[type, Callable], N
                 [cameras.times if cameras.times is not None else -torch.ones_like(cameras.times) for cameras in batch],
                 dim=0,
             ),
-            metadata=metadata,
         )
 
     for type_key in extra_mappings:

@@ -22,7 +22,6 @@ from rich.progress import (
     BarColumn,
     Progress,
     ProgressColumn,
-    Task,
     TaskProgressColumn,
     TextColumn,
     TimeRemainingColumn,
@@ -39,7 +38,7 @@ class ItersPerSecColumn(ProgressColumn):
         super().__init__()
         self.suffix = suffix
 
-    def render(self, task: Task) -> Text:
+    def render(self, task: "Task") -> Text:
         """Show data transfer speed."""
         speed = task.finished_speed or task.speed
         if speed is None:

@@ -33,7 +33,6 @@ export const snap_to_camera = (sceneTree, camera, matrix) => {
     viewDirection.x,
     viewDirection.y,
     viewDirection.z,
-    {enableTransition:true}
   );
 };
 

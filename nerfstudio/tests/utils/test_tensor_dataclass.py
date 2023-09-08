@@ -1,8 +1,8 @@
 """
 Test tensor dataclass
 """
-from dataclasses import dataclass, field
-from typing import Generic, Optional, TypeVar
+from dataclasses import dataclass
+from typing import Dict
 
 import pytest
 import torch
@@ -17,17 +17,14 @@ class DummyNestedClass(TensorDataclass):
     x: torch.Tensor
 
 
-MaybeTensorDataclass = TypeVar("MaybeTensorDataclass")
-
-
 @dataclass
-class DummyTensorDataclass(TensorDataclass, Generic[MaybeTensorDataclass]):
+class DummyTensorDataclass(TensorDataclass):
     """Dummy dataclass"""
 
     a: torch.Tensor
     b: torch.Tensor
-    c: MaybeTensorDataclass
-    d: dict = field(default_factory=dict)
+    c: DummyNestedClass = None
+    d: Dict = None
 
 
 def test_init():
@@ -37,11 +34,11 @@ def test_init():
     class Dummy(TensorDataclass):
         """Dummy dataclass"""
 
-        dummy_vals: Optional[torch.Tensor] = None
+        dummy_vals: torch.Tensor = None
 
-    Dummy(dummy_vals=torch.ones(1))
+    dummy = Dummy(dummy_vals=torch.ones(1))
     with pytest.raises(ValueError):
-        Dummy()
+        dummy = Dummy()
 
 
 def test_broadcasting():
@@ -49,28 +46,28 @@ def test_broadcasting():
 
     a = torch.ones((4, 6, 3))
     b = torch.ones((6, 2))
-    tensor_dataclass = DummyTensorDataclass(a=a, b=b, c=None)
+    tensor_dataclass = DummyTensorDataclass(a=a, b=b)
     assert tensor_dataclass.b.shape == (4, 6, 2)
 
     a = torch.ones((4, 6, 3))
     b = torch.ones(2)
-    tensor_dataclass = DummyTensorDataclass(a=a, b=b, c=None)
+    tensor_dataclass = DummyTensorDataclass(a=a, b=b)
     assert tensor_dataclass.b.shape == (4, 6, 2)
 
     # Invalid broadcasting
     a = torch.ones((4, 6, 3))
     b = torch.ones((3, 2))
     with pytest.raises(RuntimeError):
-        tensor_dataclass = DummyTensorDataclass(a=a, b=b, c=None)
+        tensor_dataclass = DummyTensorDataclass(a=a, b=b)
 
 
-def test_tensor_ops():
+def test_tensor_ops():  # pylint: disable=(too-many-statements)
     """Test tensor operations"""
 
     a = torch.ones((4, 6, 3))
     b = torch.ones((6, 2))
     d = {"t1": torch.ones((4, 6, 3)), "t2": {"t3": torch.ones((6, 4))}}
-    tensor_dataclass = DummyTensorDataclass(a=a, b=b, c=None, d=d)
+    tensor_dataclass = DummyTensorDataclass(a=a, b=b, d=d)
 
     assert tensor_dataclass.shape == (4, 6)
     assert tensor_dataclass.a.shape == (4, 6, 3)
@@ -117,7 +114,6 @@ def test_tensor_ops():
     tensor_dataclass = DummyTensorDataclass(
         a=torch.ones((2, 3, 4, 5)),
         b=torch.ones((4, 5)),
-        c=None,
         d={"t1": torch.ones((2, 3, 4, 5)), "t2": {"t3": torch.ones((4, 5))}},
     )
     assert tensor_dataclass[0, ...].shape == (3, 4)
@@ -172,7 +168,7 @@ def test_nested_class():
 
 def test_iter():
     """Test iterating over tensor dataclass"""
-    tensor_dataclass = DummyTensorDataclass(a=torch.ones((3, 4, 5)), b=torch.ones((3, 4, 5)), c=None)
+    tensor_dataclass = DummyTensorDataclass(a=torch.ones((3, 4, 5)), b=torch.ones((3, 4, 5)))
     for batch in tensor_dataclass:
         assert batch.shape == (4,)
         assert batch.a.shape == (4, 5)

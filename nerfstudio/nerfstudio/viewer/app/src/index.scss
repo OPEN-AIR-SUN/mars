@@ -30,14 +30,12 @@ $highlight-color1: #606980;
 $highlight-color2: #eeeeee;
 $highlight-color3: #ffffff;
 
-$bannerHeight: 50;
-
 .banner {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: $bannerHeight + 0px;
+  height: 50px;
   width: 100%;
   z-index: 1000;
   background-color: $base-color2;
@@ -52,10 +50,6 @@ $bannerHeight: 50;
     margin-right: 120px;
     float: right;
   }
-}
-
-:export {
-  bannerHeight: $bannerHeight;
 }
 
 .App-body {
@@ -200,7 +194,7 @@ $sidebar-width: 100% !default;
 // ------------------------------------
 // Viewport Controls Modal styling
 
-.ViewportControlsModal-box {
+.ViewportConstrolsModal-box {
   position: absolute;
   top: 50%;
   left: 50%;

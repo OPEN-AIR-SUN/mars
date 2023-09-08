@@ -67,8 +67,6 @@ class NeRFModel(Model):
         config: Basic NeRF configuration to instantiate model
     """
 
-    config: VanillaModelConfig
-
     def __init__(
         self,
         config: VanillaModelConfig,
@@ -143,11 +141,7 @@ class NeRFModel(Model):
         # uniform sampling
         ray_samples_uniform = self.sampler_uniform(ray_bundle)
         if self.temporal_distortion is not None:
-            offsets = None
-            if ray_samples_uniform.times is not None:
-                offsets = self.temporal_distortion(
-                    ray_samples_uniform.frustums.get_positions(), ray_samples_uniform.times
-                )
+            offsets = self.temporal_distortion(ray_samples_uniform.frustums.get_positions(), ray_samples_uniform.times)
             ray_samples_uniform.frustums.set_offsets(offsets)
 
         # coarse field:
@@ -163,9 +157,7 @@ class NeRFModel(Model):
         # pdf sampling
         ray_samples_pdf = self.sampler_pdf(ray_bundle, ray_samples_uniform, weights_coarse)
         if self.temporal_distortion is not None:
-            offsets = None
-            if ray_samples_pdf.times is not None:
-                offsets = self.temporal_distortion(ray_samples_pdf.frustums.get_positions(), ray_samples_pdf.times)
+            offsets = self.temporal_distortion(ray_samples_pdf.frustums.get_positions(), ray_samples_pdf.times)
             ray_samples_pdf.frustums.set_offsets(offsets)
 
         # fine field:
@@ -235,7 +227,6 @@ class NeRFModel(Model):
         fine_psnr = self.psnr(image, rgb_fine)
         fine_ssim = self.ssim(image, rgb_fine)
         fine_lpips = self.lpips(image, rgb_fine)
-        assert isinstance(fine_ssim, torch.Tensor)
 
         metrics_dict = {
             "psnr": float(fine_psnr.item()),

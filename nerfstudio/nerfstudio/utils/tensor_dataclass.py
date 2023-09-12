@@ -70,28 +70,29 @@ class TensorDataclass:
         This will 1) find the broadcasted shape and 2) broadcast all fields to this shape 3)
         set _shape to be the broadcasted shape.
         """
-        for k, v in self._field_custom_dimensions.items():
-            assert (
-                isinstance(v, int) and v > 1
-            ), f"Custom dimensions must be an integer greater than 1, since 1 is the default, received {k}: {v}"
+        if self._field_custom_dimensions is not None:
+            for k, v in self._field_custom_dimensions.items():
+                assert (
+                    isinstance(v, int) and v > 1
+                ), f"Custom dimensions must be an integer greater than 1, since 1 is the default, received {k}: {v}"
 
-        # Shim to prevent pyright from narrowing `self` to DataclassInstance.
-        self_dc = self
-        if not dataclasses.is_dataclass(self_dc):
+        if not dataclasses.is_dataclass(self):
             raise TypeError("TensorDataclass must be a dataclass")
 
-        batch_shapes = self._get_dict_batch_shapes({f.name: getattr(self, f.name) for f in dataclasses.fields(self_dc)})
+        batch_shapes = self._get_dict_batch_shapes(
+            {f.name: self.__getattribute__(f.name) for f in dataclasses.fields(self)}
+        )
         if len(batch_shapes) == 0:
             raise ValueError("TensorDataclass must have at least one tensor")
         batch_shape = torch.broadcast_shapes(*batch_shapes)
 
         broadcasted_fields = self._broadcast_dict_fields(
-            {f.name: getattr(self, f.name) for f in dataclasses.fields(self_dc)}, batch_shape
+            {f.name: self.__getattribute__(f.name) for f in dataclasses.fields(self)}, batch_shape
         )
         for f, v in broadcasted_fields.items():
-            object.__setattr__(self, f, v)
+            self.__setattr__(f, v)
 
-        object.__setattr__(self, "_shape", batch_shape)
+        self.__setattr__("_shape", batch_shape)
 
     def _get_dict_batch_shapes(self, dict_: Dict) -> List:
         """Returns batch shapes of all tensors in a dictionary
@@ -106,6 +107,7 @@ class TensorDataclass:
         for k, v in dict_.items():
             if isinstance(v, torch.Tensor):
                 if isinstance(self._field_custom_dimensions, dict) and k in self._field_custom_dimensions:
+                    # pylint: disable=unsubscriptable-object
                     batch_shapes.append(v.shape[: -self._field_custom_dimensions[k]])
                 else:
                     batch_shapes.append(v.shape[:-1])
@@ -127,8 +129,9 @@ class TensorDataclass:
         new_dict = {}
         for k, v in dict_.items():
             if isinstance(v, torch.Tensor):
-                # Apply field-specific custom dimensions.
+                # If custom dimension key, then we need to
                 if isinstance(self._field_custom_dimensions, dict) and k in self._field_custom_dimensions:
+                    # pylint: disable=unsubscriptable-object
                     new_dict[k] = v.broadcast_to(
                         (
                             *batch_shape,
@@ -149,15 +152,11 @@ class TensorDataclass:
         if isinstance(indices, (int, slice, type(Ellipsis))):
             indices = (indices,)
         assert isinstance(indices, tuple)
-
-        def tensor_fn(x):
-            return x[indices + (slice(None),)]
-
-        def dataclass_fn(x):
-            return x[indices]
+        tensor_fn = lambda x: x[indices + (slice(None),)]
+        dataclass_fn = lambda x: x[indices]
 
         def custom_tensor_dims_fn(k, v):
-            custom_dims = self._field_custom_dimensions[k]
+            custom_dims = self._field_custom_dimensions[k]  # pylint: disable=unsubscriptable-object
             return v[indices + ((slice(None),) * custom_dims)]
 
         return self._apply_fn_to_fields(tensor_fn, dataclass_fn, custom_tensor_dims_fn=custom_tensor_dims_fn)
@@ -208,15 +207,11 @@ class TensorDataclass:
         """
         if isinstance(shape, int):
             shape = (shape,)
-
-        def tensor_fn(x):
-            return x.reshape((*shape, x.shape[-1]))
-
-        def dataclass_fn(x):
-            return x.reshape(shape)
+        tensor_fn = lambda x: x.reshape((*shape, x.shape[-1]))
+        dataclass_fn = lambda x: x.reshape(shape)
 
         def custom_tensor_dims_fn(k, v):
-            custom_dims = self._field_custom_dimensions[k]
+            custom_dims = self._field_custom_dimensions[k]  # pylint: disable=unsubscriptable-object
             return v.reshape((*shape, *v.shape[-custom_dims:]))
 
         return self._apply_fn_to_fields(tensor_fn, dataclass_fn, custom_tensor_dims_fn=custom_tensor_dims_fn)
@@ -243,7 +238,7 @@ class TensorDataclass:
         """
 
         def custom_tensor_dims_fn(k, v):
-            custom_dims = self._field_custom_dimensions[k]
+            custom_dims = self._field_custom_dimensions[k]  # pylint: disable=unsubscriptable-object
             return v.broadcast_to((*shape, *v.shape[-custom_dims:]))
 
         return self._apply_fn_to_fields(
@@ -286,17 +281,14 @@ class TensorDataclass:
             A new TensorDataclass with the same data but with a new shape.
         """
 
-        self_dc = self
-        assert dataclasses.is_dataclass(self_dc)
-
         new_fields = self._apply_fn_to_dict(
-            {f.name: getattr(self, f.name) for f in dataclasses.fields(self_dc)},
+            {f.name: self.__getattribute__(f.name) for f in dataclasses.fields(self)},
             fn,
             dataclass_fn,
             custom_tensor_dims_fn,
         )
 
-        return dataclasses.replace(self_dc, **new_fields)
+        return dataclasses.replace(self, **new_fields)
 
     def _apply_fn_to_dict(
         self,
@@ -325,6 +317,7 @@ class TensorDataclass:
                 # This is the case when we have a custom dimensions tensor
                 elif (
                     isinstance(v, torch.Tensor)
+                    and isinstance(self._field_custom_dimensions, dict)
                     and f in self._field_custom_dimensions
                     and custom_tensor_dims_fn is not None
                 ):

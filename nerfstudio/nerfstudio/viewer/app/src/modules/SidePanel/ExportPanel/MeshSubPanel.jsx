@@ -3,8 +3,26 @@ import { useControls, useStoreContext } from 'leva';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
+
 import { Button } from '@mui/material';
-import { get_normal_methods } from '../../../utils';
+
+function get_normal_outputs(output_options) {
+  // Get a list of normal outputs from the Model
+  let normal_options = [];
+  if (output_options) {
+    // check which outputs have normals
+    for (let i = 0; i < output_options.length; i += 1) {
+      const output_name = output_options[i];
+      if (output_name.includes('normals')) {
+        normal_options.push(output_name);
+      }
+    }
+  }
+  if (normal_options.length === 0) {
+    normal_options = ['none'];
+  }
+  return normal_options;
+}
 
 export default function MeshSubPanel(props) {
   const update_box_center = props.update_box_center;
@@ -29,7 +47,7 @@ export default function MeshSubPanel(props) {
   const output_options = useSelector(
     (state) => state.renderingState.output_options,
   );
-  const normal_options = get_normal_methods(output_options);
+  const normal_options = get_normal_outputs(output_options);
   const mesh_method_options = ['poisson', 'tsdf'];
 
   const config_filename = `${config_base_dir}/config.yml`;
@@ -46,11 +64,8 @@ export default function MeshSubPanel(props) {
       },
       normal_options: {
         label: 'Normal Options',
-        options: [...normal_options],
-        value:
-          normal_options.values().next().value !== 'none'
-            ? normal_options.values().next().value
-            : 'open3d',
+        options: [...new Set(normal_options)],
+        value: normal_options[0],
         render: (get) => get('mesh_method_options') === 'poisson',
       },
       numFaces: { label: 'Number of Faces', value: 50000, min: 1 },
@@ -147,13 +162,8 @@ export default function MeshSubPanel(props) {
       ` --output-dir ${controlValues.outputDir}` +
       ` --target-num-faces ${controlValues.numFaces}` +
       ` --num-pixels-per-side ${controlValues.textureResolution}` +
-      ` --normal-method ${
-        controlValues.normal_options === 'open3d' ? 'open3d' : 'model_output'
-      }${
-        controlValues.normal_options !== 'open3d'
-          ? ` --normal-output-name ${controlValues.normal_options}`
-          : ''
-      } --num-points ${controlValues.numPoints}` +
+      ` --normal-output-name ${controlValues.normal_options}` +
+      ` --num-points ${controlValues.numPoints}` +
       ` --remove-outliers ${getPythonBool(controlValues.removeOutliers)}` +
       ` --use-bounding-box ${getPythonBool(clippingEnabled)}` +
       ` --bounding-box-min ${bbox_min[0]} ${bbox_min[1]} ${bbox_min[2]}` +

@@ -1,5 +1,3 @@
-# type: ignore
-
 # Copyright 2022 the Regents of the University of California, Nerfstudio Team and contributors. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,12 +27,13 @@ bl_info = {
     "category": "Nerfstudio",
 }
 
+# pylint: disable=wrong-import-position
+import json
+from math import atan, degrees, radians, tan
 
-import json  # noqa: E402
-from math import atan, degrees, radians, tan  # noqa: E402
-
-import bpy  # noqa: E402
-from mathutils import Matrix  # noqa: E402
+# pylint: disable=import-error
+import bpy
+from mathutils import Matrix
 
 
 class CreateJSONCameraPath(bpy.types.Operator):
@@ -99,12 +98,12 @@ class CreateJSONCameraPath(bpy.types.Operator):
         for i, org_cam_path_mat_val in enumerate(org_camera_path_mat):
             self.transformed_camera_path_mat += [nerf_mesh_mat_list[i].inverted() @ org_cam_path_mat_val]
 
-    def get_list_from_matrix_path(self, input_mat):
+    def get_list_from_matrix_path(self, input_mat):  # pylint: disable=no-self-use
         """Flatten matrix to list for camera path."""
         full_arr = list(input_mat.row[0]) + list(input_mat.row[1]) + list(input_mat.row[2]) + list(input_mat.row[3])
         return full_arr
 
-    def get_list_from_matrix_keyframe(self, input_mat):
+    def get_list_from_matrix_keyframe(self, input_mat):  # pylint: disable=no-self-use
         """Flatten matrix to list for keyframes."""
         full_arr = list(input_mat.col[0]) + list(input_mat.col[1]) + list(input_mat.col[2]) + list(input_mat.col[3])
         return full_arr
@@ -244,7 +243,7 @@ class ReadJSONinputCameraPath(bpy.types.Operator):
     transformed_camera_path_mat = []  # final transformed world matrix of the camera at each frame
     input_json = None
 
-    def read_camera_coordinates(self):
+    def read_camera_coodinates(self):
         """Read the camera coordinates (world matrix and fov) from the json camera path."""
 
         json_cam_path = self.input_json["camera_path"]
@@ -333,7 +332,7 @@ class ReadJSONinputCameraPath(bpy.types.Operator):
             self.input_json = json.load(json_ns_file)
 
         # call methods to read cam path and create camera
-        self.read_camera_coordinates()
+        self.read_camera_coodinates()
         self.generate_camera()
 
         return {"FINISHED"}
@@ -342,7 +341,7 @@ class ReadJSONinputCameraPath(bpy.types.Operator):
 # --- Blender UI Panel --- #
 
 
-class NerfstudioMainPanel(bpy.types.Panel):
+class NerfstudioMainPanel(bpy.types.Panel):  # pylint: disable=too-few-public-methods
     """Blender UI main panel for the add-on."""
 
     bl_idname = "NERFSTUDIO_PT_NerfstudioMainPanel"
@@ -359,7 +358,7 @@ class NerfstudioMainPanel(bpy.types.Panel):
         _ = self.layout.column()
 
 
-class NerfstudioBgPanel(bpy.types.Panel):
+class NerfstudioBgPanel(bpy.types.Panel):  # pylint: disable=too-few-public-methods
     """Blender UI sub-panel for the camera path creation."""
 
     bl_idname = "NERFSTUDIO_PT_NerfstudioBgPanel"
@@ -382,7 +381,7 @@ class NerfstudioBgPanel(bpy.types.Panel):
         col.operator("opr.create_json_camera_path", text="Generate JSON File")
 
 
-class NerfstudioInputPanel(bpy.types.Panel):
+class NerfstudioInputPanel(bpy.types.Panel):  # pylint: disable=too-few-public-methods
     """Blender UI sub-panel for the Blender camera creation."""
 
     bl_idname = "NERFSTUDIO_PT_NerfstudioInputPanel"

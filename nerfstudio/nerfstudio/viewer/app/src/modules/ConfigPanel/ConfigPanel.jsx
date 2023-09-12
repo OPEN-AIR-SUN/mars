@@ -6,7 +6,6 @@ import {
   useControls,
   folder,
   button,
-  buttonGroup,
 } from 'leva';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
@@ -39,11 +38,11 @@ function CustomLeva() {
 
   guiNames.forEach((key) => {
     const { levaConf, folderLabels, hidden } = guiConfigFromName[key];
+    if (hidden) return;
     const leafFolder = getFolderContainer(folderLabels);
 
     // Hacky stuff that lives outside of TypeScript...
     if (levaConf.type === 'BUTTON') {
-      if (hidden) return;
       // Add a button.
       leafFolder[key] = button(() => {
         sendWebsocketMessage(viser_websocket, {
@@ -52,20 +51,6 @@ function CustomLeva() {
           value: true,
         });
       }, levaConf.settings);
-    } else if (levaConf.type === 'BUTTON_GROUP') {
-      // Add a button group.
-      leafFolder[key] = buttonGroup({
-        label: levaConf.label,
-        opts: levaConf.options.reduce((acc, opt) => {
-          acc[opt] = () =>
-            sendWebsocketMessage(viser_websocket, {
-              type: 'GuiUpdateMessage',
-              name: key,
-              value: opt,
-            });
-          return acc;
-        }, {}),
-      });
     } else {
       // Add any other kind of input.
       const throttledSender = makeThrottledMessageSender(viser_websocket, 25);
@@ -79,7 +64,6 @@ function CustomLeva() {
             value,
           });
         },
-        render: () => !hidden,
       };
     }
   });
@@ -151,10 +135,7 @@ export function RenderControls() {
           "& input[type='checkbox']~label svg path": {
             stroke: '#222831 !important',
           },
-          '& button': {
-            backgroundColor: '#393E46 !important',
-            height: '2em',
-          },
+          '& button': { color: '#222831 !important', height: '2em' },
         }}
       >
         <Leva

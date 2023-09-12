@@ -17,17 +17,10 @@ Callback code used for training iterations
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import InitVar, dataclass
 from enum import Enum, auto
 from inspect import signature
-from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Tuple
-
-from torch.cuda.amp.grad_scaler import GradScaler
-
-from nerfstudio.engine.optimizers import Optimizers
-
-if TYPE_CHECKING:
-    from nerfstudio.pipelines.base_pipeline import Pipeline
+from typing import Callable, Dict, List, Optional, Tuple
 
 
 @dataclass
@@ -37,11 +30,12 @@ class TrainingCallbackAttributes:
     Instead of providing access to the entire Trainer object, we only provide these attributes.
     This should be least prone to errors and fairly clean from a user perspective."""
 
-    optimizers: Optional[Optimizers]
+    # TODO(ethan): type this without circular imports
+    optimizers: Optional[InitVar]
     """optimizers for training"""
-    grad_scaler: Optional[GradScaler]
+    grad_scaler: Optional[InitVar]
     """gradient scalers"""
-    pipeline: Optional["Pipeline"]  # Prevent circular import.
+    pipeline: Optional[InitVar]
     """reference to training pipeline"""
 
 
@@ -50,7 +44,6 @@ class TrainingCallbackLocation(Enum):
 
     BEFORE_TRAIN_ITERATION = auto()
     AFTER_TRAIN_ITERATION = auto()
-    AFTER_TRAIN = auto()
 
 
 class TrainingCallback:
@@ -98,8 +91,6 @@ class TrainingCallback:
         elif self.iters is not None:
             if step in self.iters:
                 self.func(*self.args, **self.kwargs, step=step)
-        else:
-            self.func(*self.args, **self.kwargs, step=step)
 
     def run_callback_at_location(self, step: int, location: TrainingCallbackLocation) -> None:
         """Runs the callback if it's supposed to be run at the given location.

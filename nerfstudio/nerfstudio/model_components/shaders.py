@@ -15,8 +15,8 @@
 """Shaders for rendering."""
 from typing import Optional
 
-from jaxtyping import Float
-from torch import Tensor, nn
+from torch import nn
+from torchtyping import TensorType
 
 
 class LambertianShader(nn.Module):
@@ -25,9 +25,9 @@ class LambertianShader(nn.Module):
     @classmethod
     def forward(
         cls,
-        rgb: Float[Tensor, "*bs 3"],
-        normals: Float[Tensor, "*bs 3"],
-        light_direction: Float[Tensor, "*bs 3"],
+        rgb: TensorType["bs":..., 3],
+        normals: TensorType["bs":..., 3],
+        light_direction: TensorType["bs":..., 3],
         shading_weight: float = 1.0,
         detach_normals=True,
     ):
@@ -59,8 +59,8 @@ class NormalsShader(nn.Module):
     @classmethod
     def forward(
         cls,
-        normals: Float[Tensor, "*bs 3"],
-        weights: Optional[Float[Tensor, "*bs 1"]] = None,
+        normals: TensorType["bs":..., 3],
+        weights: Optional[TensorType["bs":..., 1]] = None,
     ):
         """Applies a rainbow colormap to the normals.
 

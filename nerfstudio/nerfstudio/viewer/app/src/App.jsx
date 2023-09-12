@@ -6,7 +6,6 @@ import Banner from './modules/Banner';
 import { BasicTabs } from './modules/SidePanel/SidePanel';
 import ViewerWindow from './modules/ViewerWindow/ViewerWindow';
 import { appTheme } from './themes/theme';
-import { ViserWebSocket } from './modules/WebSocket/ViserWebSocket';
 
 export default function App() {
   // The scene tree won't rerender but it will listen to changes
@@ -15,21 +14,19 @@ export default function App() {
   const sceneTree = get_scene_tree();
 
   return (
-    <ViserWebSocket sceneTree={sceneTree}>
-      <ThemeProvider theme={appTheme}>
-        <CssBaseline enableColorScheme />
-        <div className="App">
-          {/* The banner at the top of the page. */}
-          <Banner />
-          <div className="App-body">
-            {/* Order matters here. The viewer window must be rendered first. */}
-            <ViewerWindow sceneTree={sceneTree} />
-            <div className="SidePanel">
-              <BasicTabs sceneTree={sceneTree} />
-            </div>
+    <ThemeProvider theme={appTheme}>
+      <CssBaseline enableColorScheme />
+      <div className="App">
+        {/* The banner at the top of the page. */}
+        <Banner />
+        <div className="App-body">
+          {/* Order matters here. The viewer window must be rendered first. */}
+          <ViewerWindow sceneTree={sceneTree} />
+          <div className="SidePanel">
+            <BasicTabs sceneTree={sceneTree} />
           </div>
         </div>
-      </ThemeProvider>
-    </ViserWebSocket>
+      </div>
+    </ThemeProvider>
   );
 }

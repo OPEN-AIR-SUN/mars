@@ -38,7 +38,7 @@ from nerfstudio.engine.callbacks import (
 from nerfstudio.field_components.field_heads import FieldHeadNames
 from nerfstudio.field_components.spatial_distortions import SceneContraction
 from nerfstudio.fields.density_fields import HashMLPDensityField
-from nerfstudio.fields.nerfacto_field import NerfactoField
+from nerfstudio.fields.nerfacto_field import TCNNNerfactoField
 from nerfstudio.model_components.losses import MSELoss, distortion_loss, interlevel_loss
 from nerfstudio.model_components.ray_samplers import ProposalNetworkSampler
 from nerfstudio.model_components.renderers import (
@@ -90,7 +90,7 @@ class SemanticNerfWModel(Model):
             raise ValueError("Transient embedding is not fully working for semantic nerf-w.")
 
         # Fields
-        self.field = NerfactoField(
+        self.field = TCNNNerfactoField(
             self.scene_box.aabb,
             num_levels=self.config.num_levels,
             max_res=self.config.max_res,
@@ -160,10 +160,7 @@ class SemanticNerfWModel(Model):
             def set_anneal(step):
                 # https://arxiv.org/pdf/2111.12077.pdf eq. 18
                 train_frac = np.clip(step / N, 0, 1)
-
-                def bias(x, b):
-                    return b * x / ((b - 1) * x + 1)
-
+                bias = lambda x, b: (b * x) / ((b - 1) * x + 1)
                 anneal = bias(train_frac, self.config.proposal_weights_anneal_slope)
                 self.proposal_sampler.set_anneal(anneal)
 
@@ -254,7 +251,7 @@ class SemanticNerfWModel(Model):
 
         # semantic loss
         loss_dict["semantics_loss"] = self.config.semantic_loss_weight * self.cross_entropy_loss(
-            outputs["semantics"], batch["semantics"][..., 0].long().to(self.device)
+            outputs["semantics"], batch["semantics"][..., 0].long()
         )
         return loss_dict
 
@@ -301,6 +298,6 @@ class SemanticNerfWModel(Model):
         images_dict["semantics_colormap"] = self.colormap.to(self.device)[semantic_labels]
 
         # valid mask
-        images_dict["mask"] = batch["mask"].repeat(1, 1, 3).to(self.device)
+        images_dict["mask"] = batch["mask"].repeat(1, 1, 3)
 
         return metrics_dict, images_dict

@@ -3,6 +3,11 @@ Test pipeline
 """
 from pathlib import Path
 
+# pylint: disable=too-few-public-methods
+# pylint: disable=no-self-use
+# pylint: disable=missing-class-docstring
+# pylint: disable=unused-argument
+# pylint: disable=abstract-method
 import torch
 from torch import nn
 
@@ -11,10 +16,10 @@ from nerfstudio.data.datasets.base_dataset import DataparserOutputs, InputDatase
 from nerfstudio.pipelines.base_pipeline import (
     Model,
     ModelConfig,
+    VanillaDataManagerConfig,
     VanillaPipeline,
     VanillaPipelineConfig,
 )
-from nerfstudio.data.datamanagers.base_datamanager import VanillaDataManagerConfig
 
 
 class MockedDataManager:
@@ -72,13 +77,13 @@ def test_load_state_dict():
     )
     pipeline = VanillaPipeline(config, "cpu")
     state_dict = pipeline.state_dict()
-    state_dict["_model.param"].mul_(2)
+    state_dict["_model.param"].mul_(2)  # pylint: disable=unsubscriptable-object
     pipeline.load_pipeline(state_dict, 0)
     assert was_called
-    assert getattr(pipeline.model, "param")[0].item() == 2
+    assert pipeline.model.param[0].item() == 2
 
     # preparation for another test
-    state_dict["_model.param"].mul_(2)
+    state_dict["_model.param"].mul_(2)  # pylint: disable=unsubscriptable-object
     was_called = False
     # pretends to be a DDP checkpoint
     ddp_state_dict = {}
@@ -91,4 +96,4 @@ def test_load_state_dict():
     # load DDP checkpoint
     pipeline.load_pipeline(ddp_state_dict, 0)
     assert was_called
-    assert getattr(pipeline.model, "param")[0].item() == 4
+    assert pipeline.model.param[0].item() == 4

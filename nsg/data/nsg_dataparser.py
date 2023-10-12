@@ -17,14 +17,14 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional, Type, List
+from typing import List, Optional, Type
 
 import imageio
 import numpy as np
+import pandas as pd
 import torch
 from cv2 import sort
 from rich.console import Console
-import pandas as pd
 
 from nerfstudio.cameras import camera_utils
 from nerfstudio.cameras.cameras import Cameras, CameraType
@@ -1329,4 +1329,4 @@ class NSGkitti(DataParser):
         return dataparser_outputs
 
 
-NSGkittiDataParserConfigSpecification = DataParserSpecification(config=NSGkittiDataParserConfig)
+NSGkittiDataParserConfigSpecification = DataParserSpecification(config=NSGkittiDataParserConfig())

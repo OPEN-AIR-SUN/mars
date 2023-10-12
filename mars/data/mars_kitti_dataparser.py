@@ -17,15 +17,16 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional, Type, List
+from typing import List, Optional, Type
 
 import imageio
 import numpy as np
+import pandas as pd
 import torch
 from cv2 import sort
 from rich.console import Console
-import pandas as pd
 
+from mars.utils.neural_scene_graph_helper import box_pts
 from nerfstudio.cameras import camera_utils
 from nerfstudio.cameras.cameras import Cameras, CameraType
 from nerfstudio.data.dataparsers.base_dataparser import (
@@ -38,7 +39,6 @@ from nerfstudio.data.scene_box import SceneBox
 from nerfstudio.plugins.registry_dataparser import DataParserSpecification
 from nerfstudio.utils.colors import get_color
 from nerfstudio.utils.io import load_from_json
-from mars.utils.neural_scene_graph_helper import box_pts
 
 CONSOLE = Console(width=120)
 _sem2label = {"Misc": -1, "Car": 0, "Van": 0, "Truck": 2, "Tram": 3, "Pedestrian": 4}
@@ -1329,4 +1329,4 @@ class MarsKittiParser(DataParser):
         return dataparser_outputs
 
 
-KittiParserSpec = DataParserSpecification(config=MarsKittiDataParserConfig)
+KittiParserSpec = DataParserSpecification(config=MarsKittiDataParserConfig())

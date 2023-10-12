@@ -17,7 +17,7 @@ from __future__ import annotations
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional, Type, List
+from typing import List, Optional, Type
 
 import imageio
 import numpy as np
@@ -688,4 +688,4 @@ class MarsVKittiParser(DataParser):
         return dataparser_outputs
 
 
-VKittiParserSpec = DataParserSpecification(config=MarsVKittiDataParserConfig)
+VKittiParserSpec = DataParserSpecification(config=MarsVKittiDataParserConfig())

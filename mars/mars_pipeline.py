@@ -4,20 +4,9 @@ import typing
 from dataclasses import dataclass, field
 from time import time
 from typing import Any, Dict, List, Mapping, Optional, Type, Union, cast
-from torch.cuda.amp.grad_scaler import GradScaler
+
 import torch
 import torch.distributed as dist
-from rich.progress import (
-    BarColumn,
-    MofNCompleteColumn,
-    Progress,
-    TextColumn,
-    TimeElapsedColumn,
-)
-from torch.nn import Parameter
-from torch.nn.parallel import DistributedDataParallel as DDP
-from typing_extensions import Literal
-
 from nerfstudio.configs import base_config as cfg
 from nerfstudio.data.datamanagers.base_datamanager import (
     DataManagerConfig,
@@ -32,7 +21,19 @@ from nerfstudio.pipelines.base_pipeline import (
     VanillaPipelineConfig,
 )
 from nerfstudio.utils import profiler
-from mars.data.mars_datamanager import MarsDataManagerConfig
+from rich.progress import (
+    BarColumn,
+    MofNCompleteColumn,
+    Progress,
+    TextColumn,
+    TimeElapsedColumn,
+)
+from torch.cuda.amp.grad_scaler import GradScaler
+from torch.nn import Parameter
+from torch.nn.parallel import DistributedDataParallel as DDP
+from typing_extensions import Literal
+
+from mars.data.mars_datamanager import MarsDataManager, MarsDataManagerConfig
 
 
 @dataclass
@@ -77,7 +78,7 @@ class MarsPipeline(Pipeline):
         super().__init__()
         self.config = config
         self.test_mode = test_mode
-        self.datamanager: NSGkittiDataManager = config.datamanager.setup(
+        self.datamanager: MarsDataManager = config.datamanager.setup(
             device=device, test_mode=test_mode, world_size=world_size, local_rank=local_rank
         )
         self.datamanager.to(device)

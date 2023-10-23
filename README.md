@@ -282,7 +282,7 @@ If you want to render with our pre-trained model, you should visit [here](https:
 You can use the following command to render:
 
 ```bash
-python scripts/cicai_render.py --load-config outputs/nvs75fullseq/nsg-vkitti-car-depth-nvs/2023-06-21_135412/config.yml --output-path renders/
+python scripts/cicai_render.py --load-config outputs/nvs75fullseq/nsg-vkitti-car-depth-nvs/2023-06-21_135412/config.yml
 ```
 
 ## Citation

@@ -813,7 +813,7 @@ class SceneGraphModel(Model):
         }
 
         if self.use_depth_loss:
-            images_dict["bacground_depth"] = combined_background_depth
+            images_dict["background_depth"] = combined_background_depth
             images_dict["depth"] = combined_depth
 
         if self.config.debug_object_pose:

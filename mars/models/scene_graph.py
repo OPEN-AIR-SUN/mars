@@ -694,8 +694,9 @@ class SceneGraphModel(Model):
             assert "depth_mask" in batch
             depth_gt = batch["depth_image"].to(self.device).float()
             depth_mask = batch["depth_mask"].to(self.device)
-            if not self.config.is_euclidean_depth:
-                depth_gt = depth_gt * outputs["directions_norm"]
+            # depth_gt multipled by directions_norm is excuted in the depth loss function
+            # if not self.config.is_euclidean_depth:
+            #     depth_gt = depth_gt * outputs["directions_norm"]
             depth_gt[~depth_mask] = 0.0  # to make it compatible with the automask of the depth loss
             predicted_depth = outputs["depth"].float()
             depth_loss = 0

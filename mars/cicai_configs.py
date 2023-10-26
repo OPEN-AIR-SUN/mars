@@ -4,11 +4,6 @@ from pathlib import Path
 from typing import Dict
 
 import tyro
-from nerfstudio.cameras.camera_optimizers import CameraOptimizerConfig
-from nerfstudio.engine.optimizers import RAdamOptimizerConfig
-from nerfstudio.engine.schedulers import ExponentialDecaySchedulerConfig
-from nerfstudio.engine.trainer import TrainerConfig
-from nerfstudio.plugins.types import MethodSpecification
 
 from mars.data.mars_datamanager import MarsDataManagerConfig
 from mars.data.mars_kitti_dataparser import MarsKittiDataParserConfig
@@ -20,6 +15,11 @@ from mars.models.nerfacto import NerfactoModelConfig
 from mars.models.scene_graph import SceneGraphModelConfig
 from mars.models.semantic_nerfw import SemanticNerfWModelConfig
 from mars.models.vanilla_nerf import NeRFModel, VanillaModelConfig
+from nerfstudio.cameras.camera_optimizers import CameraOptimizerConfig
+from nerfstudio.engine.optimizers import RAdamOptimizerConfig
+from nerfstudio.engine.schedulers import ExponentialDecaySchedulerConfig
+from nerfstudio.engine.trainer import TrainerConfig
+from nerfstudio.plugins.types import MethodSpecification
 
 MAX_NUM_ITERATIONS = 600000
 STEPS_PER_SAVE = 2000
@@ -101,10 +101,11 @@ KITTI_Recon_Mars_Car_Depth = MethodSpecification(
                     use_car_latents=True,
                     use_depth=True,
                     car_object_latents_path=Path(
-                        "/data1/chenjt/datasets/ckpts/pretrain/car_nerf/latent_codes_car_van_truck.pt"
+                        "/DATA_EDS/liuty/ckpts/pretrain/car_nerf/latent_codes_car_van_truck.pt"
                     ),
                     split_setting="reconstruction",
-                    car_nerf_state_dict_path=Path("/data1/chenjt/datasets/ckpts/pretrain/car_nerf/epoch_670.ckpt"),
+                    car_nerf_state_dict_path=Path("/DATA_EDS/liuty/ckpts/pretrain/car_nerf/epoch_670.ckpt"),
+                    scale_factor=0.1,
                 ),
                 train_num_rays_per_batch=4096,
                 eval_num_rays_per_batch=4096,
@@ -115,6 +116,8 @@ KITTI_Recon_Mars_Car_Depth = MethodSpecification(
                 object_model_template=CarNeRFModelConfig(_target=CarNeRF),
                 object_representation="class-wise",
                 object_ray_sample_strategy="remove-bg",
+                mono_depth_loss_mult=0.01,
+                depth_loss_mult=0,
             ),
         ),
         optimizers={
@@ -207,9 +210,11 @@ KITTI_NVS_Mars_Car_Depth = MethodSpecification(
                 dataparser=MarsKittiDataParserConfig(
                     use_car_latents=True,
                     use_depth=False,
-                    car_object_latents_path=Path("/data41/luoly/kitti_mot/latents/latent_codes06.pt"),
-                    split_setting="nvs-75",
-                    car_nerf_state_dict_path=Path("/data1/chenjt/datasets/ckpts/pretrain/car_nerf/epoch_670.ckpt"),
+                    car_object_latents_path=Path(
+                        "/DATA_EDS/liuty/ckpts/pretrain/car_nerf/vkitti/latents/latent_codes06.pt"
+                    ),
+                    split_setting="nvs-25",
+                    car_nerf_state_dict_path=Path("/DATA_EDS/liuty/ckpts/pretrain/car_nerf/vkitti/epoch_805.ckpt"),
                 ),
                 train_num_rays_per_batch=4096,
                 eval_num_rays_per_batch=4096,

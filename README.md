@@ -13,7 +13,7 @@
 </p>
 <div align="center"><h4>CICAI 2023 Best Paper Runner-up Award</h4></div>
 <div align="center">
-  <img alt="" src="https://github.com/xBeho1der/mars-release/assets/7344146/8c2b525d-84b4-4e53-8a33-ad6f5e77b149">
+  <img alt="" src="https://github.com/OPEN-AIR-SUN/mars/assets/107318439/b4c747e8-8165-4576-94c3-666c976063c6">
 </div>
 
 <div align="center"><h4>For business inquiries, please contact us at <a href="mailto:zhaohao@air.tsinghua.edu.cn">zhaohao@air.tsinghua.edu.cn</a>.</h4></div>

@@ -397,7 +397,7 @@ class SceneGraphModel(Model):
             # (n_rays, n_samples)
 
             output_bg_insec_density = output_bg_density[intersection_map[..., 0]]  # (n_intersects, n_samples)
-            mask = (bg_samples_z_vals > z_vals_in_o.unsqueeze(-1)) & (bg_samples_z_vals < z_vals_out_o.unsqueeze(-1))
+            mask = (bg_samples_z_vals > z_vals_in_w.unsqueeze(-1)) & (bg_samples_z_vals < z_vals_out_w.unsqueeze(-1))
             output_bg_insec_density[mask] = 0.0
 
         track_idx = obj_pose[..., 4]  # (n_intersects, )

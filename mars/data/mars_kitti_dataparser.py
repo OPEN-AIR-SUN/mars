@@ -876,9 +876,9 @@ class MarsKittiDataParserConfig(DataParserConfig):
     """How much to scale the region of interest by."""
     alpha_color: str = "white"
     """alpha color of background"""
-    first_frame: int = 5
+    first_frame: int = 65
     """specifies the beginning of a sequence if not the complete scene is taken as Input"""
-    last_frame: int = 260
+    last_frame: int = 120
     """specifies the end of a sequence"""
     use_object_properties: bool = True
     """ use pose and properties of visible objects as an input """

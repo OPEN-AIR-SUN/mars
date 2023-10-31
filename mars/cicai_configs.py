@@ -209,12 +209,13 @@ KITTI_NVS_Mars_Car_Depth = MethodSpecification(
             datamanager=MarsDataManagerConfig(
                 dataparser=MarsKittiDataParserConfig(
                     use_car_latents=True,
-                    use_depth=False,
+                    use_depth=True,
                     car_object_latents_path=Path(
-                        "/DATA_EDS/liuty/ckpts/pretrain/car_nerf/vkitti/latents/latent_codes06.pt"
+                        "/DATA_EDS/liuty/ckpts/pretrain/car_nerf/latent_codes_car_van_truck.pt"
                     ),
-                    split_setting="nvs-25",
-                    car_nerf_state_dict_path=Path("/DATA_EDS/liuty/ckpts/pretrain/car_nerf/vkitti/epoch_805.ckpt"),
+                    split_setting="nvs-75",
+                    car_nerf_state_dict_path=Path("/DATA_EDS/liuty/ckpts/pretrain/car_nerf/epoch_670.ckpt"),
+                    scale_factor=0.1,
                 ),
                 train_num_rays_per_batch=4096,
                 eval_num_rays_per_batch=4096,
@@ -222,9 +223,11 @@ KITTI_NVS_Mars_Car_Depth = MethodSpecification(
             ),
             model=SceneGraphModelConfig(
                 background_model=NerfactoModelConfig(),
-                object_model_template=NerfactoModelConfig(),
+                object_model_template=CarNeRFModelConfig(_target=CarNeRF),
                 object_representation="class-wise",
                 object_ray_sample_strategy="remove-bg",
+                mono_depth_loss_mult=0.01,
+                depth_loss_mult=0,
             ),
         ),
         optimizers={

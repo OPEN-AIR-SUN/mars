@@ -688,4 +688,4 @@ class MarsVKittiParser(DataParser):
         return dataparser_outputs
 
 
-VKittiParserSpec = DataParserSpecification(config=MarsVKittiDataParserConfig())
+NSGvkittiDataParserConfigSpecification = DataParserSpecification(config=NSGvkittiDataParserConfig())

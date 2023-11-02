@@ -373,7 +373,7 @@ class RenderTrajectory:
             rendered_output_names=self.rendered_output_names,
             rendered_resolution_scaling_factor=1.0 / self.downscale_factor,
             seconds=seconds,
-            output_format="video",
+            output_format="images",
             # output_format=self.output_format,
             camera_type=camera_type,
             render_width=render_width,

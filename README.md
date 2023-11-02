@@ -193,34 +193,34 @@ Our pre-trained model is uploaded to Google Drive, you can refer to the below ta
     <td rowspan="4">KITTI-MOT</td>
     <td>0006</td>
     <td>Reconstruction</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
+    <td>400k</td>
+    <td>27.96</td>
+    <td>0.900</td>
+    <td><a href="https://drive.google.com/drive/folders/118qj8GA1lnkx90yXREAwWtARJquEIn6d?usp=drive_link">model</a></td>
   </tr>
   <tr>
     <td>0006</td>
     <td>Novel View Synthesis 75%</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
+    <td>200k</td>
+    <td>27.32</td>
+    <td>0.890</td>
+    <td><a href="https://drive.google.com/drive/folders/117MIMkaDhEPDhoyCAAr8o_xATj891STP?usp=drive_link">model</a></td>
   </tr>
   <tr>
     <td>0006</td>
     <td>Novel View Synthesis 50%</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
+    <td>200k</td>
+    <td>26.80</td>
+    <td>0.883</td>
+    <td><a href="https://drive.google.com/drive/folders/12BnkfO6Jv33MUfBbW1s2BWfm0pAlWecX?usp=drive_link">model</a></td>
   </tr>
   <tr>
     <td>0006</td>
     <td>Novel View Synthesis 25%</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
+    <td>200k</td>
+    <td>25.87</td>
+    <td>0.866</td>
+    <td><a href="https://drive.google.com/drive/folders/12Esij9r9f4wAf5mFvvJ1uWV3DgEZu7eg?usp=drive_link">model</a></td>
   </tr>
   <tr>
     <td rowspan="3">Vitural KITTI-2</td>

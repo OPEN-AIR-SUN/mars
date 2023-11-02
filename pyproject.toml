@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mars"
+name = "mars-nerfstudio"
 version = "0.3.1"
 description = "The official code repository for the paper: MARS: An Instance-aware, Modular and Realistic Simulator for Autonomous Driving"
 readme = "README.md"

@@ -31,26 +31,18 @@ You must have an NVIDIA video card with CUDA installed on the system. This libra
 Nerfstudio requires `python >= 3.7`. We recommend using conda to manage dependencies. Make sure to install [Conda](https://docs.conda.io/en/latest/miniconda.html) before proceeding.
 
 ```bash
-conda create --name nerfstudio -y python=3.8
-conda activate nerfstudio
-python -m pip install --upgrade pip
-pip install --upgrade pip setuptools
+conda create --name mars -y python=3.9
+conda activate mars
 ```
 
 #### Installation
 
-This section will walk you through the installation process. Our system is dependent on the <a href="https://github.com/nerfstudio-project/nerfstudio">nerfstudio</a> project.
-
-1. Install [tiny-cuda-nn](https://github.com/NVlabs/tiny-cuda-nn) firstly.
-2. Install MARS locally with:
+This section will walk you through the installation process. Our system is dependent on the <a href="https://github.com/NVlabs/tiny-cuda-nn">nerfstudio</a> project.
 
 ```bash
-git clone git@github.com:OPEN-AIR-SUN/mars.git
-cd mars/nerfstudio
-pip install -e .[dev]         # install nerfstudio and its dependencies
-cd ..
-pip install -e .
-ns-install-cli                # optional, only for tab completion
+pip install mars-nerfstudio
+cd /path/to/tiny-cuda-nn/bindings/torch
+python setup.py install
 ```
 
 ## 2. Training from Scratch
@@ -98,18 +90,20 @@ The [KITTI-MOT](https://www.cvlibs.net/datasets/kitti/eval_tracking.php) dataset
         └── sequence_id.txt
 ```
 
+> We use a [monocular depth estimation model](https://github.com/theNded/mini-omnidata) to generate the depth maps for KITTI-MOT dataset. [Here](https://drive.google.com/drive/folders/1Y-41OMCzDkdJ2P-YZHtCI-5YR9jAIKS2?usp=drive_link) is the estimation result of 0006 sequence of KITTI-MOT datasets. You can download and put them in the `KITTI-MOT/training` directory.
+
 > We download the KITTI-STEP annotations and generate the panoptic segmentation maps for KITTI-MOT dataset. You can download the demo panoptic maps [here](https://drive.google.com/drive/folders/1obAyq1jlHbyA9CS9Rg66N3YyI_sjpfGB?usp=drive_link) and put them in the `KITTI-MOT` directory, or you can visit the official website of [KITTI-STEP](https://www.cvlibs.net/datasets/kitti/eval_step.php) for more information.
 
 To train a reconstruction model, you can use the following command:
 
 ```bash
-ns-train nsg-kitti-car-depth-recon --data /data/kitti-MOT/training/image_02/0006
+ns-train mars-kitti-car-depth-recon --data /data/kitti-MOT/training/image_02/0006
 ```
 
 or if you want to use the Python script (please refer to the `launch.json` file in the `.vscode` directory):
 
 ```bash
-python nerfstudio/nerfstudio/scripts/train.py nsg-kitti-car-depth-recon --data /data/kitti-MOT/training/image_02/0006
+python nerfstudio/nerfstudio/scripts/train.py mars-kitti-car-depth-recon --data /data/kitti-MOT/training/image_02/0006
 ```
 
 #### vKITTI2
@@ -152,13 +146,13 @@ The [vKITTI2](https://europe.naverlabs.com/research/computer-vision/proxy-virtua
 To train a reconstruction model, you can use the following command:
 
 ```bash
-ns-train nsg-vkitti-car-depth-recon --data /data/vkitti/Scene06/clone
+ns-train mars-vkitti-car-depth-recon --data /data/vkitti/Scene06/clone
 ```
 
 or if you want to use the python script:
 
 ```bash
-python nerfstudio/nerfstudio/scripts/train.py nsg-vkitti-car-depth-recon --data /data/vkitti/Scene06/clone
+python nerfstudio/nerfstudio/scripts/train.py mars-vkitti-car-depth-recon --data /data/vkitti/Scene06/clone
 ```
 
 #### Your Own Data
@@ -256,7 +250,7 @@ Our pre-trained model is uploaded to Google Drive, you can refer to the below ta
 You can use the following command to train a model from a pre-trained model:
 
 ```bash
-ns-train nsg-kitti-car-depth-recon --data /data/kitti-MOT/training/image_02/0006 --load-dir outputs/experiment_name/method_name/timestamp/nerfstudio
+ns-train mars-kitti-car-depth-recon --data /data/kitti-MOT/training/image_02/0006 --load-dir outputs/experiment_name/method_name/timestamp/nerfstudio
 ```
 
 ### Model Configs
@@ -271,13 +265,14 @@ model=SceneGraphModelConfig(
     object_ray_sample_strategy="remove-bg",
 )
 ```
+
 > If you choose to use the category-level object model, please make sure that the `use_car_latents=True` and the latent codes exists. We provide latent codes of some sequences on KITTI-MOT and vKITTI2 datasets [here](https://drive.google.com/drive/folders/1E4YjMwkDbRsF4Hb1UK0iBDkz-tFVx3Me?usp=sharing).
 
-For more information, please refer to our provided configurations at `nsg/cicai_configs.py`. We use wandb for logging by default, you can also specify other viewers (tensorboard/nerfstudio-viewer supported) with the `--vis` config. Please refer to the nerfstudio documentation for details.
+For more information, please refer to our provided configurations at `mars/cicai_configs.py`. We use wandb for logging by default, you can also specify other viewers (tensorboard/nerfstudio-viewer supported) with the `--vis` config. Please refer to the nerfstudio documentation for details.
 
 ## Render
 
-If you want to render with our pre-trained model, you should visit [here](https://drive.google.com/drive/folders/1Yp-dQ7ijPpPC50SvJHfnYzxCAV9gMygX?usp=drive_link) to download our checkpoints and **config**. To run the render script, you need to ensure that your config is the same as the `config.yml` that you load in. 
+If you want to render with our pre-trained model, you should visit [here](https://drive.google.com/drive/folders/1Yp-dQ7ijPpPC50SvJHfnYzxCAV9gMygX?usp=drive_link) to download our checkpoints and **config**. To run the render script, you need to ensure that your config is the same as the `config.yml` that you load in.
 
 You can use the following command to render:
 

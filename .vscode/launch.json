@@ -15,11 +15,11 @@
         "CUDA_VISIBLE_DEVICES": "3"
       },
       "args": [
-        "nsg-kitti-car-depth-nvs",
+        "mars-kitti-car-depth-nvs",
         "--load-dir",
-        "/data1/chenjt/experiment/kitti-nvs-75/nsg-kitti-car-depth-nvs/2023-06-29_153047/nerfstudio_models",
+        "/data1/chenjt/experiment/kitti-nvs-75/mars-kitti-car-depth-nvs/2023-06-29_153047/nerfstudio_models",
         "--data",
-        "/data1/luoly/datasets/NSGstudio/kitti/training/image_02/0006",
+        "/data1/luoly/datasets/Marsstudio/kitti/training/image_02/0006",
         "--pipeline.datamanager.dataparser.car-nerf-state-dict-path",
         "/data1/chenjt/datasets/ckpts/pretrain/car_nerf/epoch_670.ckpt",
         "--pipeline.datamanager.dataparser.car-object-latents-path",
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "name": "nsg-vkitti-recon-depth-semantics",
+      "name": "mars-vkitti-recon-depth-semantics",
       "type": "python",
       "request": "launch",
       "program": "nerfstudio/nerfstudio/scripts/train.py",
@@ -39,9 +39,9 @@
         "CUDA_VISIBLE_DEVICES": "6"
       },
       "args": [
-        "nsg-vkitti-car-depth-recon-semantic",
+        "mars-vkitti-car-depth-recon-semantic",
         "--experiment_name",
-        "nsg-vkitti-recon-02seq05to220",
+        "mars-vkitti-recon-02seq05to220",
         "--data",
         "/data/luoly/dataset/demo/vkitti/Scene02/clone",
         "--max-num-iterations",
@@ -56,30 +56,30 @@
       "name": "render",
       "type": "python",
       "request": "launch",
-      "program": "/data22/DISCOVER_summer2023/yexy2304/NSG-Studio/scripts/cicai_render.py",
+      "program": "/data22/DISCOVER_summer2023/yexy2304/Mars-Studio/scripts/cicai_render.py",
       "console": "integratedTerminal",
       "justMyCode": true,
       "args": [
         "--load-config",
-        "/data22/DISCOVER_summer2023/yexy2304/NSG-Studio/outputs/nsg-vkitti-recon-02seq05to220/nsg-vkitti-car-depth-recon/2023-05-30_230718/config.yml"
+        "/data22/DISCOVER_summer2023/yexy2304/Mars-Studio/outputs/mars-vkitti-recon-02seq05to220/mars-vkitti-car-depth-recon/2023-05-30_230718/config.yml"
       ]
     },
     {
-      "name": "KITTI_Recon_NSG_Car_Depth",
+      "name": "KITTI_Recon_Mars_Car_Depth",
       "type": "python",
       "request": "launch",
       "program": "nerfstudio/nerfstudio/scripts/train.py",
       "console": "integratedTerminal",
       "args": [
-        "nsg-kitti-car-depth-recon",
+        "mars-kitti-car-depth-recon",
         "--experiment_name",
-        "NSG KITTI-0006",
+        "Mars KITTI-0006",
         "--data",
         "/DATA_EDS/wuzr/data/kitti-MOT/training/image_02/0006",
       ]
     },
     {
-      "name": "KITTI_Recon_NSG_Car",
+      "name": "KITTI_Recon_Mars_Car",
       "type": "python",
       "request": "launch",
       "program": "nerfstudio/nerfstudio/scripts/train.py",
@@ -87,13 +87,13 @@
       "args": [
         "ablation-no-depth-kitti",
         "--experiment_name",
-        "NSG KITTI-0006 without depth",
+        "Mars KITTI-0006 without depth",
         "--data",
         "/DATA_EDS/wuzr/data/kitti-MOT/training/image_02/0006",
       ]
     },
     {
-      "name": "nsg-kitti-nvs-75",
+      "name": "mars-kitti-nvs-75",
       "type": "python",
       "request": "launch",
       "program": "nerfstudio/nerfstudio/scripts/train.py",
@@ -102,15 +102,15 @@
         "CUDA_VISIBLE_DEVICES": "3"
       },
       "args": [
-        "nsg-kitti-car-depth-nvs",
+        "mars-kitti-car-depth-nvs",
         "--experiment_name",
-        "nsg-kitti-nvs-75",
+        "mars-kitti-nvs-75",
         "--data",
         "/DATA_EDS/wuzr/data/kitti-MOT/training/image_02/0006",
       ]
     },
     {
-      "name": "nsg-vkitti-recon",
+      "name": "mars-vkitti-recon",
       "type": "python",
       "request": "launch",
       "program": "nerfstudio/nerfstudio/scripts/train.py",
@@ -119,9 +119,9 @@
         "CUDA_VISIBLE_DEVICES": "3"
       },
       "args": [
-        "nsg-vkitti-car-depth-recon",
+        "mars-vkitti-car-depth-recon",
         "--experiment_name",
-        "nsg-vkitti-recon w/ car nerf & depth",
+        "mars-vkitti-recon w/ car nerf & depth",
         "--data",
         "/data22/luoly/dataset/demo/vkitti/Scene06/clone",
       ]
@@ -137,7 +137,7 @@
         "--pipeline.model.depth-weight-mode",
         "learnable-global",
         "--experiment_name",
-        "NSG KITTI-0006",
+        "Mars KITTI-0006",
         "--data",
         "/DATA_EDS/wuzr/data/kitti-MOT/training/image_02/0006",
         "--vis",
@@ -145,7 +145,7 @@
       ]
     },
     {
-      "name": "NSG-Car KITTI 0006",
+      "name": "Mars-Car KITTI 0006",
       "type": "python",
       "request": "launch",
       "program": "nerfstudio/nerfstudio/scripts/train.py",
@@ -153,7 +153,7 @@
       "args": [
         "neural-scene-graph-car",
         "--experiment_name",
-        "NSG-Car KITTI0006",
+        "Mars-Car KITTI0006",
         "--data",
         "/data/luoly/dataset/nerfsg/data/kitti/training/image_02/0006",
         "--vis",
@@ -161,7 +161,7 @@
       ]
     },
     {
-      "name": "NSG-NeRF",
+      "name": "Mars-NeRF",
       "type": "python",
       "request": "launch",
       "program": "nerfstudio/nerfstudio/scripts/train.py",
@@ -177,7 +177,7 @@
       ]
     },
     {
-      "name": "NSG-NeRF-vkitti",
+      "name": "Mars-NeRF-vkitti",
       "type": "python",
       "request": "launch",
       "program": "nerfstudio/nerfstudio/scripts/train.py",
@@ -191,7 +191,7 @@
       ]
     },
     {
-      "name": "(didi) NSG-NeRF-vkitti",
+      "name": "(didi) Mars-NeRF-vkitti",
       "type": "python",
       "request": "launch",
       "program": "nerfstudio/nerfstudio/scripts/train.py",
@@ -199,7 +199,7 @@
       "args": [
         "neural-scene-graph-nerf-vkitti",
         "--data",
-        "/data1/luoly/datasets/NSGstudio/vkitti/Scene06/clone",
+        "/data1/luoly/datasets/Marsstudio/vkitti/Scene06/clone",
         "--vis",
         "wandb"
       ]
@@ -216,7 +216,7 @@
       "args": [
         "neural-scene-graph-vkitti",
         "--data",
-        "/data1/luoly/datasets/NSGstudio/vkitti/Scene06/clone",
+        "/data1/luoly/datasets/Marsstudio/vkitti/Scene06/clone",
         "--vis",
         "wandb"
       ]
@@ -252,7 +252,7 @@
       ]
     },
     {
-      "name": "(didi) NSG-NeRF",
+      "name": "(didi) Mars-NeRF",
       "type": "python",
       "request": "launch",
       "program": "scripts/train.py",
@@ -268,7 +268,7 @@
       ]
     },
     {
-      "name": "NSG-car-depth",
+      "name": "Mars-car-depth",
       "type": "python",
       "request": "launch",
       "program": "nerfstudio/nerfstudio/scripts/train.py",
@@ -279,7 +279,7 @@
       "args": [
         "neural-scene-graph-car-depth",
         "--experiment_name",
-        "NSG-Car-KITTI0006-depth",
+        "Mars-Car-KITTI0006-depth",
         "--pipeline.model.depth-weight-mode",
         "learnable-global",
         "--data",
@@ -299,7 +299,7 @@
       },
       "args": [
         "--load-config",
-        "/data22/DISCOVER_summer2023/chenjt2305/NSG-Studio/outputs/nvs75fullseq/nsg-vkitti-car-depth-nvs/2023-06-21_135412/config.yml",
+        "/data22/DISCOVER_summer2023/chenjt2305/Mars-Studio/outputs/nvs75fullseq/mars-vkitti-car-depth-nvs/2023-06-21_135412/config.yml",
         "--traj",
         "filename",
         "--camera-path-filename",
@@ -315,7 +315,7 @@
     //   "program": "scripts/cicai_render.py",
     //   "args": [
     //     "--load-config",
-    //     "/data22/DISCOVER_summer2023/chenjt2305/NSG-Studio/outputs/nsg-vkitti-recon-02seq05to220/nsg-vkitti-car-depth-recon/2023-05-30_230718/config.yml",
+    //     "/data22/DISCOVER_summer2023/chenjt2305/Mars-Studio/outputs/mars-vkitti-recon-02seq05to220/mars-vkitti-car-depth-recon/2023-05-30_230718/config.yml",
     //     "--output-path",
     //     "renders/vkitti_edit_rotation"
     //   ]

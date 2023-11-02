@@ -1329,4 +1329,4 @@ class MarsKittiParser(DataParser):
         return dataparser_outputs
 
 
-NSGkittiDataParserConfigSpecification = DataParserSpecification(config=NSGkittiDataParserConfig())
+KittiParserSpec = DataParserSpecification(config=MarsKittiDataParserConfig())

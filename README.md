@@ -18,13 +18,12 @@
 
 <div align="center"><h4>For business inquiries, please contact us at <a href="mailto:zhaohao@air.tsinghua.edu.cn">zhaohao@air.tsinghua.edu.cn</a>.</h4></div>
 
-> Please note that this is currently a pre-release version, [several refactors](https://github.com/OPEN-AIR-SUN/mars/tree/wuzirui/refactor) will be made in the near future, which include removing the `nerfstudio/` and adapting to PyTorch 2.0 & nerfstudio 0.3.x, etc. After that, this version will no longer be maintained.
 
 ## 1. Installation: Setup the environment
 
 ### Prerequisites
 
-You must have an NVIDIA video card with CUDA installed on the system. This library has been tested with version 11.3/11.7 of CUDA. You can find more information about installing CUDA [here](https://docs.nvidia.com/cuda/cuda-quick-start-guide/index.html).
+You must have an NVIDIA video card with CUDA installed on the system. This library has been tested with version 11.7 of CUDA. You can find more information about installing CUDA [here](https://docs.nvidia.com/cuda/cuda-quick-start-guide/index.html).
 
 #### Create environment
 
@@ -37,7 +36,7 @@ conda activate mars
 
 #### Installation
 
-This section will walk you through the installation process. Our system is dependent on the <a href="https://github.com/NVlabs/tiny-cuda-nn">nerfstudio</a> project.
+This section will walk you through the installation process. Our system is dependent on the <a href="https://github.com/NVlabs/tiny-cuda-nn">tiny-cuda-nn</a> project.
 
 ```bash
 pip install mars-nerfstudio
@@ -55,7 +54,7 @@ Our repository provides dataparser for KITTI and vKITTI2 datasets, for your own 
 
 #### Data Preparation
 
-The data used in our experiments should contain both the pose parameters of cameras and object tracklets. The camera parameters include the intrinsics and the extrinsic. The object tracklets include the bounding box poses, types, ids, etc. For more information, you can refer to KITTI-MOT or vKITTI2 datasets below.
+The data used in our experiments should contain both the pose parameters of cameras and object tracklets. The camera parameters include the intrinsics and the extrinsics. The object tracklets include the bounding box poses, types, ids, etc. For more information, you can refer to KITTI-MOT or vKITTI2 datasets below.
 
 #### KITTI
 
@@ -165,87 +164,99 @@ Our model uses nerfstudio as the training framework, we provide the reconstructi
 
 Our pre-trained model is uploaded to Google Drive, you can refer to the below table to download the model.
 
-<table>
+
+<center>
+<table class="tg">
 <thead>
   <tr>
     <th>Dataset</th>
     <th>Scene</th>
-    <th>First Frame</th>
-    <th>Last Frame</th>
     <th>Setting</th>
+    <th>Start-End</th>
+    <th>Steps</th>
     <th>PSNR</th>
     <th>SSIM</th>
     <th>Download</th>
+    <th>Wandb</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td rowspan="4">KITTI-MOT</td>
     <td>0006</td>
-    <td>5</td>
-    <td>260</td>
     <td>Reconstruction</td>
-    <td>29.06</td>
-    <td>0.885</td>
-    <td><a href="https://drive.google.com/file/d/1g0eoq4QerA4kq21Nmoq9osl2RsZk-cYM/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td>65-120</td>
+    <td>400k</td>
+    <td>27.96</td>
+    <td>0.900</td>
+    <td><a href="https://drive.google.com/drive/folders/118qj8GA1lnkx90yXREAwWtARJquEIn6d?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/ff6tjef7">report</a></td>
   </tr>
   <tr>
     <td>0006</td>
-    <td>5</td>
-    <td>260</td>
     <td>Novel View Synthesis 75%</td>
-    <td>24.23</td>
-    <td>0.845</td>
-    <td><a href="https://drive.google.com/file/d/1NVBlmugj8W3Hdz-YaxLQlwr0R9N-FoC1/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td>65-120</td>
+    <td>200k</td>
+    <td>27.32</td>
+    <td>0.890</td>
+    <td><a href="https://drive.google.com/drive/folders/117MIMkaDhEPDhoyCAAr8o_xATj891STP?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/ns8w2guc">report</a></td>
   </tr>
   <tr>
     <td>0006</td>
-    <td>5</td>
-    <td>260</td>
     <td>Novel View Synthesis 50%</td>
-    <td>24.00</td>
-    <td>0.801</td>
-    <td><a href="https://drive.google.com/file/d/1xc7aLzU76gAgoOTuJlOYJ3LgoeLZOxSC/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td>65-120</td>
+    <td>200k</td>
+    <td>26.80</td>
+    <td>0.883</td>
+    <td><a href="https://drive.google.com/drive/folders/12BnkfO6Jv33MUfBbW1s2BWfm0pAlWecX?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/bk97y3mp">report</a></td>
   </tr>
   <tr>
     <td>0006</td>
-    <td>5</td>
-    <td>260</td>
     <td>Novel View Synthesis 25%</td>
-    <td>23.23</td>
-    <td>0.756</td>
-    <td><a href="https://drive.google.com/file/d/1jf8hT5603u1wO1JqE3gCJSVqHuK8oi99/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td>65-120</td>
+    <td>200k</td>
+    <td>25.87</td>
+    <td>0.866</td>
+    <td><a href="https://drive.google.com/drive/folders/12Esij9r9f4wAf5mFvvJ1uWV3DgEZu7eg?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/r1mbaeqw">report</a></td>
   </tr>
   <tr>
     <td rowspan="3">Vitural KITTI-2</td>
     <td>Scene06</td>
-    <td>0</td>
-    <td>237</td>
     <td>Novel View Synthesis 75%</td>
-    <td>29.79</td>
-    <td>0.917</td>
-    <td><a href="https://drive.google.com/file/d/14uZ0Y-SyzBohUfKby72gibrhGo5i2FIZ/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td>0-237</td>
+    <td>600k</td>
+    <td>32.32</td>
+    <td>0.940</td>
+    <td><a href="https://drive.google.com/drive/folders/10S6GcbfyIUCAgxwr6Mp7FgYcBzY-eWgB?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/3747qu1z">report</a></td>
   </tr>
   <tr>
     <td>Scene06</td>
-    <td>0</td>
-    <td>237</td>
     <td>Novel View Synthesis 50%</td>
-    <td>29.63</td>
-    <td>0.916</td>
-    <td><a href="https://drive.google.com/file/d/1IzfYP9bpqKr94Q93JtpOHb6YPo0WrRyq/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td>0-237</td>
+    <td>600k</td>
+    <td>32.16</td>
+    <td>0.938</td>
+    <td><a href="https://drive.google.com/drive/folders/1-m943ggGEgXRdK7NYGtGFEhWX4PA6DiT?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/fch9iiy8">report</a></td>
   </tr>
   <tr>
     <td>Scene06</td>
-    <td>0</td>
-    <td>237</td>
     <td>Novel View Synthesis 25%</td>
-    <td>27.01</td>
-    <td>0.887</td>
-    <td><a href="https://drive.google.com/file/d/1W8JrjJ9izg3r3sgbK0jmTC9uur-pcUx2/view?usp=drive_link" target="_blank" rel="noopener noreferrer">model</a></td>
+    <td>0-237</td>
+    <td>600k</td>
+    <td>30.87</td>
+    <td>0.935</td>
+    <td><a href="https://drive.google.com/drive/folders/1-9mvzbd1j4vFJ7Zy3CBMWezOHmSpEfcx?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/ne5xa2n1">report</a></td>
   </tr>
 </tbody>
 </table>
+</center>
+
 
 You can use the following command to train a model from a pre-trained model:
 
@@ -272,12 +283,12 @@ For more information, please refer to our provided configurations at `mars/cicai
 
 ## Render
 
-If you want to render with our pre-trained model, you should visit [here](https://drive.google.com/drive/folders/1Yp-dQ7ijPpPC50SvJHfnYzxCAV9gMygX?usp=drive_link) to download our checkpoints and **config**. To run the render script, you need to ensure that your config is the same as the `config.yml` that you load in.
+If you want to render with our pre-trained model, you should visit [here](https://drive.google.com/drive/folders/1-5NR2n3o5zD9ViWwovATOshKYfH3us1I?usp=drive_link) to download our checkpoints and **config**. To run the render script, you need to ensure that your config is the same as the `config.yml` that you load in.
 
 You can use the following command to render:
 
 ```bash
-python scripts/cicai_render.py --load-config outputs/nvs75fullseq/nsg-vkitti-car-depth-nvs/2023-06-21_135412/config.yml
+python scripts/cicai_render.py --load-config outputs/kitti-recon/mars-kitti-car-depth-recon/2023-10-25_143942/config.yml
 ```
 
 ## Citation

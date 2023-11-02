@@ -30,29 +30,18 @@ You must have an NVIDIA video card with CUDA installed on the system. This libra
 Nerfstudio requires `python >= 3.7`. We recommend using conda to manage dependencies. Make sure to install [Conda](https://docs.conda.io/en/latest/miniconda.html) before proceeding.
 
 ```bash
-conda create --name mars-open -y python=3.9
-conda activate mars-open
-python -m pip install --upgrade pip
-pip install --upgrade pip setuptools
+conda create --name mars -y python=3.9
+conda activate mars
 ```
 
 #### Installation
 
-This section will walk you through the installation process. Our system is dependent on the <a href="https://github.com/nerfstudio-project/nerfstudio">nerfstudio</a> project.
+This section will walk you through the installation process. Our system is dependent on the <a href="https://github.com/NVlabs/tiny-cuda-nn">nerfstudio</a> project.
 
-1. Install [nerfstudio](https://github.com/nerfstudio-project/nerfstudio) and [tiny-cuda-nn](https://github.com/NVlabs/tiny-cuda-nn) firstly.
 ```bash
-pip install nerfstudio
+pip install mars-nerfstudio
 cd /path/to/tiny-cuda-nn/bindings/torch
 python setup.py install
-```
-2. Install MARS locally with:
-
-```bash
-git clone git@github.com:OPEN-AIR-SUN/mars.git
-cd mars
-pip install -e .
-ns-install-cli                # optional, only for tab completion
 ```
 
 ## 2. Training from Scratch

@@ -18,7 +18,7 @@ classifiers = [
 dependencies = [
     "nerfstudio>=0.3.2",
     "torchtyping",
-    "torch>=2.0.1"
+    "torch<2.1.0",          # we found the latest version of torch not stable, but feel free to remove this constraint
 ]
 
 [project.urls]

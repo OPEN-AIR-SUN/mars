@@ -182,13 +182,13 @@ Our pre-trained model is uploaded to Google Drive, you can refer to the below ta
   <tr>
     <th>Dataset</th>
     <th>Scene</th>
-    <th>Start frame</th>
-    <th>End frame</th>
     <th>Setting</th>
+    <th>Start-End</th>
     <th>Steps</th>
     <th>PSNR</th>
     <th>SSIM</th>
-    <th>Download | Report</th>
+    <th>Download</th>
+    <th>Wandb</th>
   </tr>
 </thead>
 <tbody>
@@ -196,73 +196,73 @@ Our pre-trained model is uploaded to Google Drive, you can refer to the below ta
     <td rowspan="4">KITTI-MOT</td>
     <td>0006</td>
     <td>Reconstruction</td>
-    <td>65</td>
-    <td>120</td>
+    <td>65-120</td>
     <td>400k</td>
     <td>27.96</td>
     <td>0.900</td>
-    <td><a href="https://drive.google.com/drive/folders/118qj8GA1lnkx90yXREAwWtARJquEIn6d?usp=drive_link">model</a> | <a href="https://api.wandb.ai/links/wuzirui-research/ff6tjef7">report</a></td>
+    <td><a href="https://drive.google.com/drive/folders/118qj8GA1lnkx90yXREAwWtARJquEIn6d?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/ff6tjef7">report</a></td>
   </tr>
   <tr>
     <td>0006</td>
     <td>Novel View Synthesis 75%</td>
+    <td>65-120</td>
     <td>200k</td>
-    <td>65</td>
-    <td>120</td>
     <td>27.32</td>
     <td>0.890</td>
-    <td><a href="https://drive.google.com/drive/folders/117MIMkaDhEPDhoyCAAr8o_xATj891STP?usp=drive_link">model</a> | <a href="https://api.wandb.ai/links/wuzirui-research/ns8w2guc">report</a></td>
+    <td><a href="https://drive.google.com/drive/folders/117MIMkaDhEPDhoyCAAr8o_xATj891STP?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/ns8w2guc">report</a></td>
   </tr>
   <tr>
     <td>0006</td>
     <td>Novel View Synthesis 50%</td>
+    <td>65-120</td>
     <td>200k</td>
-    <td>65</td>
-    <td>120</td>
     <td>26.80</td>
     <td>0.883</td>
-    <td><a href="https://drive.google.com/drive/folders/12BnkfO6Jv33MUfBbW1s2BWfm0pAlWecX?usp=drive_link">model</a> | <a href="https://api.wandb.ai/links/wuzirui-research/bk97y3mp">report</a></td>
+    <td><a href="https://drive.google.com/drive/folders/12BnkfO6Jv33MUfBbW1s2BWfm0pAlWecX?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/bk97y3mp">report</a></td>
   </tr>
   <tr>
     <td>0006</td>
     <td>Novel View Synthesis 25%</td>
+    <td>65-120</td>
     <td>200k</td>
-    <td>65</td>
-    <td>120</td>
     <td>25.87</td>
     <td>0.866</td>
-    <td><a href="https://drive.google.com/drive/folders/12Esij9r9f4wAf5mFvvJ1uWV3DgEZu7eg?usp=drive_link">model</a> | <a href="https://api.wandb.ai/links/wuzirui-research/r1mbaeqw">report</a></td>
+    <td><a href="https://drive.google.com/drive/folders/12Esij9r9f4wAf5mFvvJ1uWV3DgEZu7eg?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/r1mbaeqw">report</a></td>
   </tr>
   <tr>
     <td rowspan="3">Vitural KITTI-2</td>
     <td>Scene06</td>
     <td>Novel View Synthesis 75%</td>
+    <td>0-237</td>
     <td>600k</td>
-    <td>0</td>
-    <td>237</td>
     <td>32.32</td>
     <td>0.940</td>
-    <td><a href="https://drive.google.com/drive/folders/10S6GcbfyIUCAgxwr6Mp7FgYcBzY-eWgB?usp=drive_link">model</a> | <a href="https://api.wandb.ai/links/wuzirui-research/3747qu1z">report</a></td>
+    <td><a href="https://drive.google.com/drive/folders/10S6GcbfyIUCAgxwr6Mp7FgYcBzY-eWgB?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/3747qu1z">report</a></td>
   </tr>
   <tr>
     <td>Scene06</td>
     <td>Novel View Synthesis 50%</td>
+    <td>0-237</td>
     <td>600k</td>
-    <td>0</td>
-    <td>237</td>
     <td>32.16</td>
     <td>0.938</td>
-    <td><a href="https://drive.google.com/drive/folders/1-m943ggGEgXRdK7NYGtGFEhWX4PA6DiT?usp=drive_link">model</a> | <a href="https://api.wandb.ai/links/wuzirui-research/fch9iiy8">report</a></td>
+    <td><a href="https://drive.google.com/drive/folders/1-m943ggGEgXRdK7NYGtGFEhWX4PA6DiT?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/fch9iiy8">report</a></td>
   </tr>
   <tr>
     <td>Scene06</td>
     <td>Novel View Synthesis 25%</td>
+    <td>0-237</td>
     <td>600k</td>
-    <td>0</td>
-    <td>237</td>
     <td>30.87</td>
     <td>0.935</td>
-    <td><a href="https://drive.google.com/drive/folders/1-9mvzbd1j4vFJ7Zy3CBMWezOHmSpEfcx?usp=drive_link">model</a> | <a href="https://api.wandb.ai/links/wuzirui-research/ne5xa2n1">report</a></td>
+    <td><a href="https://drive.google.com/drive/folders/1-9mvzbd1j4vFJ7Zy3CBMWezOHmSpEfcx?usp=drive_link">model</a></td>
+    <td><a href="https://api.wandb.ai/links/wuzirui-research/ne5xa2n1">report</a></td>
   </tr>
 </tbody>
 </table>

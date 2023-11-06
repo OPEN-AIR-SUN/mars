@@ -18,6 +18,7 @@
 
 <div align="center"><h4>For business inquiries, please contact us at <a href="mailto:zhaohao@air.tsinghua.edu.cn">zhaohao@air.tsinghua.edu.cn</a>.</h4></div>
 
+> We have just finished a refactorization of our codebase. Now you can use `pip install` to start using mars instantly! Please contact us without hesitation if you encounter any issues using the latest version. Thanks!
 
 ## 1. Installation: Setup the environment
 

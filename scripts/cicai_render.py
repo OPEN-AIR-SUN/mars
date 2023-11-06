@@ -6,13 +6,13 @@ from __future__ import annotations
 
 import json
 import os
-from nerfstudio.utils import colormaps
 import struct
 import sys
 from contextlib import ExitStack
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Optional
+
 import cv2
 import mediapy as media
 import numpy as np
@@ -27,17 +27,16 @@ from rich.progress import (
     TimeRemainingColumn,
 )
 from typing_extensions import Literal, assert_never
-from nerfstudio.model_components.losses import normalized_depth_scale_and_shift
+
 from nerfstudio.cameras.camera_paths import get_path_from_json, get_spiral_path
 from nerfstudio.cameras.cameras import Cameras, CameraType
+from nerfstudio.data.utils.data_utils import get_depth_image_from_path
+from nerfstudio.model_components.losses import normalized_depth_scale_and_shift
 from nerfstudio.pipelines.base_pipeline import Pipeline
-from nerfstudio.utils import install_checks
+from nerfstudio.utils import colormaps, install_checks
 from nerfstudio.utils.eval_utils import eval_setup
 from nerfstudio.utils.rich_utils import ItersPerSecColumn
 from nerfstudio.viewer.server.utils import three_js_perspective_camera_focal_length
-from nerfstudio.data.utils.data_utils import (
-    get_depth_image_from_path,
-)
 
 CONSOLE = Console(width=120)
 
@@ -110,8 +109,14 @@ def _render_trajectory_video(
         )
         with progress:
             for camera_idx in progress.track(range(cameras.size), description=""):
-                objdata = pipeline.datamanager.train_dataset.metadata["obj_info"][camera_idx].to(pipeline.device)
-                obj_metadata = pipeline.datamanager.eval_dataset.metadata["obj_metadata"].to(pipeline.device)
+                # objdata = pipeline.datamanager.train_dataset.metadata["obj_info"][camera_idx].to(pipeline.device)
+                objdata = pipeline.datamanager.train_dataset.metadata["obj_info"][camera_idx].to(
+                    pipeline.model.object_meta["obj_metadata"].device
+                )
+                # obj_metadata = pipeline.datamanager.eval_dataset.metadata["obj_metadata"].to(pipeline.device)
+                obj_metadata = pipeline.datamanager.eval_dataset.metadata["obj_metadata"].to(
+                    pipeline.model.object_meta["obj_metadata"].device
+                )
                 camera_ray_bundle = cameras.generate_rays(camera_indices=camera_idx)
                 camera_ray_bundle.metadata["object_rays_info"] = objdata
 
@@ -373,8 +378,7 @@ class RenderTrajectory:
             rendered_output_names=self.rendered_output_names,
             rendered_resolution_scaling_factor=1.0 / self.downscale_factor,
             seconds=seconds,
-            output_format="images",
-            # output_format=self.output_format,
+            output_format=self.output_format,
             camera_type=camera_type,
             render_width=render_width,
             render_height=render_height,

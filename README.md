@@ -285,10 +285,15 @@ For more information, please refer to our provided configurations at `mars/cicai
 
 If you want to render with our pre-trained model, you should visit [here](https://drive.google.com/drive/folders/1-5NR2n3o5zD9ViWwovATOshKYfH3us1I?usp=drive_link) to download our checkpoints and **config**. To run the render script, you need to ensure that your config is the same as the `config.yml` that you load in.
 
-You can use the following command to render:
+You can use the following command to render. You can modify output format and directory by specificing `--output-format` and `--output-path` :
+
 
 ```bash
-python scripts/cicai_render.py --load-config outputs/kitti-recon/mars-kitti-car-depth-recon/2023-10-25_143942/config.yml
+python scripts/cicai_render.py --load-config outputs/kitti-recon-65-120/mars-kitti-car-depth-recon/2023-10-30_212654/config.yml --output-format video
+
+or
+
+python scripts/cicai_render.py --load-config outputs/kitti-recon-65-120/mars-kitti-car-depth-recon/2023-10-30_212654/config.yml --output-format images --output-path /path/to/your/output/directory
 ```
 
 ## Citation

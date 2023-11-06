@@ -233,7 +233,9 @@ class SceneGraphModel(Model):
         self.depth_loss = general_depth_loss
         self.monosdf_depth_loss = monosdf_depth_loss
         if self.use_semantic:
-            self.cross_entropy_loss = torch.nn.CrossEntropyLoss(reduction="mean", ignore_index=self.background_model.semantic_num)
+            self.cross_entropy_loss = torch.nn.CrossEntropyLoss(
+                reduction="mean", ignore_index=self.background_model.semantic_num
+            )
 
         # metrics
         self.psnr = PeakSignalNoiseRatio(data_range=1.0)
@@ -638,7 +640,6 @@ class SceneGraphModel(Model):
         batch_obj_dyn = batch_obj_rays.view(N_rays, self.config.max_num_obj, self.config.ray_add_input_rows * 3)
         batch_obj = batch_obj_dyn[..., :4]  # n_rays * n_obj * 4: [x,y,z,yaw]
         obj_idx = batch_obj_dyn[..., 4].type(torch.int64)
-        # TODO: To run cicai_render.py, add to(self.device) in the following line
         obj_meta_tensor = self.object_meta["obj_metadata"]
         batch_obj_metadata = torch.index_select(obj_meta_tensor, 0, obj_idx.reshape(-1)).reshape(
             -1, obj_idx.shape[1], obj_meta_tensor.shape[1]

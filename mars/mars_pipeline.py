@@ -215,15 +215,9 @@ class MarsPipeline(Pipeline):
                 # time this the following line
                 inner_start = time()
 
-                # PR: Expand tensor here
-                image_idx = batch["image_idx"]
+                object_rays_info = self.datamanager.eval_dataset.metadata["obj_info"][batch["image_idx"]]
 
-                object_rays_info = self.datamanager.eval_dataset.metadata["obj_info"][image_idx]
-
-                image_width = self.datamanager.eval_dataset.cameras[image_idx].width
-                image_height = self.datamanager.eval_dataset.cameras[image_idx].height
-
-                object_rays_info_view = object_rays_info.expand(image_height[0], image_width[0], -1, -1)
+                object_rays_info_view = object_rays_info.expand(camera_ray_bundle.shape[0], camera_ray_bundle.shape[1], -1, -1)
 
                 camera_ray_bundle.metadata["object_rays_info"] = object_rays_info_view.reshape(
                     camera_ray_bundle.shape[0], camera_ray_bundle.shape[1], -1

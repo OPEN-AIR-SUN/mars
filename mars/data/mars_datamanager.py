@@ -89,11 +89,7 @@ class MarsDataManager(VanillaDataManager):  # pylint: disable=abstract-method
             image_idx = int(camera_ray_bundle.camera_indices[0, 0, 0])
             object_rays_info = self.eval_dataset.metadata["obj_info"][image_idx]
 
-            # PR: Expand tensor here
-            image_width = self.eval_dataset.cameras[image_idx].width
-            image_height = self.eval_dataset.cameras[image_idx].height
-
-            object_rays_info_view = object_rays_info.expand(image_height[0], image_width[0], -1, -1)
+            object_rays_info_view = object_rays_info.expand(camera_ray_bundle.shape[0], camera_ray_bundle.shape[0], -1, -1)
 
             camera_ray_bundle.metadata["object_rays_info"] = object_rays_info_view.reshape(
                 camera_ray_bundle.shape[0], camera_ray_bundle.shape[1], -1

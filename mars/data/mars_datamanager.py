@@ -56,9 +56,11 @@ class MarsDataManager(VanillaDataManager):  # pylint: disable=abstract-method
         ray_bundle = self.train_ray_generator(ray_indices)
 
         c = ray_indices[:, 0]  # camera indices
-        y = ray_indices[:, 1]  # row indices
-        x = ray_indices[:, 2]  # col indices
-        object_rays_info = self.train_dataset.metadata["obj_info"][c, y, x]
+        # y = ray_indices[:, 1]  # row indices
+        # x = ray_indices[:, 2]  # col indices
+
+        # PR: Adjusted to match the new tensor structure
+        object_rays_info = self.train_dataset.metadata["obj_info"][c]
         object_rays_info = object_rays_info.reshape(object_rays_info.shape[0], -1)
         ray_bundle.metadata["object_rays_info"] = object_rays_info.detach()
         return ray_bundle, batch
@@ -72,9 +74,11 @@ class MarsDataManager(VanillaDataManager):  # pylint: disable=abstract-method
         ray_indices = batch["indices"]
         ray_bundle = self.eval_ray_generator(ray_indices)
         c = ray_indices[:, 0]  # camera indices
-        y = ray_indices[:, 1]  # row indices
-        x = ray_indices[:, 2]  # col indices
-        object_rays_info = self.eval_dataset.metadata["obj_info"][c, y, x]
+        # y = ray_indices[:, 1]  # row indices
+        # x = ray_indices[:, 2]  # col indices
+
+        # PR: Adjusted to match the new tensor structure
+        object_rays_info = self.eval_dataset.metadata["obj_info"][c]
         object_rays_info = object_rays_info.reshape(object_rays_info.shape[0], -1)
         ray_bundle.metadata["object_rays_info"] = object_rays_info.detach()
         return ray_bundle, batch
@@ -84,7 +88,10 @@ class MarsDataManager(VanillaDataManager):  # pylint: disable=abstract-method
             assert camera_ray_bundle.camera_indices is not None
             image_idx = int(camera_ray_bundle.camera_indices[0, 0, 0])
             object_rays_info = self.eval_dataset.metadata["obj_info"][image_idx]
-            camera_ray_bundle.metadata["object_rays_info"] = object_rays_info.reshape(
+
+            object_rays_info_view = object_rays_info.expand(camera_ray_bundle.shape[0], camera_ray_bundle.shape[1], -1, -1)
+
+            camera_ray_bundle.metadata["object_rays_info"] = object_rays_info_view.reshape(
                 camera_ray_bundle.shape[0], camera_ray_bundle.shape[1], -1
             ).detach()
             return image_idx, camera_ray_bundle, batch

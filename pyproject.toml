@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mars-nerfstudio"
-version = "0.3.3post2"
+version = "0.3.4"
 description = "The official code repository for the paper: MARS: An Instance-aware, Modular and Realistic Simulator for Autonomous Driving"
 readme = "README.md"
 license = { text="Apache 2.0" }

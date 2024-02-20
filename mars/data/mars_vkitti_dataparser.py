@@ -596,8 +596,8 @@ class MarsVKittiParser(DataParser):
 
         obj_nodes_tensor = torch.from_numpy(obj_nodes)
         # obj_nodes_tensor = torch.from_numpy(obj_nodes).cuda()
-        obj_nodes_tensor = obj_nodes_tensor[:, :, None, ...].repeat_interleave(image_width, dim=2)
-        obj_nodes_tensor = obj_nodes_tensor[:, :, None, ...].repeat_interleave(image_height, dim=2)
+
+        obj_nodes_tensor = obj_nodes_tensor.unsqueeze(1).unsqueeze(1)
 
         obj_size = self.max_input_objects * add_input_rows
         input_size += obj_size
@@ -606,9 +606,8 @@ class MarsVKittiParser(DataParser):
 
         # [N, H, W, ro+rd+rgb+obj_nodes*max_obj, 3]
         # with obj_nodes [(x+y+z)*max_obj + (obj_id+is_training+0)*max_obj]
-        obj_nodes_tensor = obj_nodes_tensor.permute([0, 2, 3, 1, 4]).cpu()
-        # obj_nodes = np.stack([obj_nodes[i] for i in i_train], axis=0)  # train images only
-        obj_info = torch.cat([obj_nodes_tensor[i : i + 1] for i in indices], dim=0)
+        
+        obj_info = obj_nodes_tensor[indices, ...]
 
         image_filenames = [imgs_name[i] for i in indices]
         instance_filenames = [instance_name[i] for i in indices]

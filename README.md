@@ -20,6 +20,8 @@
 
 > We have just finished a refactorization of our codebase. Now you can use `pip install` to start using mars instantly! Please contact us without hesitation if you encounter any issues using the latest version. Thanks!
 
+> Our related(dependent) project -- CarStudio is accepted by RAL and their code is available at [GitHub](https://github.com/lty2226262/Car_studio). Congrats to them!
+
 ## 1. Installation: Setup the environment
 
 ### Prerequisites

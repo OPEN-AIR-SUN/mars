@@ -1,2 +1,4 @@
 nerfstudio/
 neural_scene_graph.egg-info/
+
+.DS_Store

@@ -7,6 +7,7 @@
     <a href="https://arxiv.org/abs/2307.15058">
         <img src='https://img.shields.io/badge/arXiv-Page-aff'>
     </a>
+    <a href="https://pypi.org/project/mars-nerfstudio/"><img src="https://img.shields.io/badge/pypi package-0.3.4-brightgreen" alt="PyPI version"></a>
     <a href='https://open-air-sun.github.io/mars/static/data/MARS-poster.pdf'>
         <img src='https://img.shields.io/badge/Poster-PDF-pink' />
     </a>
